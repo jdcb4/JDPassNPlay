@@ -498,6 +498,66 @@ const finishActionIfNeeded = (
   return finishTurn({ ...session, activeTurn });
 };
 
+const buildActionRuntime = (options: {
+  rng?: () => number;
+  nowMs?: () => number;
+  toIso?: (timestamp: number) => string;
+  makeTimestamp?: () => string;
+  isPast?: (timestamp: string) => boolean;
+}): ActionRuntime => ({
+  rng: options.rng ?? Math.random,
+  nowMs: options.nowMs ?? Date.now,
+  toIso: options.toIso ?? ((timestamp) => new Date(timestamp).toISOString()),
+  makeTimestamp: options.makeTimestamp ?? (() => new Date().toISOString()),
+  isPast: options.isPast ?? ((timestamp) => new Date(timestamp).getTime() <= Date.now())
+});
+
+/**
+ * Mark / skip / return-skipped while `stage === 'turn'` and `activeTurn` exists.
+ * Caller must ensure we are not handling start-turn or end-turn.
+ */
+const applyTurnInteractionAction = (
+  session: HatGameSession,
+  action: HatGameAction,
+  runtime: ActionRuntime
+): HatGameActionResult => {
+  const activeTurn = session.activeTurn;
+  if (!activeTurn) {
+    return { error: 'The turn has not started yet' };
+  }
+
+  if (runtime.isPast(activeTurn.endsAt)) {
+    return finishTurn(session);
+  }
+
+  const clue = currentQueuedClue(activeTurn);
+  if (!clue) {
+    return finishTurn(session);
+  }
+
+  if (action.type === 'mark-correct') {
+    return finishActionIfNeeded(session, markCorrect(session, activeTurn, clue, runtime), runtime);
+  }
+
+  if (action.type === 'skip-clue') {
+    const nextTurn = skipFigure(session, activeTurn, clue, runtime);
+    if ('error' in nextTurn) {
+      return nextTurn;
+    }
+    return finishActionIfNeeded(session, nextTurn, runtime);
+  }
+
+  if (action.type === 'return-skipped-clue') {
+    const nextTurn = returnSkippedFigure(session, activeTurn, action.payload?.poolIndex);
+    if ('error' in nextTurn) {
+      return nextTurn;
+    }
+    return finishActionIfNeeded(session, nextTurn, runtime);
+  }
+
+  return { ...session, activeTurn };
+};
+
 export const createHatGameSession = ({
   players,
   teams,
@@ -551,13 +611,7 @@ export const applyHatGameAction = (
     isPast?: (timestamp: string) => boolean;
   } = {}
 ): HatGameActionResult => {
-  const runtime: ActionRuntime = {
-    rng: options.rng ?? Math.random,
-    nowMs: options.nowMs ?? Date.now,
-    toIso: options.toIso ?? ((timestamp) => new Date(timestamp).toISOString()),
-    makeTimestamp: options.makeTimestamp ?? (() => new Date().toISOString()),
-    isPast: options.isPast ?? ((timestamp) => new Date(timestamp).getTime() <= Date.now())
-  };
+  const runtime = buildActionRuntime(options);
 
   if (action.type === 'start-turn') {
     return startTurn(session, runtime);
@@ -574,34 +628,5 @@ export const applyHatGameAction = (
     return { error: 'The turn has not started yet' };
   }
 
-  if (runtime.isPast(session.activeTurn.endsAt)) {
-    return finishTurn(session);
-  }
-
-  const clue = currentQueuedClue(session.activeTurn);
-  if (!clue) {
-    return finishTurn(session);
-  }
-
-  if (action.type === 'mark-correct') {
-    return finishActionIfNeeded(session, markCorrect(session, session.activeTurn, clue, runtime), runtime);
-  }
-
-  if (action.type === 'skip-clue') {
-    const nextTurn = skipFigure(session, session.activeTurn, clue, runtime);
-    if ('error' in nextTurn) {
-      return nextTurn;
-    }
-    return finishActionIfNeeded(session, nextTurn, runtime);
-  }
-
-  if (action.type === 'return-skipped-clue') {
-    const nextTurn = returnSkippedFigure(session, session.activeTurn, action.payload?.poolIndex);
-    if ('error' in nextTurn) {
-      return nextTurn;
-    }
-    return finishActionIfNeeded(session, nextTurn, runtime);
-  }
-
-  return { ...session, activeTurn: session.activeTurn };
+  return applyTurnInteractionAction(session, action, runtime);
 };

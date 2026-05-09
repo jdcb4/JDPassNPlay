@@ -2,6 +2,10 @@
 
 Notable changes by version. Newest at the top. Bumps follow `docs/VERSIONING.md`.
 
+## 0.2.8 - 2026-05-10
+
+- **Hat Game (domain):** Refactored `applyHatGameAction` — extracted `buildActionRuntime` and `applyTurnInteractionAction` so routing vs mid-turn logic is easier to follow (no behaviour change).
+
 ## 0.2.7 - 2026-05-10
 
 - **Tooling:** Added `pnpm run fallow:hygiene` (dead-code + duplication only). Documented in `docs/VERIFICATION.md` how full Fallow differs from the hygiene subset when interactive complexity thresholds are noisy.
