@@ -29,12 +29,14 @@ Games:
 - `src/config` — `env.ts`, `hatGameDefaults.ts`, `teamRoster.ts` (shared 2–4 teams, 2–6 players per team), `appMeta.ts` (product label for shared chrome).
 - `docs` — durable project documentation.
 - `scripts` — deterministic project utility scripts.
+- `gallery.html` / `src/ui-gallery/` — dev-only UI gallery (not part of default `pnpm run build`).
 
 ## Commands
 
 | Command                 | Purpose                                                  |
 | ----------------------- | -------------------------------------------------------- |
 | `pnpm run dev`          | Start the development server.                            |
+| `pnpm run ui-gallery`   | Dev-only paired-screen preview (`gallery.html`, port 5174). See `docs/UI_GALLERY.md`. |
 | `pnpm run typecheck`    | TypeScript checking.                                     |
 | `pnpm run lint`         | ESLint.                                                  |
 | `pnpm test`             | Vitest once.                                             |
@@ -52,6 +54,7 @@ Games:
 - [`docs/AGENT_PROMPTS.md`](AGENT_PROMPTS.md) — canonical re-usable task prompts.
 - [`docs/ARCHITECTURE.md`](ARCHITECTURE.md) — module boundaries and runtime shape.
 - [`docs/VERIFICATION.md`](VERIFICATION.md) — required checks before commit.
+- [`docs/UI_GALLERY.md`](UI_GALLERY.md) — dev-only UI gallery for screen previews.
 - [`docs/VERSIONING.md`](VERSIONING.md) — version rules.
 - [`docs/DECISIONS.md`](DECISIONS.md) — durable decisions (ADR-lite).
 - [`docs/ROADMAP.md`](ROADMAP.md) — future ideas only, not active work.

@@ -2,6 +2,10 @@
 
 Notable changes by version. Newest at the top. Bumps follow `docs/VERSIONING.md`.
 
+## 0.3.2 - 2026-05-10
+
+- **Dev tooling:** Added a separate **UI gallery** (`pnpm run ui-gallery`, `gallery.html` + `vite.ui-gallery.config.ts`) showing Hat Game and Who What Where screens side by side with fake data — not included in the default production build.
+
 ## 0.3.1 - 2026-05-10
 
 - **Hat Game (turn):** Metrics use the same **2×2** grid as WhoWhatWhere (time left, phase name, score, skipped-waiting count). Skipped-clues panel includes the helper line “Pick a waiting word to return to it now.”
