@@ -29,7 +29,6 @@ Games:
 - `src/config` — `env.ts`, `hatGameDefaults.ts`, `teamRoster.ts` (shared 2–4 teams, 2–6 players per team), `appMeta.ts` (product label for shared chrome).
 - `docs` — durable project documentation.
 - `scripts` — deterministic project utility scripts.
-- `_reference/` — optional local clones of upstream games (gitignored pattern for local use; excluded from lint/tests).
 
 ## Commands
 

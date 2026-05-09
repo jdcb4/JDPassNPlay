@@ -2,6 +2,10 @@
 
 Notable changes by version. Newest at the top. Bumps follow `docs/VERSIONING.md`.
 
+## 0.2.4 - 2026-05-09
+
+- **Repo:** Removed optional `_reference/` upstream clone folder (local-only; was gitignored). Dropped `_reference` from ESLint, Vitest, Fallow, and `.gitignore`; updated `docs/PROJECT_INDEX.md`.
+
 ## 0.2.3 - 2026-05-09
 
 - **Hat Game setup:** Matches WhoWhatWhere — pick 2–4 teams first, then step through each team with 2–6 players per team (starts at 2; add/remove like WWW).
@@ -26,8 +30,7 @@ Notable changes by version. Newest at the top. Bumps follow `docs/VERSIONING.md`
 - Ported **WhoWhatWhere** domain, UI, `localStorage` persistence, and Web Audio cues from the reference project; final results offer **Pick another game**, **Replay**, and **New game**.
 - Reimplemented **Hat Game** from the Expo reference as a web feature (same rules engine and JSON data); local persistence; short Web Audio cues for most events; same three result actions.
 - Shared **GameShell** layout (safe areas + keyboard-friendly scroll margins) and `GameResultActions` for consistent mobile-first UX.
-- Vitest excludes `_reference/` clones; ESLint ignores `_reference/`.
-- **Deferred / follow-up:** Imposter is stub-only. Delete `_reference/` when you no longer need the upstream clones locally.
+- **Deferred / follow-up:** Imposter is stub-only.
 
 ## 0.1.0 - 2026-01-01
 

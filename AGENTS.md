@@ -30,7 +30,7 @@ If docs are missing, stale, or inconsistent with the code, fix them as part of t
 2. **No new top-level dependency or framework** without a `docs/DECISIONS.md` entry recording why.
 3. **No new database** without first justifying why JSON files are insufficient. Document the decision.
 4. **Run deterministic checks before claiming a task is complete.** See `docs/VERIFICATION.md`. Never claim a check passed when it did not.
-5. **Bump the version on every behaviour-affecting change** per `docs/VERSIONING.md`, and update `docs/CHANGELOG.md`. If the change is version-neutral, say so explicitly in the commit message.
+5. **Bump the version on every behaviour-affecting change** per `docs/VERSIONING.md`, and update `docs/CHANGELOG.md`. **Whenever `package.json`'s version increases, create a git commit** in the same change that includes the bump, changelog entry, and the code/docs that justify it. If the change is version-neutral, say so explicitly in the commit message.
 6. **Do not implement roadmap items unless the user moves them into active work.** Out-of-scope ideas go into `docs/ROADMAP.md`.
 7. **Do not commit secrets, build output, `node_modules`, or local env files.** See `.gitignore` and `SECURITY.md`.
 8. **Do not weaken or skip tests to make them pass.** Fix the underlying issue.
