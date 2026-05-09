@@ -56,6 +56,7 @@ Games:
 - [`docs/ARCHITECTURE.md`](ARCHITECTURE.md) — module boundaries and runtime shape.
 - [`docs/VERIFICATION.md`](VERIFICATION.md) — required checks before commit.
 - [`docs/TYPOGRAPHY.md`](TYPOGRAPHY.md) — named font tiers (`text-typ-*`).
+- [`docs/SCREENS.md`](SCREENS.md) — informal names for each hub/game screen (UX reference).
 - [`docs/VERSIONING.md`](VERSIONING.md) — version rules.
 - [`docs/DECISIONS.md`](DECISIONS.md) — durable decisions (ADR-lite).
 - [`docs/ROADMAP.md`](ROADMAP.md) — future ideas only, not active work.

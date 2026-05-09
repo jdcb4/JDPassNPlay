@@ -2,6 +2,10 @@
 
 Notable changes by version. Newest at the top. Bumps follow `docs/VERSIONING.md`.
 
+## 0.5.1 - 2026-05-10
+
+- **Docs:** Added [`docs/SCREENS.md`](SCREENS.md) — screen map with recognizable names for UX discussions; linked from [`docs/PROJECT_INDEX.md`](PROJECT_INDEX.md).
+
 ## 0.5.0 - 2026-05-10
 
 - **Typography system:** Named tiers **`text-typ-*`** — CSS variables (`--font-tier-*` in `src/index.css`) drive size, line-height, and letter-spacing; Tailwind maps them in `tailwind.config.ts`; `src/typography/tiers.ts` exports a **`typography`** map for components.
