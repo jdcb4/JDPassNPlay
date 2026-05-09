@@ -27,6 +27,7 @@ Games:
 - `src/data` — `words.generated.ts`, `clueSuggestions.json`, `namePacks.json`.
 - `src/assets` — static assets bundled by Vite (e.g. Hat Game phase `.wav` cues).
 - `src/config` — `env.ts`, `hatGameDefaults.ts`, `teamRoster.ts` (shared 2–4 teams, 2–6 players per team), `appMeta.ts` (product label for shared chrome).
+- `src/typography` — named font tier map (`tiers.ts`) for `text-typ-*` utilities.
 - `docs` — durable project documentation.
 - `scripts` — deterministic project utility scripts.
 - `gallery.html` / `src/ui-gallery/` — dev-only UI gallery (not part of default `pnpm run build`).
@@ -54,7 +55,7 @@ Games:
 - [`docs/AGENT_PROMPTS.md`](AGENT_PROMPTS.md) — canonical re-usable task prompts.
 - [`docs/ARCHITECTURE.md`](ARCHITECTURE.md) — module boundaries and runtime shape.
 - [`docs/VERIFICATION.md`](VERIFICATION.md) — required checks before commit.
-- [`docs/UI_GALLERY.md`](UI_GALLERY.md) — dev-only UI gallery for screen previews.
+- [`docs/TYPOGRAPHY.md`](TYPOGRAPHY.md) — named font tiers (`text-typ-*`).
 - [`docs/VERSIONING.md`](VERSIONING.md) — version rules.
 - [`docs/DECISIONS.md`](DECISIONS.md) — durable decisions (ADR-lite).
 - [`docs/ROADMAP.md`](ROADMAP.md) — future ideas only, not active work.

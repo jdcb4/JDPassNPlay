@@ -267,11 +267,11 @@ function GalleryChrome() {
     <div className="min-h-dvh bg-neutral-950 text-foreground">
       <header className="sticky top-0 z-50 border-b border-border bg-neutral-950/95 px-4 py-3 backdrop-blur">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3">
-          <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          <span className="font-semibold uppercase tracking-wide text-typ-micro text-muted-foreground">
             Dev UI gallery
           </span>
           <button
-            className="rounded-md border border-border px-3 py-1.5 text-sm hover:bg-accent"
+            className="rounded-md border border-border px-3 py-1.5 text-typ-ui hover:bg-accent"
             disabled={index === 0}
             type="button"
             onClick={goPrev}
@@ -279,17 +279,17 @@ function GalleryChrome() {
             Back
           </button>
           <button
-            className="rounded-md border border-border px-3 py-1.5 text-sm hover:bg-accent"
+            className="rounded-md border border-border px-3 py-1.5 text-typ-ui hover:bg-accent"
             disabled={index >= slides.length - 1}
             type="button"
             onClick={goNext}
           >
             Next
           </button>
-          <label className="flex items-center gap-2 text-sm">
+          <label className="flex items-center gap-2 text-typ-ui">
             <span className="text-muted-foreground">Slide</span>
             <select
-              className="max-w-[min(28rem,calc(100vw-8rem))] rounded-md border border-border bg-background px-2 py-1.5 text-sm"
+              className="max-w-[min(28rem,calc(100vw-8rem))] rounded-md border border-border bg-background px-2 py-1.5 text-typ-ui"
               value={index}
               onChange={(event) => setIndex(Number.parseInt(event.target.value, 10))}
             >
@@ -300,18 +300,18 @@ function GalleryChrome() {
               ))}
             </select>
           </label>
-          <span className="text-sm text-muted-foreground">
+          <span className="text-typ-ui text-muted-foreground">
             {index + 1} / {slides.length}
           </span>
         </div>
-        <p className="mx-auto mt-2 max-w-6xl text-xs text-muted-foreground">
+        <p className="mx-auto mt-2 max-w-6xl text-typ-micro text-muted-foreground">
           Static previews with fake data — footer buttons are visual only (pointer events off).
         </p>
       </header>
 
       <div className="mx-auto grid max-w-6xl gap-4 px-4 pb-8 pt-4 md:grid-cols-2">
         <section>
-          <h2 className="mb-2 text-center text-sm font-medium text-muted-foreground">
+          <h2 className="mb-2 text-center font-medium text-typ-ui text-muted-foreground">
             Hat Game
           </h2>
           <div className="pointer-events-none select-none overflow-hidden rounded-lg border border-border bg-background shadow-sm">
@@ -319,7 +319,7 @@ function GalleryChrome() {
               <GameShell footer={hatScreen.actions ? footerWrap(hatScreen.actions) : undefined} headerRight={hatHeaderRight} title="Hat Game">
                 {hatController.error &&
                 hatController.snapshot.step !== "team" ? (
-                  <p className="mb-3 text-sm font-medium text-destructive">
+                  <p className="mb-3 font-medium text-typ-ui text-destructive">
                     {hatController.error}
                   </p>
                 ) : null}
@@ -330,7 +330,7 @@ function GalleryChrome() {
         </section>
 
         <section>
-          <h2 className="mb-2 text-center text-sm font-medium text-muted-foreground">
+          <h2 className="mb-2 text-center font-medium text-typ-ui text-muted-foreground">
             Who What Where
           </h2>
           <div className="pointer-events-none select-none overflow-hidden rounded-lg border border-border bg-background shadow-sm">

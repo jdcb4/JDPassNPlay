@@ -23,6 +23,10 @@ Use `@/components/game/GamePanel` as the **default wrapper for primary in-game c
 
 Shared roster UI (`TeamRosterSetupScreen`) can hide its built-in heading (`omitHeading`) when the parent supplies headings via `GamePanel`.
 
+### Typography tiers (`text-typ-*`)
+
+Use **named font tiers** (`text-typ-ui`, `text-typ-panel-title`, …) backed by CSS variables — see [`docs/TYPOGRAPHY.md`](TYPOGRAPHY.md). Prefer these over raw `text-sm` / `text-xl` / `tracking-*` in components.
+
 - `src/app` — routing, app shell, framework entrypoints.
 - `src/features` — feature-specific UI and orchestration.
 - `src/components/ui` — generic visual primitives.

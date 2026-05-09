@@ -13,7 +13,7 @@ export function ImposterPlaceholder() {
         title="Imposter is on the roadmap"
       >
         <Link
-          className="mt-2 inline-flex h-12 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium shadow-sm hover:bg-accent"
+          className="mt-2 inline-flex h-12 items-center justify-center rounded-md border border-input bg-background px-4 font-medium text-typ-ui shadow-sm hover:bg-accent"
           to="/"
         >
           Back to game picker

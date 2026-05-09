@@ -11,7 +11,7 @@ export function OptionGroup({
 }) {
   return (
     <fieldset className="grid gap-3">
-      <legend className="text-sm font-semibold">{label}</legend>
+      <legend className="text-typ-ui font-semibold">{label}</legend>
       <div className="grid grid-flow-col auto-cols-fr gap-2">{children}</div>
     </fieldset>
   );

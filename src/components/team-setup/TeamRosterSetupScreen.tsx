@@ -58,7 +58,7 @@ export function TeamRosterSetupScreen({
     <section className="flex min-h-0 flex-1 flex-col">
       <div className="keyboard-safe-form min-h-0 flex-1 space-y-5 overflow-x-hidden overflow-y-auto pb-4">
         <button
-          className="flex w-fit items-center gap-2 text-sm font-medium text-muted-foreground"
+          className="flex w-fit items-center gap-2 font-medium text-typ-ui text-muted-foreground"
           onClick={onBack}
           type="button"
         >
@@ -68,10 +68,10 @@ export function TeamRosterSetupScreen({
 
         {omitHeading ? null : (
           <div className="space-y-2">
-            <p className="text-sm font-medium text-primary">
+            <p className="font-medium text-typ-ui text-primary">
               Team {teamIndex + 1} of {teamCount}
             </p>
-            <h2 className="text-2xl font-semibold tracking-normal">
+            <h2 className="font-semibold text-typ-section-title">
               Name this team
             </h2>
           </div>
@@ -91,8 +91,8 @@ export function TeamRosterSetupScreen({
 
         <div className="grid gap-3">
           <div className="flex items-center justify-between">
-            <h3 className="font-semibold">Players</h3>
-            <p className="text-sm text-muted-foreground">
+            <h3 className="font-semibold text-typ-ui">Players</h3>
+            <p className="text-typ-ui text-muted-foreground">
               {team.players.length}/{MAX_PLAYERS_PER_TEAM}
             </p>
           </div>
@@ -102,7 +102,7 @@ export function TeamRosterSetupScreen({
               key={player.id}
               className="flex min-w-0 max-w-full items-center gap-2"
             >
-              <span className="w-7 shrink-0 text-right text-sm font-semibold text-muted-foreground">
+              <span className="w-7 shrink-0 text-right font-semibold text-typ-ui text-muted-foreground">
                 {playerIndex + 1}.
               </span>
               <div className="min-w-0 flex-1">
@@ -146,7 +146,7 @@ export function TeamRosterSetupScreen({
         </div>
 
         {error ? (
-          <p className="rounded-md border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
+          <p className="rounded-md border border-destructive/30 bg-destructive/10 p-3 text-typ-ui text-destructive">
             {error}
           </p>
         ) : null}

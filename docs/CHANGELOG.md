@@ -2,6 +2,13 @@
 
 Notable changes by version. Newest at the top. Bumps follow `docs/VERSIONING.md`.
 
+## 0.5.0 - 2026-05-10
+
+- **Typography system:** Named tiers **`text-typ-*`** — CSS variables (`--font-tier-*` in `src/index.css`) drive size, line-height, and letter-spacing; Tailwind maps them in `tailwind.config.ts`; `src/typography/tiers.ts` exports a **`typography`** map for components.
+- **Components:** Replaced raw `text-sm` / `text-xl` / `tracking-*` usages across games, shared chrome, and the UI gallery with tier classes.
+- **`Button`:** Corrected **`className` merging** (`cn(buttonVariants(...), className)`); default label size uses **`text-typ-ui`**.
+- **Docs:** [`docs/TYPOGRAPHY.md`](TYPOGRAPHY.md), [`docs/ARCHITECTURE.md`](ARCHITECTURE.md), [`docs/DECISIONS.md`](DECISIONS.md), [`docs/PROJECT_INDEX.md`](PROJECT_INDEX.md).
+
 ## 0.4.0 - 2026-05-10
 
 - **Shared UI:** All Who What Where screens under `GameShell` now use **`GamePanel`** (settings, team roster, resume prompt, final summary, results). Ready and active turn already used it.

@@ -51,7 +51,7 @@ export function HatGameApp() {
     <FooterActionLockContext.Provider value={controller.footerActionsLocked}>
       <GameShell footer={footer} headerRight={headerRight} title="Hat Game">
         {controller.error && controller.snapshot.step !== "team" ? (
-          <p className="mb-3 text-sm font-medium text-destructive">
+          <p className="mb-3 font-medium text-typ-ui text-destructive">
             {controller.error}
           </p>
         ) : null}

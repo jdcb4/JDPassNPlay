@@ -65,7 +65,7 @@ export function ActiveTurnScreen({
           />
         </div>
 
-        <p className="text-sm text-muted-foreground">
+        <p className="text-typ-ui text-muted-foreground">
           Keep going until time runs out or tap{" "}
           <span className="font-medium text-foreground">End turn</span> in the
           header.
@@ -74,12 +74,12 @@ export function ActiveTurnScreen({
         {(activeTurn.currentWordSource === "skipped" ||
           activeTurn.skippedWords.length > 0) && (
           <div className="rounded-lg border border-dashed border-border p-3">
-            <p className="mb-2 text-sm font-semibold">
+            <p className="mb-2 font-semibold text-typ-ui">
               {activeTurn.currentWordSource === "skipped"
                 ? "Working through skipped words"
                 : "Skipped words waiting"}
             </p>
-            <p className="mb-3 text-sm text-muted-foreground">
+            <p className="mb-3 text-typ-ui text-muted-foreground">
               Pick a waiting word to return to it now.
             </p>
             <div className="grid gap-2">

@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { IconPencil } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export function EditableName({
   label,
@@ -20,13 +21,15 @@ export function EditableName({
 
   if (isEditing) {
     return (
-      <label className={`grid min-w-0 gap-2 text-sm font-medium ${className}`}>
+      <label
+        className={cn("grid min-w-0 gap-2 font-medium text-typ-ui", className)}
+      >
         {!hideLabel && label}
         <span className="p-0.5">
           <input
             aria-label={label}
             autoFocus
-            className="keyboard-safe-input h-12 w-full rounded-md border bg-background px-3 text-base outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring"
+            className="keyboard-safe-input h-12 w-full rounded-md border bg-background px-3 text-typ-input outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring"
             maxLength={24}
             value={value}
             onBlur={() => setIsEditing(false)}
@@ -44,9 +47,9 @@ export function EditableName({
 
   return (
     <div className={`grid min-w-0 gap-2 ${className}`}>
-      {!hideLabel && <p className="text-sm font-medium">{label}</p>}
+      {!hideLabel && <p className="font-medium text-typ-ui">{label}</p>}
       <div className="flex h-12 items-center justify-between gap-3 rounded-md border bg-card px-3">
-        <p className="min-w-0 truncate text-base font-semibold">{value}</p>
+        <p className="min-w-0 truncate text-typ-body font-semibold">{value}</p>
         <Button
           aria-label={`Edit ${label}`}
           size="icon"

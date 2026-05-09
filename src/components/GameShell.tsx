@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 
 import { IconHouse } from "@/components/icons";
+import { cn } from "@/lib/utils";
+import { typography } from "@/typography/tiers";
 
 /**
  * Shared mobile-first layout: safe areas, scrollable middle, optional sticky footer
@@ -29,7 +31,12 @@ export function GameShell({
           >
             <IconHouse className="size-5" />
           </Link>
-          <h1 className="min-w-0 flex-1 text-center text-lg font-semibold tracking-tight">
+          <h1
+            className={cn(
+              typography.shellTitle,
+              "min-w-0 flex-1 text-center font-semibold",
+            )}
+          >
             {title}
           </h1>
           <div className="flex min-h-10 min-w-[2.5rem] items-center justify-end gap-1">

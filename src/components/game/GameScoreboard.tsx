@@ -26,13 +26,13 @@ export function GameScoreboard({
 
   return (
     <div className="space-y-2 rounded-lg border border-border bg-background p-3">
-      <p className="text-sm font-semibold">Scoreboard</p>
+      <p className="text-typ-ui font-semibold">Scoreboard</p>
       <ul className="space-y-2">
         {ordered.map((team) => (
           <li
             key={team.id}
             className={cn(
-              "flex items-center justify-between text-sm font-medium",
+              "flex items-center justify-between text-typ-ui font-medium",
               team.id === activeTeamId &&
                 "-mx-1 rounded-md px-2 py-1 ring-2 ring-ring",
             )}

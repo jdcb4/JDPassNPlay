@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
+import { typography } from "@/typography/tiers";
 
 /**
  * Shared “card” chrome for in-game panels (Hat Game + WhoWhatWhere).
@@ -29,11 +30,13 @@ export function GamePanel({
     >
       <div>
         {eyebrow ? (
-          <p className="text-sm text-muted-foreground">{eyebrow}</p>
+          <p className={cn(typography.ui, "text-muted-foreground")}>{eyebrow}</p>
         ) : null}
-        <h2 className="text-xl font-semibold tracking-tight">{title}</h2>
+        <h2 className={cn(typography.panelTitle, "font-semibold")}>{title}</h2>
         {subtitle ? (
-          <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
+          <p className={cn(typography.ui, "mt-1 text-muted-foreground")}>
+            {subtitle}
+          </p>
         ) : null}
       </div>
       <div className="grid gap-4">{children}</div>

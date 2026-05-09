@@ -45,12 +45,12 @@ function HatScoreboard({ session }: { session: HatGameSession }) {
 }
 
 const inputClassName =
-  "keyboard-safe-input h-12 w-full rounded-md border border-input bg-background px-3 text-base text-foreground outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring";
+  "keyboard-safe-input h-12 w-full rounded-md border border-input bg-background px-3 text-typ-input text-foreground outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring";
 
-const noticeClass = "text-sm text-muted-foreground";
+const noticeClass = "text-typ-ui text-muted-foreground";
 
 const reviewCardClass =
-  "rounded-lg border border-border bg-muted/20 p-3 text-sm";
+  "rounded-lg border border-border bg-muted/20 p-3 text-typ-ui";
 
 const renderLanding = (controller: HatGameAppController): ScreenModel => ({
   content: (
@@ -70,7 +70,7 @@ const renderLanding = (controller: HatGameAppController): ScreenModel => ({
         </p>
       )}
       {controller.confirmNewGame ? (
-        <p className="text-sm font-medium text-destructive">
+        <p className="text-typ-ui font-medium text-destructive">
           Start a new game? This will discard the saved game on this device.
         </p>
       ) : null}
@@ -227,7 +227,7 @@ const renderClueEntry = (controller: HatGameAppController): ScreenModel => {
             key={`${player.id}-clue-${index}`}
             className="flex flex-wrap items-center gap-2"
           >
-            <span className="w-6 shrink-0 font-medium tabular-nums">
+            <span className="w-6 shrink-0 font-medium tabular-nums text-typ-ui">
               {index + 1}.
             </span>
             <input
@@ -356,8 +356,8 @@ const renderTurn = (
         </p>
         {activeTurn?.skippedClues.length ? (
           <div className="rounded-lg border border-dashed border-border p-3">
-            <p className="mb-2 text-sm font-semibold">Skipped famous figures</p>
-            <p className="mb-3 text-sm text-muted-foreground">
+            <p className="mb-2 text-typ-ui font-semibold">Skipped famous figures</p>
+            <p className="mb-3 text-typ-ui text-muted-foreground">
               Pick a waiting word to return to it now.
             </p>
             <div className="grid gap-2">
@@ -423,7 +423,7 @@ const renderResults = (
           <p className="font-semibold">
             {index + 1}. {entry.teamName}
           </p>
-          <p className="mt-1 text-muted-foreground">{entry.score} pts</p>
+          <p className="mt-1 text-typ-ui text-muted-foreground">{entry.score} pts</p>
         </div>
       ))}
     </GamePanel>

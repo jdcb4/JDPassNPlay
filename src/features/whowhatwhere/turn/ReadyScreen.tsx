@@ -6,7 +6,7 @@ import type { MatchState } from "@/domain/whowhatwhere/types";
 import { LastTurnCard } from "@/features/whowhatwhere/summary/LastTurnCard";
 import { Scoreboard } from "@/features/whowhatwhere/summary/Scoreboard";
 
-const noticeClass = "text-sm text-muted-foreground";
+const noticeClass = "text-typ-ui text-muted-foreground";
 
 export function ReadyScreen({
   match,
@@ -55,7 +55,7 @@ export function ReadyScreen({
       </GamePanel>
 
       {error ? (
-        <p className="mt-4 rounded-md border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
+        <p className="mt-4 rounded-md border border-destructive/30 bg-destructive/10 p-3 text-typ-ui text-destructive">
           {error}
         </p>
       ) : null}

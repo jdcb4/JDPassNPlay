@@ -37,3 +37,13 @@ When adding a new entry, append to the bottom and keep the most recent decisions
 **Reasoning:** One visual language for “you are in a game flow”; aligns typography and bordered panels across titles and makes new games straightforward (see `docs/ARCHITECTURE.md`).
 
 **Rejected alternatives:** Leaving mixed `<section>` layouts maintained divergence between setup vs turn screens; replacing `GamePanel` with Tailwind-only duplication would drift over time.
+
+---
+
+## 2026-05-10: Named typography tiers (`text-typ-*`)
+
+**Decision:** Define font size, line-height, and letter-spacing as CSS variables (`--font-tier-*` on `:root`) and expose them through Tailwind as `text-typ-{tier}` utilities, with a `typography` export map in `src/typography/tiers.ts`. Components use tiers instead of raw `text-sm` / `text-xl` / `tracking-*`.
+
+**Reasoning:** Adjusting one tier recenters every matching screen; semantic names document intent (panel title vs metric vs UI).
+
+**Rejected alternatives:** Ad hoc Tailwind classes only — duplicated tracking/size pairings and drift between games.

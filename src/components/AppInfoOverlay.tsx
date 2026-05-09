@@ -28,7 +28,7 @@ export function AppInfoOverlay({
     >
       <div className="w-full max-w-sm rounded-xl border border-border bg-card p-4 shadow-xl">
         <div className="flex items-start justify-between gap-2">
-          <p className="text-lg font-semibold">{title}</p>
+          <p className="text-typ-card-title font-semibold">{title}</p>
           <Button
             aria-label="Close"
             className="h-8 px-2"
@@ -39,7 +39,7 @@ export function AppInfoOverlay({
             ×
           </Button>
         </div>
-        <p className="mt-2 text-sm text-muted-foreground">
+        <p className="mt-2 text-typ-ui text-muted-foreground">
           By jdcb4. Version {version}.
         </p>
       </div>
@@ -56,7 +56,7 @@ export function AppInfoHeaderButton({
   return (
     <Button
       aria-label="App information"
-      className="h-9 w-9 shrink-0 rounded-full p-0 text-sm font-semibold"
+      className="h-9 w-9 shrink-0 rounded-full p-0 text-typ-ui font-semibold"
       onClick={onClick}
       type="button"
       variant="secondary"

@@ -2,7 +2,7 @@ import type { LastTurnSummary, WordHistoryEntry } from "@/domain/whowhatwhere/ty
 
 /** Matches Hat Game “review” recap panels (`reviewCardClass`). */
 const recapPanelClass =
-  "rounded-lg border border-border bg-muted/20 p-3 text-sm shadow-sm";
+  "rounded-lg border border-border bg-muted/20 p-3 text-typ-ui shadow-sm";
 
 export function LastTurnCard({
   summary,
@@ -15,7 +15,7 @@ export function LastTurnCard({
 
   return (
     <div className={recapPanelClass}>
-      <p className="text-sm font-medium text-muted-foreground">Last turn</p>
+      <p className="font-medium text-typ-ui text-muted-foreground">Last turn</p>
       <p className="mt-1 font-semibold">
         {summary.teamName}: +{summary.scoreDelta}
       </p>
@@ -38,10 +38,10 @@ function TurnWords({ summary }: { readonly summary: LastTurnSummary }) {
 
   return (
     <details className="mt-3 border-t border-border/60 pt-3">
-      <summary className="cursor-pointer text-sm font-medium text-muted-foreground">
+      <summary className="cursor-pointer font-medium text-typ-ui text-muted-foreground">
         Words
       </summary>
-      <div className="mt-2 max-h-28 space-y-2 overflow-y-auto text-xs">
+      <div className="mt-2 max-h-28 space-y-2 overflow-y-auto text-typ-micro">
         <WordChipGroup label="Correct" entries={correct} />
         <WordChipGroup label="Skipped" entries={skipped} />
         {summary.finalWord && (

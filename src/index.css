@@ -22,6 +22,64 @@
     --border: 216 18% 85%;
     --input: 216 18% 85%;
     --ring: 173 58% 28%;
+
+    /* Typography tiers — size + line-height + tracking (see docs/TYPOGRAPHY.md) */
+    --font-tier-display-size: 1.875rem;
+    --font-tier-display-leading: 2.25rem;
+    --font-tier-display-tracking: -0.025em;
+
+    --font-tier-overline-size: 0.875rem;
+    --font-tier-overline-leading: 1.25rem;
+    --font-tier-overline-tracking: 0.2em;
+
+    --font-tier-shell-title-size: 1.125rem;
+    --font-tier-shell-title-leading: 1.75rem;
+    --font-tier-shell-title-tracking: -0.025em;
+
+    --font-tier-panel-title-size: 1.25rem;
+    --font-tier-panel-title-leading: 1.75rem;
+    --font-tier-panel-title-tracking: -0.025em;
+
+    --font-tier-section-title-size: 1.5rem;
+    --font-tier-section-title-leading: 2rem;
+    --font-tier-section-title-tracking: 0em;
+
+    --font-tier-card-title-size: 1.125rem;
+    --font-tier-card-title-leading: 1.75rem;
+    --font-tier-card-title-tracking: -0.0125em;
+
+    --font-tier-highlight-size: 1.5rem;
+    --font-tier-highlight-leading: 1.375;
+    --font-tier-highlight-tracking: -0.015em;
+
+    --font-tier-metric-size: 1.5rem;
+    --font-tier-metric-leading: 2rem;
+    --font-tier-metric-tracking: -0.02em;
+
+    --font-tier-body-size: 1rem;
+    --font-tier-body-leading: 1.5rem;
+    --font-tier-body-tracking: 0em;
+
+    --font-tier-body-relaxed-size: 1rem;
+    --font-tier-body-relaxed-leading: 1.625;
+    --font-tier-body-relaxed-tracking: 0em;
+
+    --font-tier-ui-size: 0.875rem;
+    --font-tier-ui-leading: 1.25rem;
+    --font-tier-ui-tracking: 0em;
+
+    --font-tier-ui-snug-size: 0.875rem;
+    --font-tier-ui-snug-leading: 1.375;
+    --font-tier-ui-snug-tracking: 0em;
+
+    --font-tier-micro-size: 0.75rem;
+    --font-tier-micro-leading: 1rem;
+    --font-tier-micro-tracking: 0.025em;
+
+    --font-tier-input-size: 1rem;
+    --font-tier-input-leading: 1.5rem;
+    --font-tier-input-tracking: 0em;
+
     font-family:
       Inter,
       ui-sans-serif,
