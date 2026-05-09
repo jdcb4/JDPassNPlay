@@ -18,6 +18,7 @@ import {
 } from "@/domain/hat-game/setup";
 import { getCountdownSeconds } from "@/domain/hat-game/time";
 import type { ClueSubmissionMap, HatGameAction } from "@/domain/hat-game/types";
+import { playHatGameActionSoundEffects } from "@/features/hat-game/hatGameActionSound";
 import type { AppSnapshot, AppStep, StoragePayload } from "@/features/hat-game/hatGameAppTypes";
 import { playSoundCue } from "@/services/hatGameSound";
 import {
@@ -185,30 +186,7 @@ export function useHatGameApp() {
       return;
     }
 
-    if (action.type === 'start-turn' && previousSession.stage === 'ready' && result.stage === 'turn') {
-      playSoundCue('turn-start');
-    }
-    if (action.type === 'mark-correct') {
-      playSoundCue('correct');
-    }
-    if (action.type === 'skip-clue') {
-      playSoundCue('skip');
-    }
-    if (previousSession.stage === 'turn' && result.stage !== 'turn') {
-      const turnCueKey = previousSession.activeTurn?.startedAt ?? previousSession.activeTurn?.endsAt ?? '';
-      if (turnEndCueTurnRef.current !== turnCueKey) {
-        turnEndCueTurnRef.current = turnCueKey;
-        playSoundCue('turn-end');
-      }
-    }
-    if (result.phaseNumber !== previousSession.phaseNumber) {
-      if (result.phaseNumber === 2) {
-        playSoundCue('phase-one-word');
-      }
-      if (result.phaseNumber === 3) {
-        playSoundCue('phase-charades');
-      }
-    }
+    playHatGameActionSoundEffects(previousSession, result, action, turnEndCueTurnRef, playSoundCue);
 
     setError('');
     setSnapshot((current) => ({
