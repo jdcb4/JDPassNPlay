@@ -1,3 +1,4 @@
+import { buildLeaderboardRowsFromTeams } from '../shared/teamLeaderboard';
 import type { LeaderboardEntry, Player, Team } from './types';
 
 export const normalizeText = (value: unknown, fallback = '') => {
@@ -58,10 +59,4 @@ export const getTimedTeamContext = ({
 };
 
 export const buildLeaderboard = (teams: Team[]): LeaderboardEntry[] =>
-  [...teams]
-    .sort((left, right) => right.score - left.score)
-    .map((team) => ({
-      teamId: team.id,
-      teamName: team.name,
-      score: team.score
-    }));
+  buildLeaderboardRowsFromTeams(teams);

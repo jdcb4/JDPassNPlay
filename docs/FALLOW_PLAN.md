@@ -5,7 +5,7 @@ Working list from `pnpm dlx fallow --no-cache --format human` (session start). I
 ## Wave 1 — actionable hygiene
 
 - [x] **W1-1** Remove unused devDependency `globals` (not referenced in eslint.config or source).
-- [ ] **W1-2** Deduplicate leaderboard construction: shared helper in `src/domain/shared/`, used by Hat Game `teamUtils` and WhoWhatWhere `game.ts` (`buildResults`).
+- [x] **W1-2** Deduplicate leaderboard construction: shared helper in `src/domain/shared/`, used by Hat Game `teamUtils` and WhoWhatWhere `game.ts` (`buildResults`).
 
 ## Deferred / monitor (not blocking)
 

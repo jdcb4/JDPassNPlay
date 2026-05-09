@@ -1,3 +1,4 @@
+import { buildLeaderboardRowsFromTeams } from "../shared/teamLeaderboard";
 import {
   normalizeName,
   TEAM_NAME_LIMIT,
@@ -364,13 +365,7 @@ function buildResults(
   teams: readonly Team[],
   turnSummaries: readonly LastTurnSummary[] = [],
 ): Results {
-  const leaderboard = [...teams]
-    .sort((left, right) => right.score - left.score)
-    .map((team) => ({
-      teamId: team.id,
-      teamName: team.name,
-      score: team.score,
-    }));
+  const leaderboard = buildLeaderboardRowsFromTeams(teams);
   const topScore = leaderboard[0]?.score ?? 0;
   const winnerTeamIds = leaderboard
     .filter((entry) => entry.score === topScore)
