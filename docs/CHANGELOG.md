@@ -2,6 +2,10 @@
 
 Notable changes by version. Newest at the top. Bumps follow `docs/VERSIONING.md`.
 
+## 0.5.3 - 2026-05-10
+
+- **UI gallery:** Re-paired the first slides — Hat **landing** + WWW explainer (WWW has no in-route landing), then **Game settings** on both sides; **Team 1 roster** pairs Hat team setup with WWW team 1. Fixes the previous “off by one” Hat-vs-WWW alignment at the start of the strip.
+
 ## 0.5.2 - 2026-05-10
 
 - **Theming:** Semantic color tokens (`--semantic-*` in `src/themes/default.css`, Tailwind `semantic` colors). Components use `bg-semantic-*` / `border-semantic-*` instead of palette utilities with `/opacity`; blends live only in theme CSS. Gallery chrome uses `semantic-gallery*` tokens; `gallery.html` is included in Tailwind content.

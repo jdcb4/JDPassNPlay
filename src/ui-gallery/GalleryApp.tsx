@@ -7,6 +7,7 @@ import {
   PrimaryFooterButton,
   SecondaryFooterButton,
 } from "@/components/game/GameFooterButtons";
+import { GamePanel } from "@/components/game/GamePanel";
 import { GameScreenHeaderActions } from "@/components/game/GameScreenHeaderActions";
 import { GameResultActions } from "@/components/GameResultActions";
 import { GameShell } from "@/components/GameShell";
@@ -63,9 +64,27 @@ function buildSlides(): readonly SlideSpec[] {
 
   return [
     {
-      label: "Home · Game settings",
-      // No saved game — pairs with WWW settings as the neutral “start here” step.
+      label: "Hat landing · WWW (starts at settings)",
       hat: () => createHatGalleryController(hatGallerySnapshots.landing),
+      wwwContent: () => (
+        <GamePanel
+          subtitle="There is no separate landing inside this route."
+          title="Who What Where"
+        >
+          <p className="text-typ-body text-muted-foreground">
+            From the home hub, Who What Where opens straight to Game settings — paired
+            with Hat on the next slide.
+          </p>
+        </GamePanel>
+      ),
+      wwwFooter: () =>
+        footerWrap(
+          <PrimaryFooterButton label="Next: Game settings" onClick={noop} />,
+        ),
+    },
+    {
+      label: "Game settings · Game settings",
+      hat: () => createHatGalleryController(hatGallerySnapshots.settings),
       wwwContent: () => (
         <SettingsScreen settings={demoWwwSettings} onChange={noop} />
       ),
@@ -76,7 +95,7 @@ function buildSlides(): readonly SlideSpec[] {
     },
     {
       label: "Team count · Team 1 roster",
-      hat: () => createHatGalleryController(hatGallerySnapshots.settings),
+      hat: () => createHatGalleryController(hatGallerySnapshots.teamFirst),
       wwwContent: () => (
         <TeamSetupScreen
           error=""
