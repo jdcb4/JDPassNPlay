@@ -21,11 +21,12 @@ Games:
 - `src/features/imposter` — placeholder screen.
 - `src/domain/whowhatwhere` — WhoWhatWhere rules (framework-free).
 - `src/domain/hat-game` — Hat Game engine + setup helpers.
-- `src/components` — shared UI (`GameShell`, `GameResultActions`, icons, `EditableName`, `Metric`, `ui/button`).
+- `src/domain/shared` — cross-game types (e.g. roster row shape for setup UI).
+- `src/components` — shared UI (`GameShell`, `GameResultActions`, `AppInfoOverlay`, `EditableName`, `Metric`, `setup/`, `team-setup/`, `ui/button`).
 - `src/services` — browser persistence (`whowhatwherePersistence`, `hatGameStorage`) and Web Audio (`whowhatwhereSound`, `hatGameSound`).
 - `src/data` — `words.generated.ts`, `clueSuggestions.json`, `namePacks.json`.
 - `src/assets` — static assets bundled by Vite (e.g. Hat Game phase `.wav` cues).
-- `src/config` — `env.ts`, `hatGameDefaults.ts`.
+- `src/config` — `env.ts`, `hatGameDefaults.ts`, `teamRoster.ts` (shared 2–4 teams, 2–6 players per team), `appMeta.ts` (product label for shared chrome).
 - `docs` — durable project documentation.
 - `scripts` — deterministic project utility scripts.
 - `_reference/` — optional local clones of upstream games (gitignored pattern for local use; excluded from lint/tests).

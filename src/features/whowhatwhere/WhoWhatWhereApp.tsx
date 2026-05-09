@@ -1,7 +1,11 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import {
+  AppInfoHeaderButton,
+  AppInfoOverlay,
+} from "@/components/AppInfoOverlay";
 import { GameShell } from "@/components/GameShell";
-import { IconSparkles } from "@/components/icons";
 import { FinalSummaryScreen } from "@/features/whowhatwhere/results/FinalSummaryScreen";
 import { ResultsScreen } from "@/features/whowhatwhere/results/ResultsScreen";
 import { ResumePrompt } from "@/features/whowhatwhere/ResumePrompt";
@@ -11,22 +15,34 @@ import { ActiveTurnScreen } from "@/features/whowhatwhere/turn/ActiveTurnScreen"
 import { ReadyScreen } from "@/features/whowhatwhere/turn/ReadyScreen";
 import { useGameController } from "@/features/whowhatwhere/useGameController";
 
+import packageJson from "../../../package.json";
+
 export function WhoWhatWhereApp() {
   const navigate = useNavigate();
   const game = useGameController();
+  const [showAppInfo, setShowAppInfo] = useState(false);
+
+  useEffect(() => {
+    if (!showAppInfo) {
+      return undefined;
+    }
+    const timeout = setTimeout(() => setShowAppInfo(false), 5000);
+    return () => clearTimeout(timeout);
+  }, [showAppInfo]);
 
   return (
     <GameShell
       headerRight={
-        <div
-          aria-hidden="true"
-          className="flex size-9 items-center justify-center rounded-full bg-primary text-primary-foreground"
-        >
-          <IconSparkles className="size-5" />
-        </div>
+        <AppInfoHeaderButton onClick={() => setShowAppInfo(true)} />
       }
       title="Who What Where"
     >
+      <AppInfoOverlay
+        open={showAppInfo}
+        version={packageJson.version}
+        onClose={() => setShowAppInfo(false)}
+      />
+
       {game.pendingMatch ? (
         <ResumePrompt
           savedMatch={game.pendingMatch}

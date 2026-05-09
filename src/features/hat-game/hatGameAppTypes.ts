@@ -7,7 +7,7 @@ import type {
   Team,
 } from "@/domain/hat-game/types";
 
-export type AppStep = 'landing' | 'counts' | 'team' | 'review' | 'clues' | 'game';
+export type AppStep = 'landing' | 'settings' | 'team' | 'review' | 'clues' | 'game';
 
 export type AppSnapshot = {
   step: AppStep;

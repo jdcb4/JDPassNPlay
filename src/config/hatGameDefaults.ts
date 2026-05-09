@@ -11,8 +11,9 @@ export type HatGameConfig = {
 };
 
 export const GAME_DEFAULTS: HatGameConfig = {
+  /** 2 teams × 2 players minimum; 4 teams × 6 players maximum. */
   minPlayers: 4,
-  maxPlayers: 12,
+  maxPlayers: 24,
   minTeams: 2,
   maxTeams: 4,
   turnDurationSeconds: 45,

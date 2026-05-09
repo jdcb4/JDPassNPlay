@@ -1,10 +1,16 @@
+import {
+  MAX_PLAYERS_PER_TEAM,
+  MIN_PLAYERS_PER_TEAM,
+} from "@/config/teamRoster";
+
 import { getTeamNameSet } from "./teamNames";
 import { CATEGORIES, type Category, type GameSettings, type TeamSetup } from "./types";
 
 const PLAYER_NAME_LIMIT = 24;
 export const TEAM_NAME_LIMIT = 24;
-export const MIN_PLAYERS_PER_TEAM = 2;
-export const MAX_PLAYERS_PER_TEAM = 6;
+
+/** Re-export for callers that already import limits from domain setup. */
+export { MAX_PLAYERS_PER_TEAM, MIN_PLAYERS_PER_TEAM } from "@/config/teamRoster";
 
 export function createDefaultSettings(): GameSettings {
   return {

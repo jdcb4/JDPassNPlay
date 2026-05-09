@@ -1,5 +1,9 @@
 import { useNavigate } from "react-router-dom";
 
+import {
+  AppInfoHeaderButton,
+  AppInfoOverlay,
+} from "@/components/AppInfoOverlay";
 import { GameShell } from "@/components/GameShell";
 import { Button } from "@/components/ui/button";
 import { HatActionLockContext } from "@/features/hat-game/hatActionLockContext";
@@ -12,7 +16,7 @@ export function HatGameApp() {
   const screen = buildHatGameScreen(controller, navigate);
 
   const showExit = controller.loaded && controller.snapshot.step !== "landing";
-  const showInfo = controller.loaded && controller.snapshot.step === "landing";
+  const showAppInfo = controller.loaded;
   const showEndTurn =
     controller.loaded &&
     controller.snapshot.step === "game" &&
@@ -41,16 +45,10 @@ export function HatGameApp() {
           Exit
         </Button>
       ) : null}
-      {showInfo ? (
-        <Button
-          aria-label="App information"
-          className="h-9 w-9 shrink-0 rounded-full p-0 text-sm font-semibold"
+      {showAppInfo ? (
+        <AppInfoHeaderButton
           onClick={() => controller.setShowInfoPopup(true)}
-          type="button"
-          variant="secondary"
-        >
-          i
-        </Button>
+        />
       ) : null}
     </>
   );
@@ -65,38 +63,18 @@ export function HatGameApp() {
 
   return (
     <GameShell footer={footer} headerRight={headerRight} title="Hat Game">
-      {controller.error ? (
+      {controller.error && controller.snapshot.step !== "team" ? (
         <p className="mb-3 text-sm font-medium text-destructive">
           {controller.error}
         </p>
       ) : null}
       {screen.content}
 
-      {controller.showInfoPopup ? (
-        <div
-          aria-modal="true"
-          className="fixed inset-0 z-50 flex items-end justify-center bg-black/45 p-4 sm:items-center"
-          role="dialog"
-        >
-          <div className="w-full max-w-sm rounded-xl border border-border bg-card p-4 shadow-xl">
-            <div className="flex items-start justify-between gap-2">
-              <p className="text-lg font-semibold">Hat Game</p>
-              <Button
-                aria-label="Close"
-                className="h-8 px-2"
-                onClick={() => controller.setShowInfoPopup(false)}
-                type="button"
-                variant="ghost"
-              >
-                ×
-              </Button>
-            </div>
-            <p className="mt-2 text-sm text-muted-foreground">
-              By jdcb4. Version {controller.appVersion}.
-            </p>
-          </div>
-        </div>
-      ) : null}
+      <AppInfoOverlay
+        open={controller.showInfoPopup}
+        version={controller.appVersion}
+        onClose={() => controller.setShowInfoPopup(false)}
+      />
     </GameShell>
   );
 }

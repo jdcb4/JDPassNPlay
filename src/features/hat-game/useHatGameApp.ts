@@ -1,12 +1,21 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { GAME_DEFAULTS } from "@/config/hatGameDefaults";
+import { MIN_PLAYERS_PER_TEAM } from "@/config/teamRoster";
 import clueSuggestions from "@/data/clueSuggestions.json";
 import {
   applyHatGameAction,
   createHatGameSession,
 } from "@/domain/hat-game/engine";
-import { buildDefaultSetup, getHatGameSetupError } from "@/domain/hat-game/setup";
+import {
+  addPlayerToHatTeam,
+  applyRosterRowsToHat,
+  buildDefaultSetup,
+  getHatGameSetupError,
+  type HatRosterTeamRow,
+  hatStateToRosterRows,
+  removePlayerFromHatTeam,
+} from "@/domain/hat-game/setup";
 import { getCountdownSeconds } from "@/domain/hat-game/time";
 import type { ClueSubmissionMap, HatGameAction } from "@/domain/hat-game/types";
 import type { AppSnapshot, AppStep, StoragePayload } from "@/features/hat-game/hatGameAppTypes";
@@ -23,21 +32,27 @@ const ACTION_LOCK_MS = 500;
 
 const createEmptyClues = () => Array.from({ length: GAME_DEFAULTS.cluesPerPlayer }, () => '');
 
-const createInitialSnapshot = (step: AppStep = 'counts'): AppSnapshot => {
-  const { teams, players } = buildDefaultSetup(4, 2);
-  return {
-    step,
-    teamEditIndex: 0,
-    playerCount: 4,
-    teamCount: 2,
-    teams,
-    players,
-    clueSubmissions: Object.fromEntries(players.map((player) => [player.id, { clues: createEmptyClues() }])),
-    clueEntryIndex: 0,
-    clueEntryRevealed: false,
-    handoffRevealed: false,
-    session: null
-  };
+const createInitialSnapshot = (step: AppStep = "settings"): AppSnapshot => ({
+  step,
+  teamEditIndex: 0,
+  playerCount: 0,
+  teamCount: 2,
+  teams: [],
+  players: [],
+  clueSubmissions: {},
+  clueEntryIndex: 0,
+  clueEntryRevealed: false,
+  handoffRevealed: false,
+  session: null,
+});
+
+/** Older builds used `counts` for the team-count-only step. */
+const normalizeSnapshotStep = (snapshot: AppSnapshot): AppSnapshot => {
+  const step = snapshot.step as string;
+  if (step === "counts") {
+    return { ...snapshot, step: "settings" };
+  }
+  return snapshot;
 };
 
 const syncClueSubmissions = (players: AppSnapshot['players'], current: ClueSubmissionMap): ClueSubmissionMap =>
@@ -106,11 +121,14 @@ export function useHatGameApp() {
         return;
       }
       const record = isStoragePayload(saved)
-        ? saved
+        ? {
+            ...saved,
+            snapshot: normalizeSnapshotStep(saved.snapshot),
+          }
         : {
             schemaVersion: 1 as const,
             lastSavedAt: new Date().toISOString(),
-            snapshot: saved,
+            snapshot: normalizeSnapshotStep(saved),
           };
       // Do not offer resume after a finished game (stale storage from older builds).
       if (
@@ -274,7 +292,7 @@ export function useHatGameApp() {
     setSavedRecord(null);
     setError('');
     await clearSavedState();
-    setSnapshot(createInitialSnapshot('counts'));
+    setSnapshot(createInitialSnapshot("settings"));
   };
 
   const resumeSavedGame = () => {
@@ -283,7 +301,7 @@ export function useHatGameApp() {
     }
     setConfirmNewGame(false);
     setError('');
-    setSnapshot(savedRecord.snapshot);
+    setSnapshot(normalizeSnapshotStep(savedRecord.snapshot));
   };
 
   const exitToLanding = () => {
@@ -293,7 +311,17 @@ export function useHatGameApp() {
     setSnapshot((current) => ({ ...current, step: 'landing' }));
   };
 
-  const regenerateSetup = (playerCount: number, teamCount: number) => {
+  const updateHatTeamCountSetting = (teamCount: number) => {
+    if (teamCount < GAME_DEFAULTS.minTeams || teamCount > GAME_DEFAULTS.maxTeams) {
+      return;
+    }
+    setSnapshot((current) => ({ ...current, teamCount }));
+  };
+
+  /** Build 2 players per team and move into per-team setup (same pattern as WhoWhatWhere). */
+  const confirmTeamCountAndStartTeamSetup = () => {
+    const teamCount = snapshotRef.current.teamCount;
+    const playerCount = teamCount * MIN_PLAYERS_PER_TEAM;
     const setupError = getHatGameSetupError({ playerCount, teamCount });
     if (setupError) {
       setError(setupError);
@@ -302,42 +330,55 @@ export function useHatGameApp() {
     const { teams, players } = buildDefaultSetup(playerCount, teamCount);
     setSnapshot((current) => ({
       ...current,
-      step: 'team',
+      step: "team",
       teamEditIndex: 0,
-      playerCount,
+      playerCount: players.length,
       teamCount,
       teams,
       players,
       clueSubmissions: syncClueSubmissions(players, {}),
-      session: null
+      session: null,
     }));
-    setError('');
+    setError("");
   };
 
-  const updatePlayerCount = (playerCount: number) => {
-    setSnapshot((current) => ({ ...current, playerCount }));
+  const applyHatRosterFromRows = (rows: readonly HatRosterTeamRow[]) => {
+    setError("");
+    setSnapshot((current) => {
+      const { teams, players } = applyRosterRowsToHat(rows, current.teams);
+      return {
+        ...current,
+        teams,
+        players,
+        playerCount: players.length,
+        clueSubmissions: syncClueSubmissions(players, current.clueSubmissions),
+      };
+    });
   };
 
-  const updateTeamCount = (teamCount: number) => {
-    setSnapshot((current) => ({ ...current, teamCount }));
+  const addPlayerToHatRosterRows = (
+    rows: readonly HatRosterTeamRow[],
+    teamId: string,
+  ) => {
+    const current = snapshotRef.current;
+    const { teams, players } = applyRosterRowsToHat(rows, current.teams);
+    const result = addPlayerToHatTeam(teams, players, teamId);
+    return result
+      ? hatStateToRosterRows(result.teams, result.players)
+      : [...rows];
   };
 
-  const updateTeamName = (teamId: string, name: string) => {
-    setSnapshot((current) => ({
-      ...current,
-      teams: current.teams.map((team) =>
-        team.id === teamId ? { ...team, name: name.slice(0, GAME_DEFAULTS.maxNameLength) } : team
-      )
-    }));
-  };
-
-  const updatePlayerName = (playerId: string, name: string) => {
-    setSnapshot((current) => ({
-      ...current,
-      players: current.players.map((player) =>
-        player.id === playerId ? { ...player, name: name.slice(0, GAME_DEFAULTS.maxNameLength) } : player
-      )
-    }));
+  const removePlayerFromHatRosterRows = (
+    rows: readonly HatRosterTeamRow[],
+    teamId: string,
+    playerId: string,
+  ) => {
+    const current = snapshotRef.current;
+    const { teams, players } = applyRosterRowsToHat(rows, current.teams);
+    const result = removePlayerFromHatTeam(teams, players, teamId, playerId);
+    return result
+      ? hatStateToRosterRows(result.teams, result.players)
+      : [...rows];
   };
 
   const updateClue = (playerId: string, clueIndex: number, value: string) => {
@@ -380,7 +421,7 @@ export function useHatGameApp() {
   const backTeamStep = () => {
     setSnapshot((current) => ({
       ...current,
-      step: current.teamEditIndex === 0 ? 'counts' : 'team',
+      step: current.teamEditIndex === 0 ? "settings" : "team",
       teamEditIndex: Math.max(0, current.teamEditIndex - 1)
     }));
   };
@@ -391,10 +432,10 @@ export function useHatGameApp() {
 
   const startClueEntry = () => {
     const setupError = getHatGameSetupError({
-      playerCount: snapshot.playerCount,
+      playerCount: snapshot.players.length,
       teamCount: snapshot.teamCount,
       teams: snapshot.teams,
-      players: snapshot.players
+      players: snapshot.players,
     });
     if (setupError) {
       setError(setupError);
@@ -473,11 +514,11 @@ export function useHatGameApp() {
     startNewGame,
     resumeSavedGame,
     exitToLanding,
-    regenerateSetup,
-    updatePlayerCount,
-    updateTeamCount,
-    updateTeamName,
-    updatePlayerName,
+    updateHatTeamCountSetting,
+    confirmTeamCountAndStartTeamSetup,
+    applyHatRosterFromRows,
+    addPlayerToHatRosterRows,
+    removePlayerFromHatRosterRows,
     updateClue,
     fillSuggestion,
     confirmTeamStep,

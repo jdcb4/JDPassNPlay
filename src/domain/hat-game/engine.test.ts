@@ -190,7 +190,9 @@ describe('Hat Game engine', () => {
   });
 
   it('validates setup bounds and team sizes', () => {
-    expect(getHatGameSetupError({ playerCount: 3, teamCount: 2 })).toBe('Choose 4-12 players.');
+    expect(getHatGameSetupError({ playerCount: 3, teamCount: 2 })).toBe(
+      "This setup supports 4-24 players total.",
+    );
     expect(getHatGameSetupError({ playerCount: 4, teamCount: 3 })).toBe('Each team needs at least 2 players.');
 
     const { teams, players } = buildDefaultSetup(4, 2);

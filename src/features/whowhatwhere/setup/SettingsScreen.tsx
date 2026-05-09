@@ -1,8 +1,8 @@
+import { OptionButton, OptionGroup } from "@/components/setup/OptionGroup";
+import { TeamCountOptionGroup } from "@/components/setup/TeamCountOptionGroup";
 import { Button } from "@/components/ui/button";
 import { toggleCategory } from "@/domain/whowhatwhere/setup";
 import { CATEGORIES, type GameSettings } from "@/domain/whowhatwhere/types";
-
-import { OptionButton, OptionGroup } from "./OptionGroup";
 
 export function SettingsScreen({
   settings,
@@ -27,19 +27,12 @@ export function SettingsScreen({
         </p>
       </div>
 
-      <OptionGroup label="Teams">
-        {[2, 3, 4].map((teamCount) => (
-          <OptionButton
-            key={teamCount}
-            selected={settings.teamCount === teamCount}
-            onClick={() =>
-              setSetting("teamCount", teamCount as GameSettings["teamCount"])
-            }
-          >
-            {teamCount}
-          </OptionButton>
-        ))}
-      </OptionGroup>
+      <TeamCountOptionGroup
+        value={settings.teamCount}
+        onChange={(count) =>
+          setSetting("teamCount", count as GameSettings["teamCount"])
+        }
+      />
 
       <OptionGroup label="Turn length">
         {[30, 45, 60, 75].map((seconds) => (

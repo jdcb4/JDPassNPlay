@@ -4,12 +4,19 @@ import type { NavigateFunction } from "react-router-dom";
 
 import { GameResultActions } from "@/components/GameResultActions";
 import { Metric } from "@/components/Metric";
+import {
+  TeamCountOptionGroup,
+} from "@/components/setup/TeamCountOptionGroup";
+import { TeamRosterSetupScreen } from "@/components/team-setup/TeamRosterSetupScreen";
 import { Button } from "@/components/ui/button";
 import { GAME_DEFAULTS } from "@/config/hatGameDefaults";
+import type { SharedTeamCount } from "@/config/teamRoster";
+import { teamCountRosterHint } from "@/config/teamRoster";
 import {
   getHatGameContext,
   getHatGamePhaseMeta,
 } from "@/domain/hat-game/engine";
+import { hatStateToRosterRows } from "@/domain/hat-game/setup";
 import { formatCountdown } from "@/domain/hat-game/time";
 import type { HatGameSession } from "@/domain/hat-game/types";
 import { HatActionLockContext } from "@/features/hat-game/hatActionLockContext";
@@ -37,10 +44,6 @@ function Panel({
       <div className="grid gap-4">{children}</div>
     </div>
   );
-}
-
-function Label({ children }: { children: ReactNode }) {
-  return <p className="text-sm font-medium text-foreground">{children}</p>;
 }
 
 function HatScoreboard({ session }: { session: HatGameSession }) {
@@ -157,39 +160,6 @@ function IconTextButton({
   );
 }
 
-function HatCounter({
-  label,
-  value,
-  min,
-  max,
-  onChange,
-}: {
-  label: string;
-  value: number;
-  min: number;
-  max: number;
-  onChange: (value: number) => void;
-}) {
-  return (
-    <div className="flex flex-col gap-2 rounded-lg border border-dashed border-border bg-muted/30 p-3">
-      <p className="text-sm font-medium">{label}</p>
-      <div className="flex items-center justify-between gap-3">
-        <SecondaryButton
-          disabled={value <= min}
-          label="−"
-          onPress={() => onChange(value - 1)}
-        />
-        <span className="text-2xl font-semibold tabular-nums">{value}</span>
-        <SecondaryButton
-          disabled={value >= max}
-          label="+"
-          onPress={() => onChange(value + 1)}
-        />
-      </div>
-    </div>
-  );
-}
-
 const inputClassName =
   "keyboard-safe-input h-12 w-full rounded-md border border-input bg-background px-3 text-base text-foreground outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring";
 
@@ -249,93 +219,49 @@ const renderLanding = (controller: HatGameAppController): ScreenModel => ({
   ),
 });
 
-const renderCounts = (controller: HatGameAppController): ScreenModel => ({
+const renderSettings = (controller: HatGameAppController): ScreenModel => ({
   content: (
     <Panel
-      subtitle="Choose the only two game options players need to decide."
+      subtitle="Choose how many teams are playing. Next you will name each team and its players (2–6 per team)."
       title="Set up Hat Game"
     >
-      <HatCounter
-        label="Players"
-        max={GAME_DEFAULTS.maxPlayers}
-        min={GAME_DEFAULTS.minPlayers}
-        onChange={controller.updatePlayerCount}
-        value={controller.snapshot.playerCount}
+      <TeamCountOptionGroup
+        value={controller.snapshot.teamCount as SharedTeamCount}
+        onChange={controller.updateHatTeamCountSetting}
       />
-      <HatCounter
-        label="Teams"
-        max={GAME_DEFAULTS.maxTeams}
-        min={GAME_DEFAULTS.minTeams}
-        onChange={controller.updateTeamCount}
-        value={controller.snapshot.teamCount}
-      />
+      <p className={noticeClass}>
+        {teamCountRosterHint(controller.snapshot.teamCount)}
+      </p>
     </Panel>
   ),
   actions: (
     <PrimaryButton
-      label="Build teams"
-      onPress={() =>
-        controller.regenerateSetup(
-          controller.snapshot.playerCount,
-          controller.snapshot.teamCount,
-        )
-      }
+      label="Next: Team 1"
+      onPress={() => controller.confirmTeamCountAndStartTeamSetup()}
     />
   ),
 });
 
-const renderTeamEditor = (
-  controller: HatGameAppController,
-): ScreenModel => {
-  if (!controller.activeTeam) {
-    return { content: null };
-  }
+const renderTeamEditor = (controller: HatGameAppController): ScreenModel => {
+  const rosterRows = hatStateToRosterRows(
+    controller.snapshot.teams,
+    controller.snapshot.players,
+  );
 
   return {
     content: (
-      <Panel
-        subtitle="Defaults are ready to use, but every name is editable."
-        title={`Set up team ${controller.snapshot.teamEditIndex + 1}`}
-      >
-        <Label>Team name</Label>
-        <input
-          className={inputClassName}
-          maxLength={GAME_DEFAULTS.maxNameLength}
-          value={controller.activeTeam.name}
-          onChange={(event) =>
-            controller.updateTeamName(controller.activeTeam?.id ?? "", event.target.value)
-          }
-        />
-        <div className="grid gap-3">
-          {controller.activeTeamPlayers.map((player) => (
-            <div key={player.id}>
-              <Label>{`Player ${player.seat + 1}`}</Label>
-              <input
-                className={inputClassName}
-                maxLength={GAME_DEFAULTS.maxNameLength}
-                value={player.name}
-                onChange={(event) =>
-                  controller.updatePlayerName(player.id, event.target.value)
-                }
-              />
-            </div>
-          ))}
-        </div>
-      </Panel>
-    ),
-    actions: (
-      <>
-        <SecondaryButton label="Back" onPress={controller.backTeamStep} />
-        <PrimaryButton
-          label={
-            controller.snapshot.teamEditIndex >=
-            controller.snapshot.teams.length - 1
-              ? "Review teams"
-              : "Next team"
-          }
-          onPress={controller.confirmTeamStep}
-        />
-      </>
+      <TeamRosterSetupScreen
+        addPlayerToRoster={controller.addPlayerToHatRosterRows}
+        error={controller.error}
+        lastTeamPrimaryLabel="Review teams"
+        removePlayerFromRoster={controller.removePlayerFromHatRosterRows}
+        teamCount={controller.snapshot.teamCount}
+        teamIndex={controller.snapshot.teamEditIndex}
+        teams={rosterRows}
+        onBack={controller.backTeamStep}
+        onNext={controller.confirmTeamStep}
+        onTeamsChange={controller.applyHatRosterFromRows}
+      />
     ),
   };
 };
@@ -643,8 +569,8 @@ export const buildHatGameScreen = (
   if (controller.snapshot.step === "landing") {
     return renderLanding(controller);
   }
-  if (controller.snapshot.step === "counts") {
-    return renderCounts(controller);
+  if (controller.snapshot.step === "settings") {
+    return renderSettings(controller);
   }
   if (controller.snapshot.step === "team") {
     return renderTeamEditor(controller);
