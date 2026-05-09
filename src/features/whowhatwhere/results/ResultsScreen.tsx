@@ -1,21 +1,14 @@
-import { GameResultActions } from "@/components/GameResultActions";
 import type { MatchState } from "@/domain/whowhatwhere/types";
 
 export function ResultsScreen({
   match,
-  onPickAnotherGame,
-  onReplay,
-  onNewGame,
 }: {
   readonly match: MatchState;
-  readonly onPickAnotherGame: () => void;
-  readonly onReplay: () => void;
-  readonly onNewGame: () => void;
 }) {
   const results = match.results;
 
   return (
-    <section className="flex flex-1 flex-col gap-5 pb-8">
+    <section className="flex flex-1 flex-col gap-5 pb-4">
       <div className="space-y-2">
         <p className="text-sm font-medium text-primary">Final results</p>
         <h2 className="text-2xl font-semibold tracking-normal">
@@ -37,7 +30,7 @@ export function ResultsScreen({
             </p>
           </div>
         )}
-        {results?.leaderboard.map((entry, index) => (
+        {results?.leaderboard?.map((entry, index) => (
           <div
             key={entry.teamId}
             className="flex items-center justify-between rounded-md border bg-card p-4"
@@ -52,12 +45,6 @@ export function ResultsScreen({
           </div>
         ))}
       </div>
-
-      <GameResultActions
-        onNewGame={onNewGame}
-        onPickAnotherGame={onPickAnotherGame}
-        onReplay={onReplay}
-      />
     </section>
   );
 }

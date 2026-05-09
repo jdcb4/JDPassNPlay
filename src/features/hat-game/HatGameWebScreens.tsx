@@ -1,14 +1,21 @@
 /* eslint-disable react-refresh/only-export-components -- screen builder module; not a leaf component file */
-import { type ReactNode, useContext } from "react";
 import type { NavigateFunction } from "react-router-dom";
 
+import {
+  FooterIconSlotButton,
+  FooterOutlineIconTextButton,
+  PrimaryFooterButton,
+  SecondaryFooterButton,
+} from "@/components/game/GameFooterButtons";
+import { GamePanel } from "@/components/game/GamePanel";
+import { TurnPlayHighlight } from "@/components/game/TurnPlayHighlight";
 import { GameResultActions } from "@/components/GameResultActions";
+import { IconCheck, IconSkipForward } from "@/components/icons";
 import { Metric } from "@/components/Metric";
 import {
   TeamCountOptionGroup,
 } from "@/components/setup/TeamCountOptionGroup";
 import { TeamRosterSetupScreen } from "@/components/team-setup/TeamRosterSetupScreen";
-import { Button } from "@/components/ui/button";
 import { GAME_DEFAULTS } from "@/config/hatGameDefaults";
 import type { SharedTeamCount } from "@/config/teamRoster";
 import { teamCountRosterHint } from "@/config/teamRoster";
@@ -19,32 +26,9 @@ import {
 import { hatStateToRosterRows } from "@/domain/hat-game/setup";
 import { formatCountdown } from "@/domain/hat-game/time";
 import type { HatGameSession } from "@/domain/hat-game/types";
-import { HatActionLockContext } from "@/features/hat-game/hatActionLockContext";
 import type { ScreenModel } from "@/features/hat-game/hatGameAppTypes";
 import type { HatGameAppController } from "@/features/hat-game/useHatGameApp";
 import { formatSavedAt } from "@/features/hat-game/useHatGameApp";
-
-function Panel({
-  title,
-  subtitle,
-  children,
-}: {
-  title: string;
-  subtitle?: string;
-  children?: ReactNode;
-}) {
-  return (
-    <div className="space-y-3 rounded-xl border border-border bg-card p-4 shadow-sm">
-      <div>
-        <h2 className="text-xl font-semibold tracking-tight">{title}</h2>
-        {subtitle ? (
-          <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
-        ) : null}
-      </div>
-      <div className="grid gap-4">{children}</div>
-    </div>
-  );
-}
 
 function HatScoreboard({ session }: { session: HatGameSession }) {
   return (
@@ -67,99 +51,6 @@ function HatScoreboard({ session }: { session: HatGameSession }) {
   );
 }
 
-function PrimaryButton({
-  label,
-  onPress,
-  disabled = false,
-}: {
-  label: string;
-  onPress: () => void;
-  disabled?: boolean;
-}) {
-  const footerLocked = useContext(HatActionLockContext);
-  return (
-    <Button
-      className="h-12 w-full min-w-0"
-      disabled={disabled || footerLocked}
-      onClick={onPress}
-      type="button"
-    >
-      {label}
-    </Button>
-  );
-}
-
-function SecondaryButton({
-  label,
-  onPress,
-  disabled = false,
-}: {
-  label: string;
-  onPress: () => void;
-  disabled?: boolean;
-}) {
-  const footerLocked = useContext(HatActionLockContext);
-  return (
-    <Button
-      className="h-12 w-full min-w-0"
-      disabled={disabled || footerLocked}
-      onClick={onPress}
-      type="button"
-      variant="outline"
-    >
-      {label}
-    </Button>
-  );
-}
-
-function IconButton({
-  label,
-  icon,
-  onPress,
-}: {
-  label: string;
-  icon: string;
-  onPress: () => void;
-}) {
-  const footerLocked = useContext(HatActionLockContext);
-  return (
-    <Button
-      aria-label={label}
-      className="h-12 shrink-0 px-3"
-      disabled={footerLocked}
-      onClick={onPress}
-      type="button"
-      variant="secondary"
-    >
-      <span aria-hidden="true">{icon}</span>
-    </Button>
-  );
-}
-
-function IconTextButton({
-  icon,
-  label,
-  onPress,
-}: {
-  icon: string;
-  label: string;
-  onPress: () => void;
-}) {
-  const footerLocked = useContext(HatActionLockContext);
-  return (
-    <Button
-      className="h-auto min-h-12 w-full justify-start gap-2 py-3 text-left"
-      disabled={footerLocked}
-      onClick={onPress}
-      type="button"
-      variant="outline"
-    >
-      <span aria-hidden="true">{icon}</span>
-      <span className="break-words">{label}</span>
-    </Button>
-  );
-}
-
 const inputClassName =
   "keyboard-safe-input h-12 w-full rounded-md border border-input bg-background px-3 text-base text-foreground outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring";
 
@@ -170,7 +61,7 @@ const reviewCardClass =
 
 const renderLanding = (controller: HatGameAppController): ScreenModel => ({
   content: (
-    <Panel
+    <GamePanel
       subtitle="A pass-and-play Celebrity-style party game. Add famous figures, split into teams, then race through Describe, One Word, and Charades with the same figure pool."
       title="Hat Game"
     >
@@ -190,38 +81,38 @@ const renderLanding = (controller: HatGameAppController): ScreenModel => ({
           Start a new game? This will discard the saved game on this device.
         </p>
       ) : null}
-    </Panel>
+    </GamePanel>
   ),
   actions: controller.confirmNewGame ? (
     <>
-      <SecondaryButton
+      <SecondaryFooterButton
         label="Cancel"
-        onPress={() => controller.setConfirmNewGame(false)}
+        onClick={() => controller.setConfirmNewGame(false)}
       />
-      <PrimaryButton
+      <PrimaryFooterButton
         label="Discard and start"
-        onPress={() => void controller.startNewGame()}
+        onClick={() => void controller.startNewGame()}
       />
     </>
   ) : controller.savedRecord ? (
     <>
-      <SecondaryButton
+      <SecondaryFooterButton
         label="New game"
-        onPress={() => controller.setConfirmNewGame(true)}
+        onClick={() => controller.setConfirmNewGame(true)}
       />
-      <PrimaryButton label="Resume game" onPress={controller.resumeSavedGame} />
+      <PrimaryFooterButton label="Resume game" onClick={controller.resumeSavedGame} />
     </>
   ) : (
-    <PrimaryButton
+    <PrimaryFooterButton
       label="Start game"
-      onPress={() => void controller.startNewGame()}
+      onClick={() => void controller.startNewGame()}
     />
   ),
 });
 
 const renderSettings = (controller: HatGameAppController): ScreenModel => ({
   content: (
-    <Panel
+    <GamePanel
       subtitle="Choose how many teams are playing. Next you will name each team and its players (2–6 per team)."
       title="Set up Hat Game"
     >
@@ -232,12 +123,12 @@ const renderSettings = (controller: HatGameAppController): ScreenModel => ({
       <p className={noticeClass}>
         {teamCountRosterHint(controller.snapshot.teamCount)}
       </p>
-    </Panel>
+    </GamePanel>
   ),
   actions: (
-    <PrimaryButton
+    <PrimaryFooterButton
       label="Next: Team 1"
-      onPress={() => controller.confirmTeamCountAndStartTeamSetup()}
+      onClick={() => controller.confirmTeamCountAndStartTeamSetup()}
     />
   ),
 });
@@ -268,7 +159,7 @@ const renderTeamEditor = (controller: HatGameAppController): ScreenModel => {
 
 const renderReview = (controller: HatGameAppController): ScreenModel => ({
   content: (
-    <Panel
+    <GamePanel
       subtitle="Pass the phone around for private famous figure entry after this."
       title="Review teams"
     >
@@ -283,14 +174,14 @@ const renderReview = (controller: HatGameAppController): ScreenModel => ({
           </p>
         </div>
       ))}
-    </Panel>
+    </GamePanel>
   ),
   actions: (
     <>
-      <SecondaryButton label="Edit teams" onPress={controller.editTeams} />
-      <PrimaryButton
+      <SecondaryFooterButton label="Edit teams" onClick={controller.editTeams} />
+      <PrimaryFooterButton
         label="Start famous figure entry"
-        onPress={controller.startClueEntry}
+        onClick={controller.startClueEntry}
       />
     </>
   ),
@@ -306,19 +197,19 @@ const renderClueEntry = (controller: HatGameAppController): ScreenModel => {
   if (!controller.snapshot.clueEntryRevealed) {
     return {
       content: (
-        <Panel
+        <GamePanel
           subtitle={`Figure pack ${controller.snapshot.clueEntryIndex + 1} of ${controller.snapshot.players.length}`}
           title={`Pass to ${player.name}`}
         >
           <p className={noticeClass}>
             Only {player.name} should look at the screen for this step.
           </p>
-        </Panel>
+        </GamePanel>
       ),
       actions: (
-        <PrimaryButton
+        <PrimaryFooterButton
           label={`${player.name} ready`}
-          onPress={controller.revealClueEntry}
+          onClick={controller.revealClueEntry}
         />
       ),
     };
@@ -326,7 +217,7 @@ const renderClueEntry = (controller: HatGameAppController): ScreenModel => {
 
   return {
     content: (
-      <Panel
+      <GamePanel
         subtitle="Enter people or characters most players could know."
         title={`${player.name}'s famous figures`}
       >
@@ -347,24 +238,24 @@ const renderClueEntry = (controller: HatGameAppController): ScreenModel => {
                 controller.updateClue(player.id, index, event.target.value)
               }
             />
-            <IconButton
-              icon="⚡"
+            <FooterIconSlotButton
+              icon={<span aria-hidden="true">⚡</span>}
               label="Lightning suggestion"
-              onPress={() => controller.fillSuggestion(player.id, index)}
+              onClick={() => controller.fillSuggestion(player.id, index)}
             />
           </div>
         ))}
-      </Panel>
+      </GamePanel>
     ),
     actions: (
-      <PrimaryButton
+      <PrimaryFooterButton
         label={
           controller.snapshot.clueEntryIndex >=
           controller.snapshot.players.length - 1
             ? "Confirm and start game"
             : "Confirm and pass on"
         }
-        onPress={controller.confirmClues}
+        onClick={controller.confirmClues}
       />
     ),
   };
@@ -382,7 +273,7 @@ const renderReady = (
 
   return {
     content: (
-      <Panel
+      <GamePanel
         subtitle={`Phase ${session.phaseNumber}: ${phase.name}`}
         title={`${context.activeTeam?.name ?? "Next team"} up next`}
       >
@@ -412,19 +303,19 @@ const renderReady = (
             ? `${context.activeDescriberName} has the phone.`
             : `Give the phone to ${context.activeDescriberName}.`}
         </p>
-      </Panel>
+      </GamePanel>
     ),
     actions: controller.snapshot.handoffRevealed ? (
-      <PrimaryButton
+      <PrimaryFooterButton
         label="Start turn"
-        onPress={() =>
+        onClick={() =>
           controller.dispatchGameAction({ type: "start-turn" })
         }
       />
     ) : (
-      <PrimaryButton
+      <PrimaryFooterButton
         label={`${context.activeDescriberName} ready`}
-        onPress={controller.revealHandoff}
+        onClick={controller.revealHandoff}
       />
     ),
   };
@@ -442,13 +333,11 @@ const renderTurn = (
 
   return {
     content: (
-      <Panel
+      <GamePanel
         subtitle={`${context.activeDescriberName} is presenting`}
         title={`${context.activeTeam?.name ?? "Team"} guessing`}
       >
-        <div className="rounded-xl border-2 border-primary/40 bg-primary/5 p-6 text-center text-2xl font-semibold leading-snug">
-          {currentClue}
-        </div>
+        <TurnPlayHighlight>{currentClue}</TurnPlayHighlight>
         <div className="grid grid-cols-3 gap-2">
           <Metric
             label="Time"
@@ -465,11 +354,11 @@ const renderTurn = (
             <p className="mb-2 text-sm font-semibold">Skipped famous figures</p>
             <div className="grid gap-2">
               {activeTurn.skippedClues.map((clue) => (
-                <IconTextButton
+                <FooterOutlineIconTextButton
                   key={clue.poolIndex}
-                  icon="↶"
+                  icon={<span aria-hidden="true">↶</span>}
                   label={clue.text}
-                  onPress={() =>
+                  onClick={() =>
                     controller.dispatchGameAction({
                       type: "return-skipped-clue",
                       payload: { poolIndex: clue.poolIndex },
@@ -480,20 +369,22 @@ const renderTurn = (
             </div>
           </div>
         ) : null}
-      </Panel>
+      </GamePanel>
     ),
     actions: (
       <>
-        <PrimaryButton
+        <SecondaryFooterButton
           disabled={(activeTurn?.skipsRemaining ?? 0) <= 0}
+          icon={<IconSkipForward className="size-5" />}
           label="Skip"
-          onPress={() =>
+          onClick={() =>
             controller.dispatchGameAction({ type: "skip-clue" })
           }
         />
-        <PrimaryButton
+        <PrimaryFooterButton
+          icon={<IconCheck className="size-5" />}
           label="Correct"
-          onPress={() =>
+          onClick={() =>
             controller.dispatchGameAction({ type: "mark-correct" })
           }
         />
@@ -508,7 +399,7 @@ const renderResults = (
   navigate: NavigateFunction,
 ): ScreenModel => ({
   content: (
-    <Panel
+    <GamePanel
       subtitle="All three phases are complete."
       title={session.results?.isTie ? "Tie game" : "Final leaderboard"}
     >
@@ -527,7 +418,7 @@ const renderResults = (
           <p className="mt-1 text-muted-foreground">{entry.score} pts</p>
         </div>
       ))}
-    </Panel>
+    </GamePanel>
   ),
   actions: (
     <GameResultActions
@@ -562,7 +453,7 @@ export const buildHatGameScreen = (
   if (!controller.loaded) {
     return {
       content: (
-        <Panel subtitle="Loading saved game…" title="Hat Game" />
+        <GamePanel subtitle="Loading saved game…" title="Hat Game" />
       ),
     };
   }

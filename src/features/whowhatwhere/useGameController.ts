@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
+import { FOOTER_ACTION_LOCK_MS } from "@/components/footerActionLockContext";
 import {
   correctWord,
   createMatch,
@@ -43,6 +44,8 @@ export function useGameController() {
   const [setupError, setSetupError] = useState("");
   const [turnError, setTurnError] = useState("");
   const [isStartingTurn, setIsStartingTurn] = useState(false);
+  const [footerActionsLocked, setFooterActionsLocked] = useState(false);
+  const [readyHandoffRevealed, setReadyHandoffRevealed] = useState(false);
 
   useEffect(() => {
     saveSetup({ settings, teams: teamSetups });
@@ -88,6 +91,29 @@ export function useGameController() {
       ? "ready"
       : match.stage
     : mode;
+
+  useEffect(() => {
+    setReadyHandoffRevealed(false);
+  }, [match?.roundNumber, match?.teamIndex, match?.stage]);
+
+  const actionLockKey = [
+    pendingMatch ? "pending" : "idle",
+    activeMode,
+    teamStep,
+    match?.roundNumber ?? "-",
+    match?.teamIndex ?? "-",
+    readyHandoffRevealed ? "go" : "pass",
+    match?.activeTurn?.startedAt ?? "no-turn",
+  ].join(":");
+
+  useEffect(() => {
+    setFooterActionsLocked(true);
+    const timeout = window.setTimeout(
+      () => setFooterActionsLocked(false),
+      FOOTER_ACTION_LOCK_MS,
+    );
+    return () => window.clearTimeout(timeout);
+  }, [actionLockKey]);
 
   const updateSettings = (nextSettings: GameSettings) => {
     setSettings(nextSettings);
@@ -203,6 +229,9 @@ export function useGameController() {
     setupError,
     turnError,
     isStartingTurn,
+    footerActionsLocked,
+    readyHandoffRevealed,
+    setReadyHandoffRevealed,
     setTeamSetups: setTeamSetups as (teams: TeamSetup[]) => void,
     updateSettings,
     goToTeamSetup,

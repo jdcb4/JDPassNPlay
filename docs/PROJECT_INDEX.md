@@ -22,7 +22,7 @@ Games:
 - `src/domain/whowhatwhere` — WhoWhatWhere rules (framework-free).
 - `src/domain/hat-game` — Hat Game engine + setup helpers.
 - `src/domain/shared` — cross-game types (e.g. roster row shape for setup UI).
-- `src/components` — shared UI (`GameShell`, `GameResultActions`, `AppInfoOverlay`, `EditableName`, `Metric`, `setup/`, `team-setup/`, `ui/button`).
+- `src/components` — shared UI (`GameShell`, `GameResultActions`, `AppInfoOverlay`, `game/` panels + footer buttons, `EditableName`, `Metric`, `setup/`, `team-setup/`, `ui/button`).
 - `src/services` — browser persistence (`whowhatwherePersistence`, `hatGameStorage`) and Web Audio (`whowhatwhereSound`, `hatGameSound`).
 - `src/data` — `words.generated.ts`, `clueSuggestions.json`, `namePacks.json`.
 - `src/assets` — static assets bundled by Vite (e.g. Hat Game phase `.wav` cues).

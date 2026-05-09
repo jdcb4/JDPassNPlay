@@ -1,5 +1,4 @@
-import { useState } from "react";
-
+import { GamePanel } from "@/components/game/GamePanel";
 import { IconArrowLeft } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { getActiveContext } from "@/domain/whowhatwhere/game";
@@ -10,21 +9,18 @@ import { Scoreboard } from "@/features/whowhatwhere/summary/Scoreboard";
 export function ReadyScreen({
   match,
   error,
-  isLoading,
-  onStartTurn,
+  handoffRevealed,
   onBackToSetup,
 }: {
   readonly match: MatchState;
   readonly error: string;
-  readonly isLoading: boolean;
-  readonly onStartTurn: () => void;
+  readonly handoffRevealed: boolean;
   readonly onBackToSetup: () => void;
 }) {
-  const [revealed, setRevealed] = useState(false);
   const context = getActiveContext(match);
 
   return (
-    <section className="flex flex-1 flex-col gap-5 pb-8">
+    <section className="flex flex-1 flex-col gap-5 pb-4">
       <div className="flex items-center justify-between">
         <p className="text-sm font-medium text-muted-foreground">
           Round {Math.min(match.roundNumber, match.settings.totalRounds)} /{" "}
@@ -43,43 +39,37 @@ export function ReadyScreen({
       <LastTurnCard summary={match.lastTurnSummary} />
       <Scoreboard match={match} />
 
-      <div className="mt-auto rounded-md border bg-card p-4 shadow-sm">
-        {!revealed ? (
-          <div className="grid gap-4">
-            <div>
-              <p className="text-sm font-medium text-primary">Pass to describer</p>
-              <p className="mt-1 text-sm font-semibold text-muted-foreground">
-                {context.team.name} up next
-              </p>
-              <h3 className="mt-1 text-xl font-semibold">
-                Give the phone to {context.describer.name}
-              </h3>
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                {context.describer.name} taps ready when everyone else is looking
-                away.
-              </p>
-            </div>
-            <Button className="h-12" onClick={() => setRevealed(true)}>
-              Describer ready
-            </Button>
-          </div>
+      <GamePanel
+        eyebrow="Pass to describer"
+        title={
+          handoffRevealed
+            ? `${context.team.name} are live when you start`
+            : `Give the phone to ${context.describer.name}`
+        }
+        {...(!handoffRevealed
+          ? {
+              subtitle: `${context.team.name} up next — ${context.describer.name} taps ready when everyone else is looking away.`,
+            }
+          : {})}
+      >
+        {!handoffRevealed ? (
+          <p className="text-sm leading-6 text-muted-foreground">
+            Only the describer should see the next steps after tapping{" "}
+            <span className="font-medium text-foreground">Describer ready</span>{" "}
+            in the bar below.
+          </p>
         ) : (
-          <div className="grid gap-4">
-            <p className="rounded-md bg-secondary p-3 text-sm">
-              {context.team.name} are live when you start.
-            </p>
-            <Button className="h-12" disabled={isLoading} onClick={onStartTurn}>
-              {isLoading ? "Loading words" : "Start turn"}
-            </Button>
-          </div>
+          <p className="rounded-lg border border-border bg-muted/20 p-3 text-sm">
+            When everyone is ready, start the timer from the footer.
+          </p>
         )}
-      </div>
+      </GamePanel>
 
-      {error && (
+      {error ? (
         <p className="rounded-md border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
           {error}
         </p>
-      )}
+      ) : null}
     </section>
   );
 }

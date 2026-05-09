@@ -1,17 +1,14 @@
 import { OptionButton, OptionGroup } from "@/components/setup/OptionGroup";
 import { TeamCountOptionGroup } from "@/components/setup/TeamCountOptionGroup";
-import { Button } from "@/components/ui/button";
 import { toggleCategory } from "@/domain/whowhatwhere/setup";
 import { CATEGORIES, type GameSettings } from "@/domain/whowhatwhere/types";
 
 export function SettingsScreen({
   settings,
   onChange,
-  onNext,
 }: {
   readonly settings: GameSettings;
   readonly onChange: (settings: GameSettings) => void;
-  readonly onNext: () => void;
 }) {
   const setSetting = <Key extends keyof GameSettings>(
     key: Key,
@@ -19,7 +16,7 @@ export function SettingsScreen({
   ) => onChange({ ...settings, [key]: value });
 
   return (
-    <section className="keyboard-safe-form flex flex-1 flex-col gap-6 pb-8">
+    <section className="keyboard-safe-form flex flex-1 flex-col gap-6 pb-4">
       <div className="space-y-2">
         <h2 className="text-2xl font-semibold tracking-normal">Game settings</h2>
         <p className="leading-7 text-muted-foreground">
@@ -100,12 +97,6 @@ export function SettingsScreen({
           </OptionButton>
         ))}
       </OptionGroup>
-
-      <div className="mt-auto pt-2">
-        <Button className="h-12 w-full" onClick={onNext}>
-          Next: Team 1
-        </Button>
-      </div>
     </section>
   );
 }

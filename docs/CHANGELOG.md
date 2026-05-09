@@ -2,6 +2,13 @@
 
 Notable changes by version. Newest at the top. Bumps follow `docs/VERSIONING.md`.
 
+## 0.3.0 - 2026-05-10
+
+- **Shared chrome:** `FooterActionLockContext` + `GameFooterButtons` (`PrimaryFooterButton`, `SecondaryFooterButton`, etc.), `GamePanel`, `TurnPlayHighlight`, `GameScreenHeaderActions`. Hat Game renamed from hat-only context; shell wraps full game so in-flow controls respect the same brief footer lock as primary actions.
+- **Hat Game:** Removed duplicate header **Exit** (Home covers leaving). Skip/Correct use outline + primary styling with icons; skip uses secondary/outline for parity with WWW.
+- **Who What Where:** Primary flows use `GameShell` sticky footer (settings, resume, ready handoff, turn Skip/Correct, final summary, results). **End turn** moved to header like Hat Game. Active turn UI aligned with Hat (`GamePanel`, shaded highlight, dashed skipped list, 2×2 metrics kept). Ready flow uses lifted handoff state + same footer lock timing as Hat (`FOOTER_ACTION_LOCK_MS`).
+- **Removed:** `hatActionLockContext.tsx` (superseded by shared footer context).
+
 ## 0.2.9 - 2026-05-10
 
 - **Hat Game (UI):** Moved dispatch sound cues into `hatGameActionSound.ts` with unit tests; `useHatGameApp` delegates to `playHatGameActionSoundEffects` after a successful engine transition.

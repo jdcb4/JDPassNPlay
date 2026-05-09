@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { FOOTER_ACTION_LOCK_MS } from "@/components/footerActionLockContext";
 import { GAME_DEFAULTS } from "@/config/hatGameDefaults";
 import { MIN_PLAYERS_PER_TEAM } from "@/config/teamRoster";
 import clueSuggestions from "@/data/clueSuggestions.json";
@@ -28,8 +29,6 @@ import {
 } from "@/services/hatGameStorage";
 
 import packageJson from "../../../package.json";
-
-const ACTION_LOCK_MS = 500;
 
 const createEmptyClues = () => Array.from({ length: GAME_DEFAULTS.cluesPerPlayer }, () => '');
 
@@ -253,7 +252,7 @@ export function useHatGameApp() {
 
   useEffect(() => {
     setFooterActionsLocked(true);
-    const timeout = setTimeout(() => setFooterActionsLocked(false), ACTION_LOCK_MS);
+    const timeout = setTimeout(() => setFooterActionsLocked(false), FOOTER_ACTION_LOCK_MS);
     return () => clearTimeout(timeout);
   }, [actionLockKey]);
 
