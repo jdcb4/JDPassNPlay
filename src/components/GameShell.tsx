@@ -23,7 +23,7 @@ export function GameShell({
   return (
     <div className="min-h-dvh bg-background text-foreground">
       <div className="safe-screen mx-auto flex min-h-dvh w-full max-w-md flex-col px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-[max(0.5rem,env(safe-area-inset-top))]">
-        <header className="flex items-center justify-between gap-2 border-b border-border/70 py-3">
+        <header className="flex items-center justify-between gap-2 border-b border-semantic-border-muted py-3">
           <Link
             aria-label="Back to game picker"
             className="flex size-10 shrink-0 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-accent"
@@ -49,7 +49,7 @@ export function GameShell({
         </div>
 
         {footer ? (
-          <footer className="sticky bottom-0 z-20 border-t border-border bg-background/95 py-3 backdrop-blur supports-[padding:max(0px)]:pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+          <footer className="sticky bottom-0 z-20 border-t border-border bg-semantic-surface-elevated py-3 backdrop-blur supports-[padding:max(0px)]:pb-[max(0.75rem,env(safe-area-inset-bottom))]">
             {footer}
           </footer>
         ) : null}

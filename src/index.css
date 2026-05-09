@@ -88,6 +88,11 @@
       BlinkMacSystemFont,
       "Segoe UI",
       sans-serif;
+
+    /*
+     * Semantic color tokens (--semantic-*) live in src/themes/default.css
+     * so theme packs can override blends without touching components.
+     */
   }
 
   * {

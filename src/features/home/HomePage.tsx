@@ -54,10 +54,10 @@ export function HomePage() {
             return (
               <li key={game.id}>
                 <Link
-                  className="flex gap-4 rounded-2xl border border-border bg-card p-4 shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className="flex gap-4 rounded-2xl border border-border bg-card p-4 shadow-sm transition-colors hover:border-semantic-primary-border hover:bg-semantic-accent-hover-wash focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   to={game.to}
                 >
-                  <div className="flex size-14 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
+                  <div className="flex size-14 shrink-0 items-center justify-center rounded-xl bg-semantic-primary-well-bg text-primary">
                     <Icon className="size-7" />
                   </div>
                   <div className="min-w-0 flex-1">

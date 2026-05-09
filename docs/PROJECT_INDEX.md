@@ -28,6 +28,7 @@ Games:
 - `src/assets` — static assets bundled by Vite (e.g. Hat Game phase `.wav` cues).
 - `src/config` — `env.ts`, `hatGameDefaults.ts`, `teamRoster.ts` (shared 2–4 teams, 2–6 players per team), `appMeta.ts` (product label for shared chrome).
 - `src/typography` — named font tier map (`tiers.ts`) for `text-typ-*` utilities.
+- `src/themes` — semantic color tokens (`default.css`) layered on primitives in `index.css`.
 - `docs` — durable project documentation.
 - `scripts` — deterministic project utility scripts.
 - `gallery.html` / `src/ui-gallery/` — dev-only UI gallery (not part of default `pnpm run build`).
@@ -56,6 +57,7 @@ Games:
 - [`docs/ARCHITECTURE.md`](ARCHITECTURE.md) — module boundaries and runtime shape.
 - [`docs/VERIFICATION.md`](VERIFICATION.md) — required checks before commit.
 - [`docs/TYPOGRAPHY.md`](TYPOGRAPHY.md) — named font tiers (`text-typ-*`).
+- [`docs/THEMING.md`](THEMING.md) — semantic colors (`semantic-*`) and theme layers.
 - [`docs/SCREENS.md`](SCREENS.md) — informal names for each hub/game screen (UX reference).
 - [`docs/VERSIONING.md`](VERSIONING.md) — version rules.
 - [`docs/DECISIONS.md`](DECISIONS.md) — durable decisions (ADR-lite).

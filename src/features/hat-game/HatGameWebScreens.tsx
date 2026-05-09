@@ -50,7 +50,7 @@ const inputClassName =
 const noticeClass = "text-typ-ui text-muted-foreground";
 
 const reviewCardClass =
-  "rounded-lg border border-border bg-muted/20 p-3 text-typ-ui";
+  "rounded-lg border border-border bg-semantic-muted-panel-bg p-3 text-typ-ui";
 
 const renderLanding = (controller: HatGameAppController): ScreenModel => ({
   content: (

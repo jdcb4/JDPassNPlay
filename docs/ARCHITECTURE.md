@@ -27,6 +27,10 @@ Shared roster UI (`TeamRosterSetupScreen`) can hide its built-in heading (`omitH
 
 Use **named font tiers** (`text-typ-ui`, `text-typ-panel-title`, …) backed by CSS variables — see [`docs/TYPOGRAPHY.md`](TYPOGRAPHY.md). Prefer these over raw `text-sm` / `text-xl` / `tracking-*` in components.
 
+### Semantic colors (`semantic-*`)
+
+Use **semantic theme tokens** for tinted surfaces, soft borders, scrims, and dev-gallery chrome — see [`docs/THEMING.md`](THEMING.md). Prefer `bg-semantic-*` / `border-semantic-*` over primitives with `/opacity` Tailwind modifiers; opacity math lives in theme CSS only.
+
 - `src/app` — routing, app shell, framework entrypoints.
 - `src/features` — feature-specific UI and orchestration.
 - `src/components/ui` — generic visual primitives.

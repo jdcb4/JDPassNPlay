@@ -2,6 +2,11 @@
 
 Notable changes by version. Newest at the top. Bumps follow `docs/VERSIONING.md`.
 
+## 0.5.2 - 2026-05-10
+
+- **Theming:** Semantic color tokens (`--semantic-*` in `src/themes/default.css`, Tailwind `semantic` colors). Components use `bg-semantic-*` / `border-semantic-*` instead of palette utilities with `/opacity`; blends live only in theme CSS. Gallery chrome uses `semantic-gallery*` tokens; `gallery.html` is included in Tailwind content.
+- **Docs:** [`docs/THEMING.md`](THEMING.md), [`docs/DECISIONS.md`](DECISIONS.md), [`docs/ARCHITECTURE.md`](ARCHITECTURE.md), [`docs/PROJECT_INDEX.md`](PROJECT_INDEX.md).
+
 ## 0.5.1 - 2026-05-10
 
 - **Docs:** Added [`docs/SCREENS.md`](SCREENS.md) — screen map with recognizable names for UX discussions; linked from [`docs/PROJECT_INDEX.md`](PROJECT_INDEX.md).

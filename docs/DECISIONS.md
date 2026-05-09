@@ -47,3 +47,13 @@ When adding a new entry, append to the bottom and keep the most recent decisions
 **Reasoning:** Adjusting one tier recenters every matching screen; semantic names document intent (panel title vs metric vs UI).
 
 **Rejected alternatives:** Ad hoc Tailwind classes only — duplicated tracking/size pairings and drift between games.
+
+---
+
+## 2026-05-10: Semantic color tokens (`semantic-*`)
+
+**Decision:** Keep primitive CSS variables in `src/index.css`; define blends and alpha **only** in `src/themes/default.css` as `--semantic-*` tokens; expose them through Tailwind under the `semantic` color group. Components use those utilities (`bg-semantic-*`, `border-semantic-*`) and **do not** use palette utilities with `/opacity` modifiers.
+
+**Reasoning:** One place controls opacity math; future per-game themes can swap stylesheet layers without chasing Tailwind classes across components.
+
+**Rejected alternatives:** Encoding `primary/40`-style classes only in components — duplicates logic and blocks algorithmic or swappable themes later.

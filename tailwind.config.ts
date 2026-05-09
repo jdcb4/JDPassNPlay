@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  content: ["./index.html", "./src/**/*.{ts,tsx}"],
+  content: ["./index.html", "./gallery.html", "./src/**/*.{ts,tsx}"],
   darkMode: "class",
   theme: {
     extend: {
@@ -34,6 +34,27 @@ const config: Config = {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+        },
+        /** Semantic colors — values come from theme CSS (see src/themes/default.css). */
+        semantic: {
+          "primary-soft-bg": "var(--semantic-primary-soft-bg)",
+          "primary-well-bg": "var(--semantic-primary-well-bg)",
+          "primary-border": "var(--semantic-primary-border)",
+          "primary-hover": "var(--semantic-primary-hover)",
+          "secondary-hover": "var(--semantic-secondary-hover)",
+          "accent-hover-wash": "var(--semantic-accent-hover-wash)",
+          "muted-panel-bg": "var(--semantic-muted-panel-bg)",
+          "border-faint": "var(--semantic-border-faint)",
+          "border-muted": "var(--semantic-border-muted)",
+          "surface-elevated": "var(--semantic-surface-elevated)",
+          "destructive-border-soft": "var(--semantic-destructive-border-soft)",
+          "destructive-surface-soft": "var(--semantic-destructive-surface-soft)",
+          scrim: "var(--semantic-scrim)",
+          gallery: {
+            DEFAULT: "hsl(var(--semantic-gallery-chrome))",
+            header: "hsl(var(--semantic-gallery-chrome) / 0.95)",
+            foreground: "hsl(var(--semantic-gallery-foreground))",
+          },
         },
       },
       fontSize: {

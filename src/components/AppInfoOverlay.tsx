@@ -23,7 +23,7 @@ export function AppInfoOverlay({
   return (
     <div
       aria-modal="true"
-      className="fixed inset-0 z-50 flex items-end justify-center bg-black/45 p-4 sm:items-center"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-semantic-scrim p-4 sm:items-center"
       role="dialog"
     >
       <div className="w-full max-w-sm rounded-xl border border-border bg-card p-4 shadow-xl">

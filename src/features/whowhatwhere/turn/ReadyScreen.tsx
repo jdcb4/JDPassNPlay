@@ -55,7 +55,7 @@ export function ReadyScreen({
       </GamePanel>
 
       {error ? (
-        <p className="mt-4 rounded-md border border-destructive/30 bg-destructive/10 p-3 text-typ-ui text-destructive">
+        <p className="mt-4 rounded-md border border-semantic-destructive-border-soft bg-semantic-destructive-surface-soft p-3 text-typ-ui text-destructive">
           {error}
         </p>
       ) : null}

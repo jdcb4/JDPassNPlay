@@ -264,8 +264,8 @@ function GalleryChrome() {
     setIndex((current) => Math.min(slides.length - 1, current + 1));
 
   return (
-    <div className="min-h-dvh bg-neutral-950 text-foreground">
-      <header className="sticky top-0 z-50 border-b border-border bg-neutral-950/95 px-4 py-3 backdrop-blur">
+    <div className="min-h-dvh bg-semantic-gallery text-semantic-gallery-foreground">
+      <header className="sticky top-0 z-50 border-b border-border bg-semantic-gallery-header px-4 py-3 backdrop-blur">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3">
           <span className="font-semibold uppercase tracking-wide text-typ-micro text-muted-foreground">
             Dev UI gallery

@@ -146,13 +146,13 @@ export function TeamRosterSetupScreen({
         </div>
 
         {error ? (
-          <p className="rounded-md border border-destructive/30 bg-destructive/10 p-3 text-typ-ui text-destructive">
+          <p className="rounded-md border border-semantic-destructive-border-soft bg-semantic-destructive-surface-soft p-3 text-typ-ui text-destructive">
             {error}
           </p>
         ) : null}
       </div>
 
-      <div className="grid w-full gap-3 border-t border-border bg-background/95 py-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)] backdrop-blur">
+      <div className="grid w-full gap-3 border-t border-border bg-semantic-surface-elevated py-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)] backdrop-blur">
         <Button
           className="h-11 w-full"
           variant="outline"
