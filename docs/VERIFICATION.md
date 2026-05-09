@@ -21,6 +21,12 @@ For significant implementation changes, run Fallow and consider its feedback bef
 pnpm dlx fallow --no-cache --format human
 ```
 
+The default combined run includes **health** (cyclomatic / CRAP heuristics). Large React hooks and game reducers often trigger those thresholds without indicating a bug. To check only **unused dependencies, dead exports, and duplication** (the issues most actionable in small fixes), use:
+
+```bash
+pnpm run fallow:hygiene
+```
+
 If Fallow is unavailable, record that it was skipped and perform a local code-quality review before running the deterministic checks. Fallow 2.x reads `.fallowrc.json`: use **`entry`** (glob list of entry points, including tests/scripts) and **`ignorePatterns`** — the old `entrypoints` / `ignore` keys are no longer accepted.
 
 ## Optional deeper checks

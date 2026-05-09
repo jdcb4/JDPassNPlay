@@ -1,6 +1,6 @@
 {
   "name": "jdpassnplay",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@9.12.0",
@@ -20,6 +20,7 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "verify": "pnpm run typecheck && pnpm run lint && pnpm test && pnpm run build",
+    "fallow:hygiene": "pnpm dlx fallow --no-cache --format human --only dead-code,dupes",
     "docker:build": "docker build -t jdcb4/jdpassnplay:$(node -p \"require('./package.json').version\") -t jdcb4/jdpassnplay:latest ."
   },
   "dependencies": {

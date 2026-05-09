@@ -42,7 +42,8 @@ Games:
 | `pnpm run build`        | Production build.                                        |
 | `pnpm run build:pages` | GitHub Pages build (`base` + `404.html` for SPA).         |
 | `pnpm run verify`       | Typecheck + lint + test + build (commit gate).           |
-| `pnpm dlx fallow ...`   | Deterministic dead-code / complexity / duplication scan. |
+| `pnpm run fallow:hygiene` | Fallow dead-code + duplication only (see `docs/VERIFICATION.md`). |
+| `pnpm dlx fallow ...`   | Full Fallow scan (dead-code, duplication, health metrics). |
 
 ## Key docs
 
