@@ -2,6 +2,14 @@
 
 Notable changes by version. Newest at the top. Bumps follow `docs/VERSIONING.md`.
 
+## 0.4.0 - 2026-05-10
+
+- **Shared UI:** All Who What Where screens under `GameShell` now use **`GamePanel`** (settings, team roster, resume prompt, final summary, results). Ready and active turn already used it.
+- **Hat Game:** Team roster step wraps **`TeamRosterSetupScreen`** in **`GamePanel`** with **`omitHeading`** so titles stay in one place (matches WWW team setup).
+- **Imposter:** Placeholder route wraps content in **`GamePanel`**.
+- **`GamePanel`:** Optional **`className`** for flex/min-height layouts; **`TeamRosterSetupScreen`** supports **`omitHeading`** when the parent supplies headings.
+- **Docs:** `docs/ARCHITECTURE.md` and `docs/DECISIONS.md` describe **`GamePanel`** as the default for new game routes.
+
 ## 0.3.3 - 2026-05-10
 
 - **Dev UI gallery:** First slide uses Hat Game **landing without a saved game** so it aligns with Who What Where **settings** (no “resume” mismatch between columns).

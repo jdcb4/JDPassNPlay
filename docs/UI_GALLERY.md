@@ -12,7 +12,7 @@ Opens the dev server on port **5174** with **`/gallery.html`** (see `vite.ui-gal
 
 ## Contents
 
-- Ten paired slides (toolbar **Back / Next / dropdown**): Hat **landing** (no fake saved game, so it matches WWW **settings**), setup steps, ready/active/recap/results.
+- Ten paired slides (toolbar **Back / Next / dropdown**): Hat **landing** (no fake saved game, so it matches WWW **settings**), setup steps, ready/active/recap/results. WWW/Hat team-setup slides include the shared **`GamePanel`** + roster chrome used in the real app.
 - **Imposter** has only a placeholder route in the app — there are no distinct Imposter screens to mirror yet.
 
 ## Implementation notes

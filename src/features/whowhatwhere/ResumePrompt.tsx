@@ -1,3 +1,4 @@
+import { GamePanel } from "@/components/game/GamePanel";
 import type { PersistedMatch } from "@/services/whowhatwherePersistence";
 
 /**
@@ -9,17 +10,12 @@ export function ResumePrompt({
   readonly savedMatch: PersistedMatch;
 }) {
   return (
-    <section className="flex flex-1 flex-col justify-center gap-6 pb-4">
-      <div className="space-y-3">
-        <p className="text-sm font-medium text-primary">Game in progress</p>
-        <h2 className="text-2xl font-semibold tracking-normal">
-          Resume your saved game?
-        </h2>
-        <p className="text-base leading-7 text-muted-foreground">
-          We found a game saved at {formatSavedAt(savedMatch.savedAt)}. Use the
-          buttons below.
-        </p>
-      </div>
+    <section className="flex flex-1 flex-col justify-center pb-4">
+      <GamePanel
+        eyebrow="Game in progress"
+        subtitle={`We found a game saved at ${formatSavedAt(savedMatch.savedAt)}. Use the buttons below.`}
+        title="Resume your saved game?"
+      />
     </section>
   );
 }

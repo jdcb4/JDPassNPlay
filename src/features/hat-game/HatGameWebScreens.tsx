@@ -134,18 +134,26 @@ const renderTeamEditor = (controller: HatGameAppController): ScreenModel => {
 
   return {
     content: (
-      <TeamRosterSetupScreen
-        addPlayerToRoster={controller.addPlayerToHatRosterRows}
-        error={controller.error}
-        lastTeamPrimaryLabel="Review teams"
-        removePlayerFromRoster={controller.removePlayerFromHatRosterRows}
-        teamCount={controller.snapshot.teamCount}
-        teamIndex={controller.snapshot.teamEditIndex}
-        teams={rosterRows}
-        onBack={controller.backTeamStep}
-        onNext={controller.confirmTeamStep}
-        onTeamsChange={controller.applyHatRosterFromRows}
-      />
+      <GamePanel
+        className="flex min-h-0 flex-1 flex-col"
+        eyebrow={`Team ${controller.snapshot.teamEditIndex + 1} of ${controller.snapshot.teamCount}`}
+        subtitle="Edit names and optional players before continuing."
+        title="Name this team"
+      >
+        <TeamRosterSetupScreen
+          addPlayerToRoster={controller.addPlayerToHatRosterRows}
+          error={controller.error}
+          lastTeamPrimaryLabel="Review teams"
+          omitHeading
+          removePlayerFromRoster={controller.removePlayerFromHatRosterRows}
+          teamCount={controller.snapshot.teamCount}
+          teamIndex={controller.snapshot.teamEditIndex}
+          teams={rosterRows}
+          onBack={controller.backTeamStep}
+          onNext={controller.confirmTeamStep}
+          onTeamsChange={controller.applyHatRosterFromRows}
+        />
+      </GamePanel>
     ),
   };
 };

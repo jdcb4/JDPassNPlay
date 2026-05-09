@@ -21,6 +21,7 @@ export function TeamRosterSetupScreen({
   lastTeamPrimaryLabel,
   addPlayerToRoster,
   removePlayerFromRoster,
+  omitHeading = false,
 }: {
   readonly teamCount: number;
   readonly teamIndex: number;
@@ -31,6 +32,8 @@ export function TeamRosterSetupScreen({
   readonly onNext: () => void;
   /** e.g. "Start local round" (WWW) or "Review teams" (Hat Game). */
   readonly lastTeamPrimaryLabel: string;
+  /** When true, skip the built-in “Team X of Y” / title block — parent uses `GamePanel` for headings. */
+  readonly omitHeading?: boolean;
   readonly addPlayerToRoster: (
     teams: readonly RosterTeamRow[],
     teamId: string,
@@ -63,14 +66,16 @@ export function TeamRosterSetupScreen({
           Back
         </button>
 
-        <div className="space-y-2">
-          <p className="text-sm font-medium text-primary">
-            Team {teamIndex + 1} of {teamCount}
-          </p>
-          <h2 className="text-2xl font-semibold tracking-normal">
-            Name this team
-          </h2>
-        </div>
+        {omitHeading ? null : (
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-primary">
+              Team {teamIndex + 1} of {teamCount}
+            </p>
+            <h2 className="text-2xl font-semibold tracking-normal">
+              Name this team
+            </h2>
+          </div>
+        )}
 
         <EditableName
           label="Team name"
