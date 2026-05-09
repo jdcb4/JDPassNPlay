@@ -1,5 +1,9 @@
 import type { LastTurnSummary, WordHistoryEntry } from "@/domain/whowhatwhere/types";
 
+/** Matches Hat Game “review” recap panels (`reviewCardClass`). */
+const recapPanelClass =
+  "rounded-lg border border-border bg-muted/20 p-3 text-sm shadow-sm";
+
 export function LastTurnCard({
   summary,
 }: {
@@ -10,12 +14,12 @@ export function LastTurnCard({
   }
 
   return (
-    <div className="rounded-md border bg-card p-4">
+    <div className={recapPanelClass}>
       <p className="text-sm font-medium text-muted-foreground">Last turn</p>
       <p className="mt-1 font-semibold">
         {summary.teamName}: +{summary.scoreDelta}
       </p>
-      <p className="mt-1 text-sm text-muted-foreground">
+      <p className="mt-1 text-muted-foreground">
         {summary.describerName} got {summary.correctCount} correct and skipped{" "}
         {summary.skippedCount}.
       </p>
@@ -33,7 +37,7 @@ function TurnWords({ summary }: { readonly summary: LastTurnSummary }) {
   }
 
   return (
-    <details className="mt-3">
+    <details className="mt-3 border-t border-border/60 pt-3">
       <summary className="cursor-pointer text-sm font-medium text-muted-foreground">
         Words
       </summary>
@@ -43,7 +47,7 @@ function TurnWords({ summary }: { readonly summary: LastTurnSummary }) {
         {summary.finalWord && (
           <div className="flex flex-wrap items-center gap-1.5">
             <span className="mr-1 font-semibold text-muted-foreground">Final</span>
-            <span className="rounded-full border px-2 py-1">
+            <span className="rounded-md border border-border bg-background px-2 py-1">
               {summary.finalWord.word}
             </span>
           </div>
@@ -70,7 +74,7 @@ function WordChipGroup({
       {entries.map((entry) => (
         <span
           key={`${entry.timestamp}-${entry.word.word}-${entry.status}`}
-          className="rounded-full border px-2 py-1"
+          className="rounded-md border border-border bg-background px-2 py-1"
         >
           {entry.word.word}
         </span>

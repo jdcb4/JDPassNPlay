@@ -2,6 +2,11 @@
 
 Notable changes by version. Newest at the top. Bumps follow `docs/VERSIONING.md`.
 
+## 0.3.1 - 2026-05-10
+
+- **Hat Game (turn):** Metrics use the same **2×2** grid as WhoWhatWhere (time left, phase name, score, skipped-waiting count). Skipped-clues panel includes the helper line “Pick a waiting word to return to it now.”
+- **Who What Where (between turns):** Ready screen matches Hat-style **single outer `GamePanel`**; scoreboard uses shared **`GameScoreboard`** (Hat list UX); **`LastTurnCard`** recap uses muted rounded panel styling with collapsible words preserved.
+
 ## 0.3.0 - 2026-05-10
 
 - **Shared chrome:** `FooterActionLockContext` + `GameFooterButtons` (`PrimaryFooterButton`, `SecondaryFooterButton`, etc.), `GamePanel`, `TurnPlayHighlight`, `GameScreenHeaderActions`. Hat Game renamed from hat-only context; shell wraps full game so in-flow controls respect the same brief footer lock as primary actions.

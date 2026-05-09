@@ -8,6 +8,7 @@ import {
   SecondaryFooterButton,
 } from "@/components/game/GameFooterButtons";
 import { GamePanel } from "@/components/game/GamePanel";
+import { GameScoreboard } from "@/components/game/GameScoreboard";
 import { TurnPlayHighlight } from "@/components/game/TurnPlayHighlight";
 import { GameResultActions } from "@/components/GameResultActions";
 import { IconCheck, IconSkipForward } from "@/components/icons";
@@ -32,22 +33,14 @@ import { formatSavedAt } from "@/features/hat-game/useHatGameApp";
 
 function HatScoreboard({ session }: { session: HatGameSession }) {
   return (
-    <div className="space-y-2 rounded-lg border border-border bg-background p-3">
-      <p className="text-sm font-semibold">Scoreboard</p>
-      <ul className="space-y-2">
-        {session.teams.map((team) => (
-          <li
-            key={team.id}
-            className="flex items-center justify-between text-sm font-medium"
-          >
-            <span>{team.name}</span>
-            <span className="tabular-nums text-muted-foreground">
-              {team.score} pts
-            </span>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <GameScoreboard
+      sortDescendingByScore={false}
+      teams={session.teams.map((team) => ({
+        id: team.id,
+        name: team.name,
+        score: team.score,
+      }))}
+    />
   );
 }
 
@@ -338,13 +331,17 @@ const renderTurn = (
         title={`${context.activeTeam?.name ?? "Team"} guessing`}
       >
         <TurnPlayHighlight>{currentClue}</TurnPlayHighlight>
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-2 gap-3">
           <Metric
-            label="Time"
+            label="Time left"
             value={formatCountdown(controller.secondsRemaining)}
           />
+          <Metric label="Phase" value={phase.name} />
           <Metric label="Score" value={String(activeTurn?.score ?? 0)} />
-          <Metric label="Skips" value={String(activeTurn?.skipsRemaining ?? 0)} />
+          <Metric
+            label="Skipped waiting"
+            value={String(activeTurn?.skippedClues.length ?? 0)}
+          />
         </div>
         <p className={noticeClass}>
           Phase {session.phaseNumber}: {phase.name}. {phase.instruction}
@@ -352,6 +349,9 @@ const renderTurn = (
         {activeTurn?.skippedClues.length ? (
           <div className="rounded-lg border border-dashed border-border p-3">
             <p className="mb-2 text-sm font-semibold">Skipped famous figures</p>
+            <p className="mb-3 text-sm text-muted-foreground">
+              Pick a waiting word to return to it now.
+            </p>
             <div className="grid gap-2">
               {activeTurn.skippedClues.map((clue) => (
                 <FooterOutlineIconTextButton
