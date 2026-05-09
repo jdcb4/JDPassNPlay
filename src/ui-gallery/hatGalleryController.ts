@@ -96,14 +96,6 @@ export function hatSnapshotLanding(): AppSnapshot {
   };
 }
 
-export function hatSnapshotLandingWithSave(snapshotForSave: AppSnapshot): StoragePayload {
-  return {
-    schemaVersion: 1,
-    lastSavedAt: new Date(Date.UTC(2026, 5, 10, 11, 30, 0)).toISOString(),
-    snapshot: snapshotForSave,
-  };
-}
-
 export function hatSnapshotSettings(): AppSnapshot {
   return {
     step: "settings",

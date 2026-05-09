@@ -2,6 +2,10 @@
 
 Notable changes by version. Newest at the top. Bumps follow `docs/VERSIONING.md`.
 
+## 0.3.3 - 2026-05-10
+
+- **Dev UI gallery:** First slide uses Hat Game **landing without a saved game** so it aligns with Who What Where **settings** (no “resume” mismatch between columns).
+
 ## 0.3.2 - 2026-05-10
 
 - **Dev tooling:** Added a separate **UI gallery** (`pnpm run ui-gallery`, `gallery.html` + `vite.ui-gallery.config.ts`) showing Hat Game and Who What Where screens side by side with fake data — not included in the default production build.

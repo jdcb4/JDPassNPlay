@@ -23,7 +23,6 @@ import { ReadyScreen } from "@/features/whowhatwhere/turn/ReadyScreen";
 import {
   createHatGalleryController,
   hatGallerySnapshots,
-  hatSnapshotLandingWithSave,
 } from "@/ui-gallery/hatGalleryController";
 import {
   wwwGalleryMatchActiveFrozen,
@@ -65,10 +64,8 @@ function buildSlides(): readonly SlideSpec[] {
   return [
     {
       label: "Home · Game settings",
-      hat: () =>
-        createHatGalleryController(hatGallerySnapshots.landing, {
-          savedRecord: hatSnapshotLandingWithSave(hatGallerySnapshots.teamFirst),
-        }),
+      // No saved game — pairs with WWW settings as the neutral “start here” step.
+      hat: () => createHatGalleryController(hatGallerySnapshots.landing),
       wwwContent: () => (
         <SettingsScreen settings={demoWwwSettings} onChange={noop} />
       ),
