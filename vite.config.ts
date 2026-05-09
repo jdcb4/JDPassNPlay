@@ -5,7 +5,9 @@ import { defineConfig } from "vite";
 
 export default defineConfig(({ mode }) => ({
   plugins: [react()],
-  base: mode === "github-pages" ? "/jdpassnplay/" : "/",
+  // Must match the repository name segment in the GitHub Pages URL (case-sensitive).
+  // Repo: github.com/jdcb4/JDPassNPlay → https://jdcb4.github.io/JDPassNPlay/
+  base: mode === "github-pages" ? "/JDPassNPlay/" : "/",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

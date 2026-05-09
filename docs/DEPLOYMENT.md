@@ -47,7 +47,9 @@ Repository setup (one-time):
 3. Set `Build and deployment` source to `GitHub Actions`.
 4. Push to `main` (or run the workflow manually).
 
-The Pages base path is set in `vite.config.ts` and currently uses `/jdpassnplay/`. If the GitHub repository name differs from the project slug, update the `base` value in `vite.config.ts` and run `pnpm run build:pages` to verify.
+The Pages base path is set in `vite.config.ts` and must match the **repository name** in the site URL (case-sensitive), e.g. `/JDPassNPlay/` for `github.com/jdcb4/JDPassNPlay`. If you rename the repo, update `base` and run `pnpm run build:pages` to verify.
+
+Direct visits to client routes (e.g. `/JDPassNPlay/games/hat`) need GitHub to serve `index.html`; the workflow copies `dist/index.html` to `dist/404.html` after build for that fallback.
 
 ## Verification before deploy
 

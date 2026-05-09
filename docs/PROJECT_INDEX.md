@@ -40,6 +40,7 @@ Games:
 | `pnpm test`             | Vitest once.                                             |
 | `pnpm run test:watch`   | Vitest in watch mode.                                    |
 | `pnpm run build`        | Production build.                                        |
+| `pnpm run build:pages` | GitHub Pages build (`base` + `404.html` for SPA).         |
 | `pnpm run verify`       | Typecheck + lint + test + build (commit gate).           |
 | `pnpm dlx fallow ...`   | Deterministic dead-code / complexity / duplication scan. |
 
