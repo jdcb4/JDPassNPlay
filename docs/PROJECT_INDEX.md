@@ -17,7 +17,7 @@ Games:
 - `src/app` — router, root layout, smoke tests.
 - `src/features/home` — launcher / game picker.
 - `src/features/whowhatwhere` — WWW UI + `useGameController` (`WwwLandingScreen`, `WwwReviewTeamsScreen`, …).
-- `src/features/hat-game` — Hat Game web UI + `useHatGameApp`.
+- `src/features/hat-game` — Hat Game web UI + `useHatGameApp`; per-screen builders under `screens/` (`hatLandingScreen`, `hatInGameRouter`, …), wired by `buildHatGameScreen` in `HatGameWebScreens.tsx`.
 - `src/features/imposter` — placeholder screen.
 - `src/domain/whowhatwhere` — WhoWhatWhere rules (framework-free).
 - `src/domain/hat-game` — Hat Game engine + setup helpers.

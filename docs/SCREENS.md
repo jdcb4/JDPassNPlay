@@ -48,7 +48,7 @@ Rendered inside **`GameShell`**. Shell step is **`AppSnapshot.step`** (`hatGameA
 | **Final turn recap** | Last turn of the match: **That’s the last turn**, **`HatLastTurnCard`**, **Next steps**; footer **Final scores** → **`stage === "results"`**. Session **`stage === "finalSummary"`**. |
 | **Final results** | Same shared podium UI as WWW (**`FinalResultsBody`** via **`mapFinalResultsFromHat`**); session **`stage === "results"`**. |
 
-Screen assembly: **`buildHatGameScreen`** in `HatGameWebScreens.tsx`. **`HatGameApp`** adds shell chrome, error strip, and **`AppInfoOverlay`**.
+Screen assembly: **`buildHatGameScreen`** in `HatGameWebScreens.tsx` routes **`AppSnapshot.step`** and delegates to modules under **`features/hat-game/screens/`** (same file-per-screen idea as Who What Where). **`HatGameApp`** adds shell chrome, error strip, and **`AppInfoOverlay`**.
 
 ---
 
