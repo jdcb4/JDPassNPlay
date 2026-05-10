@@ -2,6 +2,10 @@
 
 Notable changes by version. Newest at the top. Bumps follow `docs/VERSIONING.md`.
 
+## 0.9.1 - 2026-05-10
+
+- **Who What Where:** Last team roster step footer primary **Finalise teams** (was **Start local round**).
+
 ## 0.9.0 - 2026-05-10
 
 - **Final results (WWW + Hat):** Shared **`FinalResultsBody`** — hero winner/tie callout, **Final Leaderboard** with primary tint for winners + podium-ish ranks 2–3, **Best turn** card (player prominent, large score, team muted). **`ResultsConfetti`** (Tailwind **`confetti-fall`** keyframes; no new deps). **`GamePanel`** title **Final Results** on both games; Hat drops phase subtitle.

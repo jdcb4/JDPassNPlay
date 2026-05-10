@@ -123,7 +123,7 @@ function buildSlides(): readonly SlideSpec[] {
       ),
       wwwFooter: () =>
         footerWrap(
-          <PrimaryFooterButton label="Start local round" onClick={noop} />,
+          <PrimaryFooterButton label="Finalise teams" onClick={noop} />,
         ),
     },
     {

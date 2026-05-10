@@ -102,7 +102,7 @@ export function WhoWhatWhereApp() {
         label={teamRosterAdvanceLabel(
           game.teamStep,
           game.settings.teamCount,
-          "Start local round",
+          "Finalise teams",
         )}
         onClick={game.advanceTeamSetup}
       />,

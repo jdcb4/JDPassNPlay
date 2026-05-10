@@ -28,7 +28,7 @@ export function TeamRosterSetupScreen({
   readonly error: string;
   readonly onTeamsChange: (next: RosterTeamRow[]) => void;
   readonly onBack: () => void;
-  /** e.g. “Start local round” (WWW) or “Review teams” (Hat Game) — used only by parent footer labels. */
+  /** e.g. “Finalise teams” (WWW) or “Review teams” (Hat Game) — used only by parent footer labels. */
   readonly omitHeading?: boolean;
   readonly addPlayerToRoster: (
     teams: readonly RosterTeamRow[],
