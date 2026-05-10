@@ -42,7 +42,7 @@ export function wwwGalleryMatchActiveFrozen(): MatchState {
   return { ...match, activeTurn };
 }
 
-/** End of match — stage `finalSummary`, results payload present but not yet “revealed”. */
+/** End of match — stage `finalSummary` (Final turn recap), results payload present but not yet “revealed”. */
 export function wwwGalleryMatchFinalSummary(): MatchState {
   const settings = { ...createDefaultSettings(), totalRounds: 1 as const };
   let match = createMatch(createTeamSetups(2), settings);

@@ -51,6 +51,12 @@ describe('Hat Game engine', () => {
     let session: HatGameSession = makeSession({ cluesPerPlayer: 3 });
 
     while (session.stage !== 'results') {
+      if (session.stage === 'finalSummary') {
+        session = unwrap(
+          applyHatGameAction(session, { type: 'view-results' }, actionOptions),
+        );
+        continue;
+      }
       if (session.stage === 'ready') {
         session = unwrap(applyHatGameAction(session, { type: 'start-turn' }, actionOptions));
       }

@@ -1,6 +1,7 @@
 /* eslint-disable react-refresh/only-export-components -- screen builder module; not a leaf component file */
 import type { NavigateFunction } from "react-router-dom";
 
+import { FINAL_TURN_RECAP_NEXT_STEPS } from "@/components/game/finalTurnRecapCopy";
 import {
   FooterIconSlotButton,
   FooterOutlineIconTextButton,
@@ -15,6 +16,7 @@ import { ReadyProgressCard } from "@/components/game/ReadyProgressCard";
 import { ResumeGameCard } from "@/components/game/ResumeGameCard";
 import { reviewDisplayRowsFromHat } from "@/components/game/reviewTeamMappers";
 import { ReviewTeamsPanel } from "@/components/game/ReviewTeamsPanel";
+import { ThatsTheLastTurnCard } from "@/components/game/ThatsTheLastTurnCard";
 import { TurnPlayHighlight } from "@/components/game/TurnPlayHighlight";
 import { GameResultActions } from "@/components/GameResultActions";
 import { IconCheck, IconSkipForward } from "@/components/icons";
@@ -435,6 +437,31 @@ const renderTurn = (
   };
 };
 
+const renderFinalTurnRecap = (
+  controller: HatGameAppController,
+  session: HatGameSession,
+): ScreenModel => {
+  const previousTurn = session.lastTurnSummary;
+
+  return {
+    content: (
+      <section className="flex flex-1 flex-col gap-4 pb-4">
+        <ThatsTheLastTurnCard />
+        {previousTurn ? <HatLastTurnCard summary={previousTurn} /> : null}
+        <ReadyNextStepsCard primaryText={FINAL_TURN_RECAP_NEXT_STEPS} />
+      </section>
+    ),
+    actions: (
+      <PrimaryFooterButton
+        label="Final scores"
+        onClick={() =>
+          controller.dispatchGameAction({ type: "view-results" })
+        }
+      />
+    ),
+  };
+};
+
 const renderResults = (
   controller: HatGameAppController,
   session: HatGameSession,
@@ -481,6 +508,9 @@ const renderGame = (
   }
   if (session.stage === "results") {
     return renderResults(controller, session, navigate);
+  }
+  if (session.stage === "finalSummary") {
+    return renderFinalTurnRecap(controller, session);
   }
   if (session.stage === "turn") {
     return renderTurn(controller, session);

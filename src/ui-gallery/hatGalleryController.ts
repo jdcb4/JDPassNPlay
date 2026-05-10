@@ -4,6 +4,7 @@ import type { AppSnapshot, StoragePayload } from "@/features/hat-game/hatGameApp
 import type { HatGameAppController } from "@/features/hat-game/useHatGameApp";
 import {
   getGalleryHatSetup,
+  hatGallerySessionFinalTurnRecap,
   hatGallerySessionMidTurnWithSkips,
   hatGallerySessionReadyWithSummary,
   hatGallerySessionResults,
@@ -226,5 +227,6 @@ export const hatGallerySnapshots = {
   readyRecapHandoffOff: hatSnapshotGame(hatGallerySessionReadyWithSummary(), false),
   readyRecapHandoffOn: hatSnapshotGame(hatGallerySessionReadyWithSummary(), true),
   turnSkips: hatSnapshotGame(hatGallerySessionMidTurnWithSkips(), false),
+  finalTurnRecap: hatSnapshotGame(hatGallerySessionFinalTurnRecap(), false),
   results: hatSnapshotGame(hatGallerySessionResults(), false),
 } as const;

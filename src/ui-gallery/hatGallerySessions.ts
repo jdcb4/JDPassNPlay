@@ -87,9 +87,9 @@ export function hatGallerySessionMidTurnWithSkips(): HatGameSession {
   return session;
 }
 
-export function hatGallerySessionResults(): HatGameSession {
+export function hatGallerySessionFinalTurnRecap(): HatGameSession {
   let session = hatGalleryBaseSession();
-  while (session.stage !== "results") {
+  while (session.stage !== "finalSummary") {
     if (session.stage === "ready") {
       session = unwrap(
         applyHatGameAction(session, { type: "start-turn" }, galleryHatActionOpts),
@@ -100,4 +100,11 @@ export function hatGallerySessionResults(): HatGameSession {
     );
   }
   return session;
+}
+
+export function hatGallerySessionResults(): HatGameSession {
+  const session = hatGallerySessionFinalTurnRecap();
+  return unwrap(
+    applyHatGameAction(session, { type: "view-results" }, galleryHatActionOpts),
+  );
 }

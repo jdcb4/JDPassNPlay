@@ -10,11 +10,11 @@ import {
 import { GameScreenHeaderActions } from "@/components/game/GameScreenHeaderActions";
 import { GameResultActions } from "@/components/GameResultActions";
 import { GameShell } from "@/components/GameShell";
-import { IconCheck, IconChevronRight, IconSkipForward } from "@/components/icons";
+import { IconCheck, IconSkipForward } from "@/components/icons";
 import { canQueueSkipped, getActiveContext } from "@/domain/whowhatwhere/game";
 import { buildHatGameScreen } from "@/features/hat-game/HatGameWebScreens";
 import type { HatGameAppController } from "@/features/hat-game/useHatGameApp";
-import { FinalSummaryScreen } from "@/features/whowhatwhere/results/FinalSummaryScreen";
+import { FinalTurnRecapScreen } from "@/features/whowhatwhere/results/FinalTurnRecapScreen";
 import { ResultsScreen } from "@/features/whowhatwhere/results/ResultsScreen";
 import { SettingsScreen } from "@/features/whowhatwhere/setup/SettingsScreen";
 import { TeamSetupScreen } from "@/features/whowhatwhere/setup/TeamSetupScreen";
@@ -204,16 +204,12 @@ function buildSlides(): readonly SlideSpec[] {
         ),
     },
     {
-      label: "Mid-turn (skipped clues) · Final recap",
-      hat: () => createHatGalleryController(hatGallerySnapshots.turnSkips),
-      wwwContent: () => <FinalSummaryScreen match={wwwFinal} />,
+      label: "Final turn recap · Final turn recap",
+      hat: () => createHatGalleryController(hatGallerySnapshots.finalTurnRecap),
+      wwwContent: () => <FinalTurnRecapScreen match={wwwFinal} />,
       wwwFooter: () =>
         footerWrap(
-          <PrimaryFooterButton
-            icon={<IconChevronRight className="size-5" />}
-            label="View final scores"
-            onClick={noop}
-          />,
+          <PrimaryFooterButton label="Final scores" onClick={noop} />,
         ),
       wwwShowEndTurn: false,
     },

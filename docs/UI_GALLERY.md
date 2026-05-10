@@ -12,7 +12,7 @@ Opens the dev server on port **5174** with **`/gallery.html`** (see `vite.ui-gal
 
 ## Contents
 
-- Eleven paired slides: **Hat landing · WWW landing**, **Game settings** (both), team rosters, **Review teams** (both), clue pass / ready / active / recap / results. See `src/ui-gallery/GalleryApp.tsx`.
+- Eleven paired slides: **Hat landing · WWW landing**, **Game settings** (both), team rosters, **Review teams** (both), clue pass / ready / active / **Final turn recap** / results. See `src/ui-gallery/GalleryApp.tsx`.
 - **Imposter** has only a placeholder route in the app — there are no distinct Imposter screens to mirror yet.
 
 ## Implementation notes

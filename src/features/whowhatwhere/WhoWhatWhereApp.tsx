@@ -14,10 +14,10 @@ import {
 import { GameScreenHeaderActions } from "@/components/game/GameScreenHeaderActions";
 import { GameResultActions } from "@/components/GameResultActions";
 import { GameShell } from "@/components/GameShell";
-import { IconCheck, IconChevronRight, IconSkipForward } from "@/components/icons";
+import { IconCheck, IconSkipForward } from "@/components/icons";
 import { teamRosterAdvanceLabel } from "@/components/team-setup/teamRosterLabels";
 import { canQueueSkipped, getActiveContext } from "@/domain/whowhatwhere/game";
-import { FinalSummaryScreen } from "@/features/whowhatwhere/results/FinalSummaryScreen";
+import { FinalTurnRecapScreen } from "@/features/whowhatwhere/results/FinalTurnRecapScreen";
 import { ResultsScreen } from "@/features/whowhatwhere/results/ResultsScreen";
 import { SettingsScreen } from "@/features/whowhatwhere/setup/SettingsScreen";
 import { TeamSetupScreen } from "@/features/whowhatwhere/setup/TeamSetupScreen";
@@ -158,11 +158,7 @@ export function WhoWhatWhereApp() {
     );
   } else if (game.match && game.activeMode === "finalSummary") {
     footer = wrap(
-      <PrimaryFooterButton
-        icon={<IconChevronRight className="size-5" />}
-        label="View final scores"
-        onClick={game.viewResults}
-      />,
+      <PrimaryFooterButton label="Final scores" onClick={game.viewResults} />,
     );
   } else if (game.match && game.activeMode === "results") {
     footer = wrap(
@@ -237,7 +233,7 @@ export function WhoWhatWhereApp() {
         {!game.pendingMatch &&
         game.match &&
         game.activeMode === "finalSummary" ? (
-          <FinalSummaryScreen match={game.match} />
+          <FinalTurnRecapScreen match={game.match} />
         ) : null}
 
         {!game.pendingMatch &&

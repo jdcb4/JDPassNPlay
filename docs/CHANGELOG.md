@@ -2,6 +2,12 @@
 
 Notable changes by version. Newest at the top. Bumps follow `docs/VERSIONING.md`.
 
+## 0.8.0 - 2026-05-10
+
+- **Final turn recap (WWW + Hat):** After the last timed turn, a recap modeled on **Between turns (ready)** without round/phase/scoreboard — **That’s the last turn**, last-turn card (**`LastTurnCard`** / **`HatLastTurnCard`**), **Next steps** → footer **Final scores** → overall results. Hat **`HatGameSession.stage`** gains **`finalSummary`** and **`view-results`** action before **`results`**.
+- **Who What Where:** Replaced **`FinalSummaryScreen`** with **`FinalTurnRecapScreen`**.
+- **Shared:** **`ThatsTheLastTurnCard`**, **`finalTurnRecapCopy`**, **`ReadyNextStepsCard`** optional give-phone line.
+
 ## 0.7.0 - 2026-05-10
 
 - **Between turns (WWW + Hat):** Shared stack — heading (`GamePanel`), **`LastTurnCard`** / **`HatLastTurnCard`** (expandable Words), **`ReadyProgressCard`** (Round or Phase), **`GameScoreboard`** (ring highlights **last turn’s team**, not upcoming), **`ReadyNextStepsCard`**. WWW ready removes back button and round categories blurb; footer primary **`[Describer name] Ready`**.

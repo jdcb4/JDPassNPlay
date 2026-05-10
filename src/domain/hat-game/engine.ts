@@ -357,9 +357,9 @@ const finishTurn = (session: HatGameSession): HatGameActionResult => {
   if (phaseCompleted && session.phaseNumber >= 3) {
     return {
       ...nextSession,
-      stage: 'results',
+      stage: 'finalSummary',
       usedCluePoolIndices: [],
-      results: buildResults(nextSession)
+      results: buildResults(nextSession),
     };
   }
 
@@ -622,6 +622,16 @@ export const applyHatGameAction = (
       return { error: 'There is no active turn to end' };
     }
     return finishTurn(session);
+  }
+
+  if (action.type === 'view-results') {
+    if (session.stage !== 'finalSummary') {
+      return { error: 'Final scores are only available after the last turn.' };
+    }
+    return {
+      ...session,
+      stage: 'results',
+    };
   }
 
   if (session.stage !== 'turn' || !session.activeTurn) {
