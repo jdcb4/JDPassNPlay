@@ -3,7 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { RootLayout } from "@/app/RootLayout";
 import { HatGameApp } from "@/features/hat-game/HatGameApp";
 import { HomePage } from "@/features/home/HomePage";
-import { ImposterPlaceholder } from "@/features/imposter/ImposterPlaceholder";
+import { ImposterApp } from "@/features/imposter/ImposterApp";
 import { WhoWhatWhereApp } from "@/features/whowhatwhere/WhoWhatWhereApp";
 
 const baseUrl = import.meta.env.BASE_URL;
@@ -17,7 +17,7 @@ export const router = createBrowserRouter(
         { index: true, element: <HomePage /> },
         { path: "games/whowhatwhere", element: <WhoWhatWhereApp /> },
         { path: "games/hat", element: <HatGameApp /> },
-        { path: "games/imposter", element: <ImposterPlaceholder /> },
+        { path: "games/imposter", element: <ImposterApp /> },
       ],
     },
   ],

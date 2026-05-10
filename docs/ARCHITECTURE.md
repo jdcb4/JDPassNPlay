@@ -7,9 +7,9 @@
 - `/` — game picker (home).
 - `/games/whowhatwhere` — WhoWhatWhere pass-and-play flow.
 - `/games/hat` — Hat Game pass-and-play flow.
-- `/games/imposter` — placeholder third game.
+- `/games/imposter` — Imposter pass-and-play flow (roles + scripted reveal).
 
-State persists in **`localStorage`** per game (isolated keys). **Web Audio API** generates short UI cues (no external audio assets for Hat Game in this port).
+State persists in **`localStorage`** per game (isolated keys). **Web Audio API** generates short UI cues for Who What Where and Hat Game (no Imposter audio yet).
 
 Deploy targets: GitHub Pages, Docker (`pnpm run docker:build`).
 
@@ -19,7 +19,7 @@ Use clear layers. Adapt the names if the project demands it, but keep the separa
 
 ### Game screen layout (`GamePanel`)
 
-Use `@/components/game/GamePanel` as the **default wrapper for primary in-game content** on each screen inside `GameShell`: titled card (`bg-card`, border, rounded corners) with optional eyebrow and subtitle. Both Hat Game and Who What Where follow this; Imposter uses it on the placeholder route. When adding a new game route, wrap each step’s main body in `GamePanel` unless a deliberate exception is documented in `docs/DECISIONS.md`.
+Use `@/components/game/GamePanel` as the **default wrapper for primary in-game content** on each screen inside `GameShell`: titled card (`bg-card`, border, rounded corners) with optional eyebrow and subtitle. Who What Where, Hat Game, and Imposter follow this.
 
 Shared roster UI (`TeamRosterSetupScreen`) can hide its built-in heading (`omitHeading`) when the parent supplies headings via `GamePanel`. **Primary navigation on roster steps** (Next team / Start round / Review teams) lives in the **`GameShell` footer**, not inside `TeamRosterSetupScreen`.
 

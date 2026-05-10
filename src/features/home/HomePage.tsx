@@ -26,7 +26,8 @@ const games = [
   {
     id: "imposter",
     title: "Imposter",
-    description: "Coming soon — a hidden-role guessing game for the same pass-and-play table.",
+    description:
+      "Hidden roles and one secret word — pass the phone for private reveals, then let the app pace clues, discussion, and the big reveal.",
     to: "/games/imposter",
     icon: IconMask,
   },

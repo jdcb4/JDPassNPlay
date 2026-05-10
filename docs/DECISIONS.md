@@ -42,7 +42,7 @@ When adding a new entry, append to the bottom and keep the most recent decisions
 
 ## 2026-05-10: Default `GamePanel` wrapper for game routes
 
-**Decision:** Wrap primary game-route body content (everything inside `GameShell` below the header) in `GamePanel` for consistent card chrome. Apply across Who What Where (including settings, team roster, resume prompt, final summary, results), Imposter placeholder, and Hat Game team roster when paired with `TeamRosterSetupScreen` (`omitHeading`).
+**Decision:** Wrap primary game-route body content (everything inside `GameShell` below the header) in `GamePanel` for consistent card chrome. Apply across Who What Where (including settings, team roster, resume prompt, final summary, results), Imposter, and Hat Game team roster when paired with `TeamRosterSetupScreen` (`omitHeading`).
 
 **Reasoning:** One visual language for “you are in a game flow”; aligns typography and bordered panels across titles and makes new games straightforward (see `docs/ARCHITECTURE.md`).
 
@@ -77,3 +77,13 @@ When adding a new entry, append to the bottom and keep the most recent decisions
 **Reasoning:** Aligns both games’ pass-and-play rhythm and removes duplicate primaries inside roster panels.
 
 **Rejected alternatives:** WWW-only full-screen resume gate; Hat-only inline roster footer primaries.
+
+---
+
+## 2026-05-10: Imposter words from JSON + Theme hook (backend only)
+
+**Decision:** Ship Imposter secret words from a bundled JSON list (`src/data/imposterWords.json`) loaded via `imposterWordList.ts`. Add `resolveImposterWordBank` in `src/domain/imposter/themeWords.ts` so a future **Theme** can filter to word subsets. Do **not** expose Theme in the UI until explicitly requested.
+
+**Reasoning:** Keeps offline-only deployment simple; host-entered words were ruled out; the resolver gives one extension point without shipping unused controls.
+
+**Rejected alternatives:** Inline hard-coded arrays in domain only — harder to swap for a larger asset later; letting hosts type words — out of scope for trust/simplicity.

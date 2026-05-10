@@ -2,6 +2,11 @@
 
 Notable changes by version. Newest at the top. Bumps follow `docs/VERSIONING.md`.
 
+## 0.10.0 - 2026-05-10
+
+- **Imposter (`/games/imposter`):** Full pass-and-play flow — landing with **Resume game** (localStorage, same discard-new-game pattern as Hat), **Game settings** (player count 4–10, imposter count with sensible defaults and caps), flat **Player roster** + **Review**, private **role/word** reveals (Hat-style handoff), four **round guide** screens (pregame → discussion → reveal warning → scripted reveal of imposter(s) and secret word), then **Pick another game** / **Replay** / **New game**. Secret words are drawn only from `src/data/imposterWords.json` (small seed list). Domain helpers in `src/domain/imposter/`; future **Theme** word subsets are stubbed in `themeWords.ts` with no UI yet.
+- **Hub:** Imposter card copy updated from “coming soon.”
+
 ## 0.9.2 - 2026-05-10
 
 - **Shared layouts:** **`BetweenTurnsLayout`** (ready + final turn recap stack for WWW and Hat) and **`LandingScreenLayout`** (shared **`GamePanel`** shell + resume / discard-confirm slots; WWW keeps keyboard-safe outer section). Refactor only — intended UX parity with previous screens.

@@ -10,7 +10,7 @@ Games:
 
 - **Who What Where** — word categories, timed turns, team scores (`/games/whowhatwhere`).
 - **Hat Game** — celebrity-style clues in three phases (`/games/hat`).
-- **Imposter** — placeholder route only (`/games/imposter`).
+- **Imposter** — hidden-role orchestration: settings, roster, private reveals, round guide, reveal screen (`/games/imposter`).
 
 ## Important folders
 
@@ -18,15 +18,16 @@ Games:
 - `src/features/home` — launcher / game picker.
 - `src/features/whowhatwhere` — WWW UI + `useGameController` (`WwwLandingScreen`, `WwwReviewTeamsScreen`, …).
 - `src/features/hat-game` — Hat Game web UI + `useHatGameApp`; per-screen builders under `screens/` (`hatLandingScreen`, `hatInGameRouter`, …), wired by `buildHatGameScreen` in `HatGameWebScreens.tsx`.
-- `src/features/imposter` — placeholder screen.
+- `src/features/imposter` — Imposter UI + `useImposterApp`; `ImposterWebScreens.tsx` routes steps; screen modules under `screens/`.
 - `src/domain/whowhatwhere` — WhoWhatWhere rules (framework-free).
 - `src/domain/hat-game` — Hat Game engine + setup helpers.
+- `src/domain/imposter` — Imposter dealing and setup validation (social outcomes only in real life).
 - `src/domain/shared` — cross-game types (e.g. roster row shape for setup UI).
 - `src/components` — shared UI (`GameShell`, `GamePanel`, `GameResultActions`, `AppInfoOverlay`, `game/` panels including **`final-results/`** (shared podium + confetti), `GameScoreboard`, **`BetweenTurnsLayout`** / **`LandingScreenLayout`** (cross-game ready/recap + landing shells), ready-flow and **Final turn recap** pieces (`ThatsTheLastTurnCard`, `finalTurnRecapCopy`), footer buttons, `EditableName`, `Metric`, `setup/`, `team-setup/`, `ui/button`).
-- `src/services` — browser persistence (`whowhatwherePersistence`, `hatGameStorage`) and Web Audio (`whowhatwhereSound`, `hatGameSound`).
-- `src/data` — `words.generated.ts`, `clueSuggestions.json`, `namePacks.json`.
+- `src/services` — browser persistence (`whowhatwherePersistence`, `hatGameStorage`, `imposterGameStorage`) and Web Audio (`whowhatwhereSound`, `hatGameSound`).
+- `src/data` — `words.generated.ts`, `clueSuggestions.json`, `namePacks.json`, `imposterWords.json` (+ `imposterWordList.ts` loader).
 - `src/assets` — static assets bundled by Vite (e.g. Hat Game phase `.wav` cues).
-- `src/config` — `env.ts`, `hatGameDefaults.ts`, `teamRoster.ts` (shared 2–4 teams, 2–6 players per team), `appMeta.ts` (product label for shared chrome).
+- `src/config` — `env.ts`, `hatGameDefaults.ts`, `imposterDefaults.ts`, `teamRoster.ts` (shared 2–4 teams, 2–6 players per team), `appMeta.ts` (product label for shared chrome).
 - `src/typography` — named font tier map (`tiers.ts`) for `text-typ-*` utilities.
 - `src/themes` — semantic color tokens (`default.css`) layered on primitives in `index.css`.
 - `docs` — durable project documentation.
