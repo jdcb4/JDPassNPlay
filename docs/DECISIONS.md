@@ -57,3 +57,13 @@ When adding a new entry, append to the bottom and keep the most recent decisions
 **Reasoning:** One place controls opacity math; future per-game themes can swap stylesheet layers without chasing Tailwind classes across components.
 
 **Rejected alternatives:** Encoding `primary/40`-style classes only in components — duplicates logic and blocks algorithmic or swappable themes later.
+
+---
+
+## 2026-05-10: Shared landing + roster footer patterns (WWW + Hat)
+
+**Decision:** Use **`ResumeGameCard`** for in-progress saves (resume inside the card) and **`GameShell`** footer primary for **Start game** / **Start new game** (with discard confirm). **`TeamRosterSetupScreen`** renders scroll content only; **`teamRosterAdvanceLabel`** drives footer labels on roster steps. **`ReviewTeamsPanel`** plus per-game **Next steps** cards implement the review checkpoint.
+
+**Reasoning:** Aligns both games’ pass-and-play rhythm and removes duplicate primaries inside roster panels.
+
+**Rejected alternatives:** WWW-only full-screen resume gate; Hat-only inline roster footer primaries.

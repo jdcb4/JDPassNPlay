@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { FOOTER_ACTION_LOCK_MS } from "@/components/footerActionLockContext";
-import { GAME_DEFAULTS } from "@/config/hatGameDefaults";
+import { GAME_DEFAULTS, type HatGameConfig } from "@/config/hatGameDefaults";
 import { MIN_PLAYERS_PER_TEAM } from "@/config/teamRoster";
 import clueSuggestions from "@/data/clueSuggestions.json";
 import {
@@ -21,6 +21,7 @@ import { getCountdownSeconds } from "@/domain/hat-game/time";
 import type { ClueSubmissionMap, HatGameAction } from "@/domain/hat-game/types";
 import { playHatGameActionSoundEffects } from "@/features/hat-game/hatGameActionSound";
 import type { AppSnapshot, AppStep, StoragePayload } from "@/features/hat-game/hatGameAppTypes";
+import { formatSavedAt } from "@/lib/formatSavedAt";
 import { playSoundCue } from "@/services/hatGameSound";
 import {
   clearSavedState,
@@ -44,16 +45,30 @@ const createInitialSnapshot = (step: AppStep = "settings"): AppSnapshot => ({
   clueEntryRevealed: false,
   handoffRevealed: false,
   session: null,
+  turnDurationSeconds: GAME_DEFAULTS.turnDurationSeconds,
+  skipsPerTurn: GAME_DEFAULTS.skipsPerTurn,
 });
 
-/** Older builds used `counts` for the team-count-only step. */
+/** Older builds used `counts` for the team-count-only step; merge setup prefs defaults. */
 const normalizeSnapshotStep = (snapshot: AppSnapshot): AppSnapshot => {
   const step = snapshot.step as string;
-  if (step === "counts") {
-    return { ...snapshot, step: "settings" };
-  }
-  return snapshot;
+  const stepFixed = step === "counts" ? "settings" : snapshot.step;
+  return {
+    ...snapshot,
+    step: stepFixed,
+    turnDurationSeconds:
+      snapshot.turnDurationSeconds ?? GAME_DEFAULTS.turnDurationSeconds,
+    skipsPerTurn: snapshot.skipsPerTurn ?? GAME_DEFAULTS.skipsPerTurn,
+  };
 };
+
+const sessionConfigFromSnapshot = (snapshot: AppSnapshot): HatGameConfig => ({
+  ...GAME_DEFAULTS,
+  turnDurationSeconds: snapshot.turnDurationSeconds,
+  skipsPerTurn: snapshot.skipsPerTurn,
+});
+
+export { formatSavedAt };
 
 const syncClueSubmissions = (players: AppSnapshot['players'], current: ClueSubmissionMap): ClueSubmissionMap =>
   Object.fromEntries(
@@ -84,18 +99,6 @@ const chooseSuggestion = (used: string[]) => {
   const remaining = (clueSuggestions as string[]).filter((suggestion) => !used.includes(suggestion));
   const source = remaining.length > 0 ? remaining : (clueSuggestions as string[]);
   return source[Math.floor(Math.random() * source.length)] ?? '';
-};
-
-export const formatSavedAt = (value?: string) => {
-  if (!value) {
-    return '';
-  }
-  return new Date(value).toLocaleString([], {
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit'
-  });
 };
 
 export function useHatGameApp() {
@@ -295,6 +298,14 @@ export function useHatGameApp() {
     setSnapshot((current) => ({ ...current, teamCount }));
   };
 
+  const updateHatTurnDurationSeconds = (seconds: number) => {
+    setSnapshot((current) => ({ ...current, turnDurationSeconds: seconds }));
+  };
+
+  const updateHatSkipsPerTurn = (skips: number) => {
+    setSnapshot((current) => ({ ...current, skipsPerTurn: skips }));
+  };
+
   /** Build 2 players per team and move into per-team setup (same pattern as WhoWhatWhere). */
   const confirmTeamCountAndStartTeamSetup = () => {
     const teamCount = snapshotRef.current.teamCount;
@@ -446,7 +457,7 @@ export function useHatGameApp() {
       const session = createHatGameSession({
         players: snapshot.players,
         teams: snapshot.teams,
-        config: GAME_DEFAULTS,
+        config: sessionConfigFromSnapshot(snapshot),
         clueSubmissions: snapshot.clueSubmissions
       });
       setSnapshot((current) => ({ ...current, step: 'game', session, handoffRevealed: false }));
@@ -468,7 +479,7 @@ export function useHatGameApp() {
     const session = createHatGameSession({
       players: snapshot.players,
       teams: snapshot.teams,
-      config: GAME_DEFAULTS,
+      config: sessionConfigFromSnapshot(snapshot),
       clueSubmissions: snapshot.clueSubmissions
     });
     setSnapshot((current) => ({ ...current, step: 'game', session, handoffRevealed: false }));
@@ -492,6 +503,8 @@ export function useHatGameApp() {
     resumeSavedGame,
     exitToLanding,
     updateHatTeamCountSetting,
+    updateHatTurnDurationSeconds,
+    updateHatSkipsPerTurn,
     confirmTeamCountAndStartTeamSetup,
     applyHatRosterFromRows,
     addPlayerToHatRosterRows,

@@ -7,7 +7,6 @@ import {
   PrimaryFooterButton,
   SecondaryFooterButton,
 } from "@/components/game/GameFooterButtons";
-import { GamePanel } from "@/components/game/GamePanel";
 import { GameScreenHeaderActions } from "@/components/game/GameScreenHeaderActions";
 import { GameResultActions } from "@/components/GameResultActions";
 import { GameShell } from "@/components/GameShell";
@@ -19,8 +18,10 @@ import { FinalSummaryScreen } from "@/features/whowhatwhere/results/FinalSummary
 import { ResultsScreen } from "@/features/whowhatwhere/results/ResultsScreen";
 import { SettingsScreen } from "@/features/whowhatwhere/setup/SettingsScreen";
 import { TeamSetupScreen } from "@/features/whowhatwhere/setup/TeamSetupScreen";
+import { WwwReviewTeamsScreen } from "@/features/whowhatwhere/setup/WwwReviewTeamsScreen";
 import { ActiveTurnScreen } from "@/features/whowhatwhere/turn/ActiveTurnScreen";
 import { ReadyScreen } from "@/features/whowhatwhere/turn/ReadyScreen";
+import { WwwLandingScreen } from "@/features/whowhatwhere/WwwLandingScreen";
 import {
   createHatGalleryController,
   hatGallerySnapshots,
@@ -64,22 +65,18 @@ function buildSlides(): readonly SlideSpec[] {
 
   return [
     {
-      label: "Hat landing · WWW (starts at settings)",
+      label: "Hat landing · WWW landing",
       hat: () => createHatGalleryController(hatGallerySnapshots.landing),
       wwwContent: () => (
-        <GamePanel
-          subtitle="There is no separate landing inside this route."
-          title="Who What Where"
-        >
-          <p className="text-typ-body text-muted-foreground">
-            From the home hub, Who What Where opens straight to Game settings — paired
-            with Hat on the next slide.
-          </p>
-        </GamePanel>
+        <WwwLandingScreen
+          confirmDiscardPending={false}
+          pendingMatch={null}
+          onResume={noop}
+        />
       ),
       wwwFooter: () =>
         footerWrap(
-          <PrimaryFooterButton label="Next: Game settings" onClick={noop} />,
+          <PrimaryFooterButton label="Start game" onClick={noop} />,
         ),
     },
     {
@@ -103,7 +100,6 @@ function buildSlides(): readonly SlideSpec[] {
           teamIndex={0}
           teams={teams}
           onBack={noop}
-          onNext={noop}
           onTeamsChange={noop}
         />
       ),
@@ -122,7 +118,6 @@ function buildSlides(): readonly SlideSpec[] {
           teamIndex={1}
           teams={teams}
           onBack={noop}
-          onNext={noop}
           onTeamsChange={noop}
         />
       ),
@@ -132,29 +127,25 @@ function buildSlides(): readonly SlideSpec[] {
         ),
     },
     {
-      label: "Review teams · Round ready (first)",
+      label: "Review teams · Review teams",
       hat: () => createHatGalleryController(hatGallerySnapshots.review),
-      wwwContent: () => (
-        <ReadyScreen
-          error=""
-          handoffRevealed={false}
-          match={wwwFresh}
-          onBackToSetup={noop}
-        />
-      ),
+      wwwContent: () => <WwwReviewTeamsScreen teams={teams} />,
       wwwFooter: () =>
         footerWrap(
-          <PrimaryFooterButton label="Describer ready" onClick={noop} />,
+          <>
+            <SecondaryFooterButton label="Edit teams" onClick={noop} />
+            <PrimaryFooterButton label="Start local round" onClick={noop} />
+          </>,
         ),
     },
     {
-      label: "Private clue pass · Round ready (last turn)",
+      label: "Private clue pass · Round ready (first)",
       hat: () => createHatGalleryController(hatGallerySnapshots.clueHidden),
       wwwContent: () => (
         <ReadyScreen
           error=""
           handoffRevealed={false}
-          match={wwwAfterTurn}
+          match={wwwFresh}
           onBackToSetup={noop}
         />
       ),

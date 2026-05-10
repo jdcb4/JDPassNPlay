@@ -24,8 +24,10 @@ import {
 import { playSound } from "@/services/whowhatwhereSound";
 
 type AppMode =
+  | "landing"
   | "settings"
   | "team"
+  | "review"
   | "ready"
   | "turn"
   | "finalSummary"
@@ -37,10 +39,11 @@ export function useGameController() {
   const [teamSetups, setTeamSetups] = useState(initialSetup.teams);
   const [teamStep, setTeamStep] = useState(0);
   const [match, setMatch] = useState<MatchState | null>(null);
-  const [mode, setMode] = useState<AppMode>("settings");
+  const [mode, setMode] = useState<AppMode>("landing");
   const [pendingMatch, setPendingMatch] = useState<PersistedMatch | null>(() =>
     loadMatch(),
   );
+  const [confirmDiscardPending, setConfirmDiscardPending] = useState(false);
   const [setupError, setSetupError] = useState("");
   const [turnError, setTurnError] = useState("");
   const [isStartingTurn, setIsStartingTurn] = useState(false);
@@ -65,7 +68,7 @@ export function useGameController() {
 
   useEffect(() => {
     if (match?.stage !== "turn" || !match.activeTurn) {
-      return;
+      return undefined;
     }
 
     const interval = window.setInterval(() => {
@@ -98,6 +101,7 @@ export function useGameController() {
 
   const actionLockKey = [
     pendingMatch ? "pending" : "idle",
+    confirmDiscardPending ? "confirm-discard" : "no-confirm",
     activeMode,
     teamStep,
     match?.roundNumber ?? "-",
@@ -120,6 +124,11 @@ export function useGameController() {
     setTeamSetups((currentTeams) =>
       reconcileTeamSetups(currentTeams, nextSettings.teamCount),
     );
+  };
+
+  const goToSettingsFromLanding = () => {
+    setConfirmDiscardPending(false);
+    setMode("settings");
   };
 
   const goToTeamSetup = () => {
@@ -146,8 +155,7 @@ export function useGameController() {
       setTeamStep((currentStep) => currentStep + 1);
       return;
     }
-
-    startNewMatch();
+    setMode("review");
   };
 
   const startNewMatch = () => {
@@ -165,6 +173,16 @@ export function useGameController() {
     } catch (error) {
       setSetupError(error instanceof Error ? error.message : "Unable to start.");
     }
+  };
+
+  const startRoundFromReview = () => {
+    startNewMatch();
+  };
+
+  const leaveReviewToTeamSetup = () => {
+    setSetupError("");
+    setMode("team");
+    setTeamStep(Math.max(0, settings.teamCount - 1));
   };
 
   const startNextTurn = async () => {
@@ -200,19 +218,21 @@ export function useGameController() {
 
     setMatch(restoredMatch);
     setPendingMatch(null);
+    setConfirmDiscardPending(false);
   };
 
   const startOverFromPendingMatch = () => {
     clearMatch();
     setMatch(null);
     setPendingMatch(null);
-    setMode("settings");
+    setMode("landing");
+    setConfirmDiscardPending(false);
   };
 
   const backToSetup = () => {
     clearMatch();
     setMatch(null);
-    setMode("settings");
+    setMode("landing");
   };
 
   const playAgain = () => {
@@ -226,6 +246,8 @@ export function useGameController() {
     teamStep,
     match,
     pendingMatch,
+    confirmDiscardPending,
+    setConfirmDiscardPending,
     setupError,
     turnError,
     isStartingTurn,
@@ -234,9 +256,12 @@ export function useGameController() {
     setReadyHandoffRevealed,
     setTeamSetups: setTeamSetups as (teams: TeamSetup[]) => void,
     updateSettings,
+    goToSettingsFromLanding,
     goToTeamSetup,
     goBackFromTeamSetup,
     advanceTeamSetup,
+    leaveReviewToTeamSetup,
+    startRoundFromReview,
     resumePendingMatch,
     startOverFromPendingMatch,
     startNextTurn,

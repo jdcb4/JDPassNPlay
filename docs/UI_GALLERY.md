@@ -12,12 +12,12 @@ Opens the dev server on port **5174** with **`/gallery.html`** (see `vite.ui-gal
 
 ## Contents
 
-- Eleven paired slides (toolbar **Back / Next / dropdown**): Hat **landing** + WWW note (WWW opens straight to settings from the hub), then **Game settings** on both games, team setup, ready/active/recap/results. WWW/Hat team-setup slides include the shared **`GamePanel`** + roster chrome used in the real app.
+- Eleven paired slides: **Hat landing · WWW landing**, **Game settings** (both), team rosters, **Review teams** (both), clue pass / ready / active / recap / results. See `src/ui-gallery/GalleryApp.tsx`.
 - **Imposter** has only a placeholder route in the app — there are no distinct Imposter screens to mirror yet.
 
 ## Implementation notes
 
 - Source lives under `src/ui-gallery/`.
 - Hat previews reuse `buildHatGameScreen` with a lightweight mock controller (`hatGalleryController.ts`).
-- Who What Where previews reuse real screen components (`SettingsScreen`, `TeamSetupScreen`, `ReadyScreen`, etc.) backed by `src/ui-gallery/wwwGallerySessions.ts`.
+- Who What Where previews reuse real screen components (`WwwLandingScreen`, `SettingsScreen`, `TeamSetupScreen`, `WwwReviewTeamsScreen`, `ReadyScreen`, etc.) backed by `src/ui-gallery/wwwGallerySessions.ts`.
 - Previews use `pointer-events-none` so taps do nothing.

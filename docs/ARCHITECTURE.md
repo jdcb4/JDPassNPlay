@@ -21,7 +21,7 @@ Use clear layers. Adapt the names if the project demands it, but keep the separa
 
 Use `@/components/game/GamePanel` as the **default wrapper for primary in-game content** on each screen inside `GameShell`: titled card (`bg-card`, border, rounded corners) with optional eyebrow and subtitle. Both Hat Game and Who What Where follow this; Imposter uses it on the placeholder route. When adding a new game route, wrap each step’s main body in `GamePanel` unless a deliberate exception is documented in `docs/DECISIONS.md`.
 
-Shared roster UI (`TeamRosterSetupScreen`) can hide its built-in heading (`omitHeading`) when the parent supplies headings via `GamePanel`.
+Shared roster UI (`TeamRosterSetupScreen`) can hide its built-in heading (`omitHeading`) when the parent supplies headings via `GamePanel`. **Primary navigation on roster steps** (Next team / Start round / Review teams) lives in the **`GameShell` footer**, not inside `TeamRosterSetupScreen`.
 
 ### Typography tiers (`text-typ-*`)
 

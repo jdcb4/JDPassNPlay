@@ -9,17 +9,21 @@ import {
 } from "@/components/game/GameFooterButtons";
 import { GamePanel } from "@/components/game/GamePanel";
 import { GameScoreboard } from "@/components/game/GameScoreboard";
+import { ResumeGameCard } from "@/components/game/ResumeGameCard";
+import { reviewDisplayRowsFromHat } from "@/components/game/reviewTeamMappers";
+import { ReviewTeamsPanel } from "@/components/game/ReviewTeamsPanel";
 import { TurnPlayHighlight } from "@/components/game/TurnPlayHighlight";
 import { GameResultActions } from "@/components/GameResultActions";
 import { IconCheck, IconSkipForward } from "@/components/icons";
 import { Metric } from "@/components/Metric";
+import { OptionButton, OptionGroup } from "@/components/setup/OptionGroup";
 import {
   TeamCountOptionGroup,
 } from "@/components/setup/TeamCountOptionGroup";
+import { teamRosterAdvanceLabel } from "@/components/team-setup/teamRosterLabels";
 import { TeamRosterSetupScreen } from "@/components/team-setup/TeamRosterSetupScreen";
 import { GAME_DEFAULTS } from "@/config/hatGameDefaults";
 import type { SharedTeamCount } from "@/config/teamRoster";
-import { teamCountRosterHint } from "@/config/teamRoster";
 import {
   getHatGameContext,
   getHatGamePhaseMeta,
@@ -29,7 +33,7 @@ import { formatCountdown } from "@/domain/hat-game/time";
 import type { HatGameSession } from "@/domain/hat-game/types";
 import type { ScreenModel } from "@/features/hat-game/hatGameAppTypes";
 import type { HatGameAppController } from "@/features/hat-game/useHatGameApp";
-import { formatSavedAt } from "@/features/hat-game/useHatGameApp";
+import { formatSavedAt } from "@/lib/formatSavedAt";
 
 function HatScoreboard({ session }: { session: HatGameSession }) {
   return (
@@ -58,17 +62,12 @@ const renderLanding = (controller: HatGameAppController): ScreenModel => ({
       subtitle="A pass-and-play Celebrity-style party game. Add famous figures, split into teams, then race through Describe, One Word, and Charades with the same figure pool."
       title="Hat Game"
     >
-      {controller.savedRecord ? (
-        <p className={noticeClass}>
-          Saved game found from{" "}
-          {formatSavedAt(controller.savedRecord.lastSavedAt)}.
-        </p>
-      ) : (
-        <p className={noticeClass}>
-          No accounts and no server. One phone, a few friends, and a hat full
-          of names.
-        </p>
-      )}
+      {controller.savedRecord && !controller.confirmNewGame ? (
+        <ResumeGameCard
+          savedAtLabel={formatSavedAt(controller.savedRecord.lastSavedAt)}
+          onResume={controller.resumeSavedGame}
+        />
+      ) : null}
       {controller.confirmNewGame ? (
         <p className="text-typ-ui font-medium text-destructive">
           Start a new game? This will discard the saved game on this device.
@@ -83,18 +82,15 @@ const renderLanding = (controller: HatGameAppController): ScreenModel => ({
         onClick={() => controller.setConfirmNewGame(false)}
       />
       <PrimaryFooterButton
-        label="Discard and start"
+        label="Discard saved game"
         onClick={() => void controller.startNewGame()}
       />
     </>
   ) : controller.savedRecord ? (
-    <>
-      <SecondaryFooterButton
-        label="New game"
-        onClick={() => controller.setConfirmNewGame(true)}
-      />
-      <PrimaryFooterButton label="Resume game" onClick={controller.resumeSavedGame} />
-    </>
+    <PrimaryFooterButton
+      label="Start new game"
+      onClick={() => controller.setConfirmNewGame(true)}
+    />
   ) : (
     <PrimaryFooterButton
       label="Start game"
@@ -106,16 +102,37 @@ const renderLanding = (controller: HatGameAppController): ScreenModel => ({
 const renderSettings = (controller: HatGameAppController): ScreenModel => ({
   content: (
     <GamePanel
-      subtitle="Choose how many teams are playing. Next you will name each team and its players (2–6 per team)."
-      title="Set up Hat Game"
+      subtitle="Choose teams, timing, skips, and how setup continues before rounds."
+      title="Game settings"
     >
       <TeamCountOptionGroup
         value={controller.snapshot.teamCount as SharedTeamCount}
         onChange={controller.updateHatTeamCountSetting}
       />
-      <p className={noticeClass}>
-        {teamCountRosterHint(controller.snapshot.teamCount)}
-      </p>
+
+      <OptionGroup label="Turn length">
+        {[30, 45, 60, 75].map((seconds) => (
+          <OptionButton
+            key={seconds}
+            selected={controller.snapshot.turnDurationSeconds === seconds}
+            onClick={() => controller.updateHatTurnDurationSeconds(seconds)}
+          >
+            {seconds}s
+          </OptionButton>
+        ))}
+      </OptionGroup>
+
+      <OptionGroup label="Skips per turn">
+        {[1, 2, 3].map((skips) => (
+          <OptionButton
+            key={skips}
+            selected={controller.snapshot.skipsPerTurn === skips}
+            onClick={() => controller.updateHatSkipsPerTurn(skips)}
+          >
+            {skips}
+          </OptionButton>
+        ))}
+      </OptionGroup>
     </GamePanel>
   ),
   actions: (
@@ -137,45 +154,52 @@ const renderTeamEditor = (controller: HatGameAppController): ScreenModel => {
       <GamePanel
         className="flex min-h-0 flex-1 flex-col"
         eyebrow={`Team ${controller.snapshot.teamEditIndex + 1} of ${controller.snapshot.teamCount}`}
-        subtitle="Edit names and optional players before continuing."
+        subtitle="Edit the roster below. At least two players per team; add seats if needed."
         title="Name this team"
       >
         <TeamRosterSetupScreen
           addPlayerToRoster={controller.addPlayerToHatRosterRows}
           error={controller.error}
-          lastTeamPrimaryLabel="Review teams"
           omitHeading
           removePlayerFromRoster={controller.removePlayerFromHatRosterRows}
           teamCount={controller.snapshot.teamCount}
           teamIndex={controller.snapshot.teamEditIndex}
           teams={rosterRows}
           onBack={controller.backTeamStep}
-          onNext={controller.confirmTeamStep}
           onTeamsChange={controller.applyHatRosterFromRows}
         />
       </GamePanel>
+    ),
+    actions: (
+      <PrimaryFooterButton
+        label={teamRosterAdvanceLabel(
+          controller.snapshot.teamEditIndex,
+          controller.snapshot.teamCount,
+          "Review teams",
+        )}
+        onClick={controller.confirmTeamStep}
+      />
     ),
   };
 };
 
 const renderReview = (controller: HatGameAppController): ScreenModel => ({
   content: (
-    <GamePanel
-      subtitle="Pass the phone around for private famous figure entry after this."
-      title="Review teams"
-    >
-      {controller.snapshot.teams.map((team) => (
-        <div key={team.id} className={reviewCardClass}>
-          <p className="font-semibold">{team.name}</p>
-          <p className="mt-1 text-muted-foreground">
-            {controller.snapshot.players
-              .filter((player) => player.teamId === team.id)
-              .map((player) => player.name)
-              .join(", ")}
-          </p>
-        </div>
-      ))}
-    </GamePanel>
+    <section className="keyboard-safe-form flex flex-1 flex-col gap-4 pb-4">
+      <GamePanel title="Review teams">
+        <ReviewTeamsPanel
+          teams={reviewDisplayRowsFromHat(
+            controller.snapshot.teams,
+            controller.snapshot.players,
+          )}
+        />
+      </GamePanel>
+      <GamePanel subtitle="Private clue entry" title="Next steps">
+        <p className={noticeClass}>
+          Pass the phone around for private famous figure entry after this.
+        </p>
+      </GamePanel>
+    </section>
   ),
   actions: (
     <>

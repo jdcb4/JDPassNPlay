@@ -1,3 +1,4 @@
+import { GAME_DEFAULTS } from "@/config/hatGameDefaults";
 import type { Player, Team } from "@/domain/hat-game/types";
 import type { AppSnapshot, StoragePayload } from "@/features/hat-game/hatGameAppTypes";
 import type { HatGameAppController } from "@/features/hat-game/useHatGameApp";
@@ -10,6 +11,16 @@ import {
 
 const noop = () => undefined;
 const noopAsync = async () => undefined;
+
+/** Merge defaults for gallery snapshots built before `AppSnapshot` gained setup prefs. */
+function normalizeGallerySnapshot(snapshot: AppSnapshot): AppSnapshot {
+  return {
+    ...snapshot,
+    turnDurationSeconds:
+      snapshot.turnDurationSeconds ?? GAME_DEFAULTS.turnDurationSeconds,
+    skipsPerTurn: snapshot.skipsPerTurn ?? GAME_DEFAULTS.skipsPerTurn,
+  };
+}
 
 function galleryActiveTeam(snapshot: AppSnapshot): {
   readonly activeTeam: Team | null;
@@ -36,17 +47,18 @@ export function createHatGalleryController(
     readonly savedRecord?: StoragePayload | null;
   } = {},
 ): HatGameAppController {
-  const { activeTeam, activeTeamPlayers } = galleryActiveTeam(snapshot);
+  const normalized = normalizeGallerySnapshot(snapshot);
+  const { activeTeam, activeTeamPlayers } = galleryActiveTeam(normalized);
   const turnActive =
-    snapshot.step === "game" &&
-    snapshot.session?.stage === "turn" &&
-    Boolean(snapshot.session.activeTurn);
+    normalized.step === "game" &&
+    normalized.session?.stage === "turn" &&
+    Boolean(normalized.session.activeTurn);
   const secondsRemaining =
     options.secondsRemaining ?? (turnActive ? 38 : 0);
 
   return {
     appVersion: "gallery",
-    snapshot,
+    snapshot: normalized,
     savedRecord: options.savedRecord ?? null,
     loaded: true,
     error: "",
@@ -62,6 +74,8 @@ export function createHatGalleryController(
     resumeSavedGame: noop,
     exitToLanding: noop,
     updateHatTeamCountSetting: noop,
+    updateHatTurnDurationSeconds: noop,
+    updateHatSkipsPerTurn: noop,
     confirmTeamCountAndStartTeamSetup: noop,
     applyHatRosterFromRows: noop,
     addPlayerToHatRosterRows: (rows) => [...rows],
@@ -80,6 +94,17 @@ export function createHatGalleryController(
   };
 }
 
+/** Defaults for `AppSnapshot` setup prefs in static gallery fixtures. */
+function hatGallerySetupPrefs(): Pick<
+  AppSnapshot,
+  "turnDurationSeconds" | "skipsPerTurn"
+> {
+  return {
+    turnDurationSeconds: GAME_DEFAULTS.turnDurationSeconds,
+    skipsPerTurn: GAME_DEFAULTS.skipsPerTurn,
+  };
+}
+
 export function hatSnapshotLanding(): AppSnapshot {
   return {
     step: "landing",
@@ -93,6 +118,7 @@ export function hatSnapshotLanding(): AppSnapshot {
     clueEntryRevealed: false,
     handoffRevealed: false,
     session: null,
+    ...hatGallerySetupPrefs(),
   };
 }
 
@@ -109,6 +135,7 @@ export function hatSnapshotSettings(): AppSnapshot {
     clueEntryRevealed: false,
     handoffRevealed: false,
     session: null,
+    ...hatGallerySetupPrefs(),
   };
 }
 
@@ -126,6 +153,7 @@ export function hatSnapshotTeam(teamEditIndex: number): AppSnapshot {
     clueEntryRevealed: false,
     handoffRevealed: false,
     session: null,
+    ...hatGallerySetupPrefs(),
   };
 }
 
@@ -143,6 +171,7 @@ export function hatSnapshotReview(): AppSnapshot {
     clueEntryRevealed: false,
     handoffRevealed: false,
     session: null,
+    ...hatGallerySetupPrefs(),
   };
 }
 
@@ -160,6 +189,7 @@ export function hatSnapshotClueEntry(revealed: boolean): AppSnapshot {
     clueEntryRevealed: revealed,
     handoffRevealed: false,
     session: null,
+    ...hatGallerySetupPrefs(),
   };
 }
 
@@ -180,6 +210,7 @@ export function hatSnapshotGame(
     clueEntryRevealed: false,
     handoffRevealed,
     session,
+    ...hatGallerySetupPrefs(),
   };
 }
 

@@ -2,6 +2,15 @@
 
 Notable changes by version. Newest at the top. Bumps follow `docs/VERSIONING.md`.
 
+## 0.6.0 - 2026-05-10
+
+- **Who What Where:** **`WwwLandingScreen`** (hub-style landing + optional **`ResumeGameCard`**); footer primary **Start game** / **Start new game** (discard confirm). **`WwwReviewTeamsScreen`** after roster steps (**Review teams** + **Next steps** cards); **`review`** mode before creating the match.
+- **Hat Game:** Landing matches WWW (**ResumeGameCard**, footer **Start new game**); **`Game settings`** title with turn length + skips; **`AppSnapshot`** stores setup prefs for **`createHatGameSession`**; **Review teams** uses shared **`ReviewTeamsPanel`** + **Next steps** card.
+- **Shared:** **`TeamRosterSetupScreen`** — players + **Add player** in body only; primary Next/Start lives in **`GameShell`** footer (`teamRosterAdvanceLabel`). **`ResumeGameCard`**, **`ReviewTeamsPanel`**, **`reviewTeamMappers`**, **`formatSavedAt`** lib helper.
+- **Removed:** `ResumePrompt.tsx` (replaced by landing flow).
+- **UI gallery:** WWW landing + review slides; Hat/WWW settings pairing unchanged structurally.
+- **Docs:** `docs/SCREENS.md`, `docs/UI_GALLERY.md`, `docs/ARCHITECTURE.md`, `docs/PROJECT_INDEX.md`, `docs/DECISIONS.md`.
+
 ## 0.5.3 - 2026-05-10
 
 - **UI gallery:** Re-paired the first slides — Hat **landing** + WWW explainer (WWW has no in-route landing), then **Game settings** on both sides; **Team 1 roster** pairs Hat team setup with WWW team 1. Fixes the previous “off by one” Hat-vs-WWW alignment at the start of the strip.

@@ -16,7 +16,6 @@ export function TeamSetupScreen({
   error,
   onTeamsChange,
   onBack,
-  onNext,
 }: {
   readonly settings: GameSettings;
   readonly teamIndex: number;
@@ -24,7 +23,6 @@ export function TeamSetupScreen({
   readonly error: string;
   readonly onTeamsChange: (teams: TeamSetup[]) => void;
   readonly onBack: () => void;
-  readonly onNext: () => void;
 }) {
   return (
     <section className="flex min-h-0 flex-1 flex-col">
@@ -39,7 +37,6 @@ export function TeamSetupScreen({
             addPlayerToTeam(rows as readonly TeamSetup[], teamId) as RosterTeamRow[]
           }
           error={error}
-          lastTeamPrimaryLabel="Start local round"
           omitHeading
           removePlayerFromRoster={(rows, teamId, playerId) =>
             removePlayerFromTeam(
@@ -52,7 +49,6 @@ export function TeamSetupScreen({
           teamIndex={teamIndex}
           teams={teams as readonly RosterTeamRow[]}
           onBack={onBack}
-          onNext={onNext}
           onTeamsChange={(next) => onTeamsChange(next as TeamSetup[])}
         />
       </GamePanel>

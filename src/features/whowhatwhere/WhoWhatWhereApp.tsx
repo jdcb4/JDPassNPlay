@@ -15,15 +15,17 @@ import { GameScreenHeaderActions } from "@/components/game/GameScreenHeaderActio
 import { GameResultActions } from "@/components/GameResultActions";
 import { GameShell } from "@/components/GameShell";
 import { IconCheck, IconChevronRight, IconSkipForward } from "@/components/icons";
+import { teamRosterAdvanceLabel } from "@/components/team-setup/teamRosterLabels";
 import { canQueueSkipped } from "@/domain/whowhatwhere/game";
 import { FinalSummaryScreen } from "@/features/whowhatwhere/results/FinalSummaryScreen";
 import { ResultsScreen } from "@/features/whowhatwhere/results/ResultsScreen";
-import { ResumePrompt } from "@/features/whowhatwhere/ResumePrompt";
 import { SettingsScreen } from "@/features/whowhatwhere/setup/SettingsScreen";
 import { TeamSetupScreen } from "@/features/whowhatwhere/setup/TeamSetupScreen";
+import { WwwReviewTeamsScreen } from "@/features/whowhatwhere/setup/WwwReviewTeamsScreen";
 import { ActiveTurnScreen } from "@/features/whowhatwhere/turn/ActiveTurnScreen";
 import { ReadyScreen } from "@/features/whowhatwhere/turn/ReadyScreen";
 import { useGameController } from "@/features/whowhatwhere/useGameController";
+import { WwwLandingScreen } from "@/features/whowhatwhere/WwwLandingScreen";
 
 import packageJson from "../../../package.json";
 
@@ -61,22 +63,62 @@ export function WhoWhatWhereApp() {
 
   let footer: ReactNode | undefined;
 
-  if (game.pendingMatch) {
-    footer = wrap(
-      <>
+  if (game.activeMode === "landing") {
+    if (game.confirmDiscardPending) {
+      footer = wrap(
+        <>
+          <SecondaryFooterButton
+            label="Cancel"
+            onClick={() => game.setConfirmDiscardPending(false)}
+          />
+          <PrimaryFooterButton
+            label="Discard saved game"
+            onClick={game.startOverFromPendingMatch}
+          />
+        </>,
+      );
+    } else if (game.pendingMatch) {
+      footer = wrap(
         <PrimaryFooterButton
-          label="Resume game"
-          onClick={game.resumePendingMatch}
-        />
-        <SecondaryFooterButton
           label="Start new game"
-          onClick={game.startOverFromPendingMatch}
-        />
-      </>,
-    );
+          onClick={() => game.setConfirmDiscardPending(true)}
+        />,
+      );
+    } else {
+      footer = wrap(
+        <PrimaryFooterButton
+          label="Start game"
+          onClick={game.goToSettingsFromLanding}
+        />,
+      );
+    }
   } else if (game.activeMode === "settings") {
     footer = wrap(
       <PrimaryFooterButton label="Next: Team 1" onClick={game.goToTeamSetup} />,
+    );
+  } else if (game.activeMode === "team") {
+    footer = wrap(
+      <PrimaryFooterButton
+        label={teamRosterAdvanceLabel(
+          game.teamStep,
+          game.settings.teamCount,
+          "Start local round",
+        )}
+        onClick={game.advanceTeamSetup}
+      />,
+    );
+  } else if (game.activeMode === "review") {
+    footer = wrap(
+      <>
+        <SecondaryFooterButton
+          label="Edit teams"
+          onClick={game.leaveReviewToTeamSetup}
+        />
+        <PrimaryFooterButton
+          label="Start local round"
+          onClick={game.startRoundFromReview}
+        />
+      </>,
     );
   } else if (game.match && game.activeMode === "ready") {
     footer = wrap(
@@ -140,30 +182,39 @@ export function WhoWhatWhereApp() {
           onClose={() => setShowAppInfo(false)}
         />
 
-        {game.pendingMatch ? (
-          <ResumePrompt savedMatch={game.pendingMatch} />
+        {game.activeMode === "landing" ? (
+          <WwwLandingScreen
+            confirmDiscardPending={game.confirmDiscardPending}
+            pendingMatch={game.pendingMatch}
+            onResume={game.resumePendingMatch}
+          />
         ) : null}
 
-        {!game.pendingMatch && game.activeMode === "settings" ? (
+        {game.activeMode === "settings" ? (
           <SettingsScreen
             settings={game.settings}
             onChange={game.updateSettings}
           />
         ) : null}
 
-        {!game.pendingMatch && game.activeMode === "team" ? (
+        {game.activeMode === "team" ? (
           <TeamSetupScreen
             error={game.setupError}
             settings={game.settings}
             teamIndex={game.teamStep}
             teams={game.teamSetups}
             onBack={game.goBackFromTeamSetup}
-            onNext={game.advanceTeamSetup}
             onTeamsChange={game.setTeamSetups}
           />
         ) : null}
 
-        {!game.pendingMatch && game.match && game.activeMode === "ready" ? (
+        {game.activeMode === "review" ? (
+          <WwwReviewTeamsScreen teams={game.teamSetups} />
+        ) : null}
+
+        {!game.pendingMatch &&
+        game.match &&
+        game.activeMode === "ready" ? (
           <ReadyScreen
             key={`${game.match.roundNumber}-${game.match.teamIndex}`}
             error={game.turnError}
@@ -183,11 +234,15 @@ export function WhoWhatWhereApp() {
           />
         ) : null}
 
-        {!game.pendingMatch && game.match && game.activeMode === "finalSummary" ? (
+        {!game.pendingMatch &&
+        game.match &&
+        game.activeMode === "finalSummary" ? (
           <FinalSummaryScreen match={game.match} />
         ) : null}
 
-        {!game.pendingMatch && game.match && game.activeMode === "results" ? (
+        {!game.pendingMatch &&
+        game.match &&
+        game.activeMode === "results" ? (
           <ResultsScreen match={game.match} />
         ) : null}
       </GameShell>

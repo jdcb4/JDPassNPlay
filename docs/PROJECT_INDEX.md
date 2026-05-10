@@ -16,7 +16,7 @@ Games:
 
 - `src/app` — router, root layout, smoke tests.
 - `src/features/home` — launcher / game picker.
-- `src/features/whowhatwhere` — WhoWhatWhere UI + `useGameController`.
+- `src/features/whowhatwhere` — WWW UI + `useGameController` (`WwwLandingScreen`, `WwwReviewTeamsScreen`, …).
 - `src/features/hat-game` — Hat Game web UI + `useHatGameApp`.
 - `src/features/imposter` — placeholder screen.
 - `src/domain/whowhatwhere` — WhoWhatWhere rules (framework-free).

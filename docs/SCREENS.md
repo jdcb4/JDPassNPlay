@@ -15,13 +15,14 @@ Implementation hints refer to components under `src/features/` unless noted.
 
 ## Who What Where (`/games/whowhatwhere`)
 
-Rendered inside **`GameShell`**. Flow is driven by `useGameController`: optional **`pendingMatch`**, then setup vs live **`match`**.
+Rendered inside **`GameShell`**. Flow is driven by `useGameController`: **`landing`** first (with optional **`pendingMatch`** resume card), then setup vs live **`match`**.
 
 | Name | Description |
 |------|-------------|
-| **Saved match gate** | Shown when a mid-game match exists in storage: short copy plus **Resume game** / **Start new game**. Component: `ResumePrompt`. |
+| **Landing** | Game description; if **`pendingMatch`**, a **`ResumeGameCard`** with **Resume game** in-card and **Start new game** in the footer (plus discard confirm when replacing a save). Component: `WwwLandingScreen`. |
 | **Game settings** | Team count, turn length, rounds, skips, word categories. Component: `SettingsScreen`. |
-| **Team roster (per team)** | One step per team: name team and players (`teamStep` advances through teams). Component: `TeamSetupScreen`. |
+| **Team roster (per team)** | One step per team: name team and players (`teamStep` advances through teams). Primary advance (**Next team** / **Start local round**) is in the shell footer. Component: `TeamSetupScreen`. |
+| **Review teams** | Read-only roster recap plus **Next steps** card before the round starts; **Edit teams** / **Start local round** in the footer. Component: `WwwReviewTeamsScreen`. |
 | **Between turns (ready)** | Who’s up next, optional last-turn recap, scoreboard; handoff messaging and **Describer ready** → **Start turn** (same screen; footer depends on `readyHandoffRevealed`). Component: `ReadyScreen`. |
 | **Active turn** | Current word, timer/metrics, Skip/Correct, skipped-word queue; **End turn** in header. Component: `ActiveTurnScreen`. |
 | **Final match recap** | After the last turn of the match: last-turn card + scoreboard; **View final scores**. Component: `FinalSummaryScreen`. |
@@ -35,10 +36,10 @@ Rendered inside **`GameShell`**. Shell step is **`AppSnapshot.step`** (`hatGameA
 
 | Name | Description |
 |------|-------------|
-| **Landing** | Intro plus **Start game**, or **Resume** / **New game** if a save exists. |
-| **Team count** | Choose number of teams only. |
-| **Team roster (per team)** | Name team and players for the current team (`teamEditIndex`). Uses `TeamRosterSetupScreen` inside **`GamePanel`**. |
-| **Review teams** | Read-only summary of all teams/players before clue entry. |
+| **Landing** | Game description; if a save exists, **`ResumeGameCard`** + footer **Start new game** (discard confirm when replacing). |
+| **Game settings** | Team count, turn length, skips per turn (aligned with WWW settings chrome). |
+| **Team roster (per team)** | Name team and players for the current team (`teamEditIndex`). Primary advance is in the shell footer. Uses `TeamRosterSetupScreen` inside **`GamePanel`**. |
+| **Review teams** | **`ReviewTeamsPanel`** summary plus **Next steps** card for private clue entry; **Edit teams** / **Start famous figure entry** in the footer. |
 | **Clue entry — private handoff** | “Pass to …” / only that player should see the screen (`clueEntryRevealed === false`). |
 | **Clue entry — figures form** | Enter famous figures for the active player (`clueEntryRevealed === true`). |
 | **Loading saved game** | Brief placeholder while persisted state loads (`!controller.loaded`). |
@@ -80,8 +81,9 @@ These labels align across both games:
 
 - **Settings** — global rules before play.
 - **Team roster** — naming teams/players.
+- **Review teams** — final roster check before play or clue entry (both games).
 - **Ready / between turns** — pass-the-phone moment before a timed turn.
 - **Active turn** — timed describing/guessing with Skip/Correct (WWW: header End turn; Hat: footer actions).
 - **Results** — match outcome and replay/exit actions.
 
-Who What Where adds **Saved match gate** and **Final match recap**. Hat Game adds **Landing**, **Team count**, **Review teams**, and **Clue entry** before the shared ready → turn → results loop.
+Who What Where adds **Landing** with optional resume, **Final match recap**, and category-driven setup. Hat Game adds **Landing**, **Clue entry**, and phase-based turns before the shared ready → turn → results loop.

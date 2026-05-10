@@ -21,6 +21,9 @@ export type AppSnapshot = {
   clueEntryRevealed: boolean;
   handoffRevealed: boolean;
   session: HatGameSession | null;
+  /** Setup preferences (used when starting `HatGameSession`; mirrors WWW Game settings). */
+  turnDurationSeconds: number;
+  skipsPerTurn: number;
 };
 
 export type StoragePayload = {

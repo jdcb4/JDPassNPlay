@@ -8,6 +8,7 @@ export type { RosterTeamRow };
 
 /**
  * Pass-and-play flow: one team at a time, editable names, add/remove players within limits.
+ * Primary “Next team / Start round” lives in `GameShell` footer — callers supply it there.
  * Callers supply how add/remove mutate the roster (WWW vs Hat name generation).
  */
 export function TeamRosterSetupScreen({
@@ -17,8 +18,6 @@ export function TeamRosterSetupScreen({
   error,
   onTeamsChange,
   onBack,
-  onNext,
-  lastTeamPrimaryLabel,
   addPlayerToRoster,
   removePlayerFromRoster,
   omitHeading = false,
@@ -29,10 +28,7 @@ export function TeamRosterSetupScreen({
   readonly error: string;
   readonly onTeamsChange: (next: RosterTeamRow[]) => void;
   readonly onBack: () => void;
-  readonly onNext: () => void;
-  /** e.g. "Start local round" (WWW) or "Review teams" (Hat Game). */
-  readonly lastTeamPrimaryLabel: string;
-  /** When true, skip the built-in “Team X of Y” / title block — parent uses `GamePanel` for headings. */
+  /** e.g. “Start local round” (WWW) or “Review teams” (Hat Game) — used only by parent footer labels. */
   readonly omitHeading?: boolean;
   readonly addPlayerToRoster: (
     teams: readonly RosterTeamRow[],
@@ -48,11 +44,6 @@ export function TeamRosterSetupScreen({
   if (!team) {
     return null;
   }
-
-  const nextPrimaryLabel =
-    teamIndex === teamCount - 1
-      ? lastTeamPrimaryLabel
-      : `Next: Team ${teamIndex + 2}`;
 
   return (
     <section className="flex min-h-0 flex-1 flex-col">
@@ -145,28 +136,22 @@ export function TeamRosterSetupScreen({
           ))}
         </div>
 
+        <Button
+          className="h-11 w-full"
+          variant="outline"
+          disabled={team.players.length >= MAX_PLAYERS_PER_TEAM}
+          onClick={() => onTeamsChange(addPlayerToRoster(teams, team.id))}
+          type="button"
+        >
+          <IconPlus className="size-4" aria-hidden="true" />
+          Add player
+        </Button>
+
         {error ? (
           <p className="rounded-md border border-semantic-destructive-border-soft bg-semantic-destructive-surface-soft p-3 text-typ-ui text-destructive">
             {error}
           </p>
         ) : null}
-      </div>
-
-      <div className="grid w-full gap-3 border-t border-border bg-semantic-surface-elevated py-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)] backdrop-blur">
-        <Button
-          className="h-11 w-full"
-          variant="outline"
-          disabled={team.players.length >= MAX_PLAYERS_PER_TEAM}
-          onClick={() =>
-            onTeamsChange(addPlayerToRoster(teams, team.id))
-          }
-        >
-          <IconPlus className="size-4" aria-hidden="true" />
-          Add player
-        </Button>
-        <Button className="h-12 w-full" onClick={onNext}>
-          {nextPrimaryLabel}
-        </Button>
       </div>
     </section>
   );
