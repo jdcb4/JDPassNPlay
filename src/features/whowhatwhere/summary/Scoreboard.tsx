@@ -2,11 +2,11 @@ import { GameScoreboard } from "@/components/game/GameScoreboard";
 import type { MatchState } from "@/domain/whowhatwhere/types";
 
 export function Scoreboard({ match }: { readonly match: MatchState }) {
-  const activeTeamId = match.teamOrder[match.teamIndex];
+  const highlightTeamId = match.lastTurnSummary?.teamId;
 
   return (
     <GameScoreboard
-      {...(activeTeamId ? { activeTeamId } : {})}
+      {...(highlightTeamId ? { highlightTeamId } : {})}
       sortDescendingByScore
       teams={match.teams.map((team) => ({
         id: team.id,

@@ -1,61 +1,56 @@
 import { GamePanel } from "@/components/game/GamePanel";
-import { IconArrowLeft } from "@/components/icons";
-import { Button } from "@/components/ui/button";
+import { ReadyNextStepsCard } from "@/components/game/ReadyNextStepsCard";
+import { ReadyProgressCard } from "@/components/game/ReadyProgressCard";
 import { getActiveContext } from "@/domain/whowhatwhere/game";
 import type { MatchState } from "@/domain/whowhatwhere/types";
 import { LastTurnCard } from "@/features/whowhatwhere/summary/LastTurnCard";
 import { Scoreboard } from "@/features/whowhatwhere/summary/Scoreboard";
 
-const noticeClass = "text-typ-ui text-muted-foreground";
-
 export function ReadyScreen({
   match,
   error,
   handoffRevealed,
-  onBackToSetup,
 }: {
   readonly match: MatchState;
   readonly error: string;
   readonly handoffRevealed: boolean;
-  readonly onBackToSetup: () => void;
 }) {
   const context = getActiveContext(match);
+  const describerName = context.describer.name;
+
+  const primaryText = handoffRevealed
+    ? "Start the timer from the footer when everyone is ready."
+    : `${describerName} taps “${describerName} Ready” in the footer when everyone else is looking away.`;
+
+  const givePhoneLine = handoffRevealed ? (
+    <>
+      <span className="font-semibold text-foreground">{describerName}</span> has the
+      phone.
+    </>
+  ) : (
+    <>
+      Give the phone to{" "}
+      <span className="font-semibold text-foreground">{describerName}</span>.
+    </>
+  );
 
   return (
-    <section className="flex flex-1 flex-col pb-4">
-      <GamePanel
-        eyebrow={`Round ${Math.min(match.roundNumber, match.settings.totalRounds)} / ${match.settings.totalRounds}`}
-        subtitle={`Give the phone to ${context.describer.name}`}
-        title={`${context.team.name} up next`}
-      >
-        <div className="flex justify-end">
-          <Button
-            aria-label="Back to setup"
-            size="icon"
-            variant="ghost"
-            onClick={onBackToSetup}
-          >
-            <IconArrowLeft className="size-5" aria-hidden="true" />
-          </Button>
-        </div>
+    <section className="flex flex-1 flex-col gap-4 pb-4">
+      <GamePanel title={`${context.team.name} up next`} />
 
-        <LastTurnCard summary={match.lastTurnSummary} />
-        <Scoreboard match={match} />
+      <LastTurnCard summary={match.lastTurnSummary} />
 
-        <p className={noticeClass}>
-          Word categories for this round:{" "}
-          {match.settings.selectedCategories.join(", ")}.
-        </p>
+      <ReadyProgressCard label="Round">
+        {Math.min(match.roundNumber, match.settings.totalRounds)} /{" "}
+        {match.settings.totalRounds}
+      </ReadyProgressCard>
 
-        <p className={noticeClass}>
-          {handoffRevealed
-            ? `${context.describer.name} has the phone. Start the timer from the footer when everyone is ready.`
-            : `${context.describer.name} taps “Describer ready” in the footer when everyone else is looking away.`}
-        </p>
-      </GamePanel>
+      <Scoreboard match={match} />
+
+      <ReadyNextStepsCard givePhoneLine={givePhoneLine} primaryText={primaryText} />
 
       {error ? (
-        <p className="mt-4 rounded-md border border-semantic-destructive-border-soft bg-semantic-destructive-surface-soft p-3 text-typ-ui text-destructive">
+        <p className="rounded-md border border-semantic-destructive-border-soft bg-semantic-destructive-surface-soft p-3 text-typ-ui text-destructive">
           {error}
         </p>
       ) : null}

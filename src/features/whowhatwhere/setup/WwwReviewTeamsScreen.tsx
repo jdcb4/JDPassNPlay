@@ -24,9 +24,8 @@ export function WwwReviewTeamsScreen({
         title="Next steps"
       >
         <p className="text-typ-body text-muted-foreground">
-          Word categories and timing come from Game settings. After you start the round,
-          pass the phone to the first describer — they will tap when ready so others can
-          look away before the timer.
+          After you start the round, pass the phone to the first describer — they will tap
+          when ready so others can look away before the timer.
         </p>
       </GamePanel>
     </section>

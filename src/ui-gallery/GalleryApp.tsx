@@ -11,7 +11,7 @@ import { GameScreenHeaderActions } from "@/components/game/GameScreenHeaderActio
 import { GameResultActions } from "@/components/GameResultActions";
 import { GameShell } from "@/components/GameShell";
 import { IconCheck, IconChevronRight, IconSkipForward } from "@/components/icons";
-import { canQueueSkipped } from "@/domain/whowhatwhere/game";
+import { canQueueSkipped, getActiveContext } from "@/domain/whowhatwhere/game";
 import { buildHatGameScreen } from "@/features/hat-game/HatGameWebScreens";
 import type { HatGameAppController } from "@/features/hat-game/useHatGameApp";
 import { FinalSummaryScreen } from "@/features/whowhatwhere/results/FinalSummaryScreen";
@@ -134,7 +134,7 @@ function buildSlides(): readonly SlideSpec[] {
         footerWrap(
           <>
             <SecondaryFooterButton label="Edit teams" onClick={noop} />
-            <PrimaryFooterButton label="Start local round" onClick={noop} />
+            <PrimaryFooterButton label="Start the game" onClick={noop} />
           </>,
         ),
     },
@@ -142,16 +142,14 @@ function buildSlides(): readonly SlideSpec[] {
       label: "Private clue pass · Round ready (first)",
       hat: () => createHatGalleryController(hatGallerySnapshots.clueHidden),
       wwwContent: () => (
-        <ReadyScreen
-          error=""
-          handoffRevealed={false}
-          match={wwwFresh}
-          onBackToSetup={noop}
-        />
+        <ReadyScreen error="" handoffRevealed={false} match={wwwFresh} />
       ),
       wwwFooter: () =>
         footerWrap(
-          <PrimaryFooterButton label="Describer ready" onClick={noop} />,
+          <PrimaryFooterButton
+            label={`${getActiveContext(wwwFresh).describer.name} Ready`}
+            onClick={noop}
+          />,
         ),
     },
     {
@@ -183,16 +181,14 @@ function buildSlides(): readonly SlideSpec[] {
       hat: () =>
         createHatGalleryController(hatGallerySnapshots.readyRecapHandoffOff),
       wwwContent: () => (
-        <ReadyScreen
-          error=""
-          handoffRevealed={false}
-          match={wwwAfterTurn}
-          onBackToSetup={noop}
-        />
+        <ReadyScreen error="" handoffRevealed={false} match={wwwAfterTurn} />
       ),
       wwwFooter: () =>
         footerWrap(
-          <PrimaryFooterButton label="Describer ready" onClick={noop} />,
+          <PrimaryFooterButton
+            label={`${getActiveContext(wwwAfterTurn).describer.name} Ready`}
+            onClick={noop}
+          />,
         ),
     },
     {
@@ -200,12 +196,7 @@ function buildSlides(): readonly SlideSpec[] {
       hat: () =>
         createHatGalleryController(hatGallerySnapshots.readyRecapHandoffOn),
       wwwContent: () => (
-        <ReadyScreen
-          error=""
-          handoffRevealed
-          match={wwwAfterTurn}
-          onBackToSetup={noop}
-        />
+        <ReadyScreen error="" handoffRevealed match={wwwAfterTurn} />
       ),
       wwwFooter: () =>
         footerWrap(

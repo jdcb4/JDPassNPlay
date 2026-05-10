@@ -9,6 +9,9 @@ import {
 } from "@/components/game/GameFooterButtons";
 import { GamePanel } from "@/components/game/GamePanel";
 import { GameScoreboard } from "@/components/game/GameScoreboard";
+import { HatLastTurnCard } from "@/components/game/HatLastTurnCard";
+import { ReadyNextStepsCard } from "@/components/game/ReadyNextStepsCard";
+import { ReadyProgressCard } from "@/components/game/ReadyProgressCard";
 import { ResumeGameCard } from "@/components/game/ResumeGameCard";
 import { reviewDisplayRowsFromHat } from "@/components/game/reviewTeamMappers";
 import { ReviewTeamsPanel } from "@/components/game/ReviewTeamsPanel";
@@ -36,8 +39,11 @@ import type { HatGameAppController } from "@/features/hat-game/useHatGameApp";
 import { formatSavedAt } from "@/lib/formatSavedAt";
 
 function HatScoreboard({ session }: { session: HatGameSession }) {
+  const highlightTeamId = session.lastTurnSummary?.teamId;
+
   return (
     <GameScoreboard
+      {...(highlightTeamId ? { highlightTeamId } : {})}
       sortDescendingByScore={false}
       teams={session.teams.map((team) => ({
         id: team.id,
@@ -195,7 +201,7 @@ const renderReview = (controller: HatGameAppController): ScreenModel => ({
         />
       </GamePanel>
       <GamePanel subtitle="Private clue entry" title="Next steps">
-        <p className={noticeClass}>
+        <p className="text-typ-body text-muted-foreground">
           Pass the phone around for private famous figure entry after this.
         </p>
       </GamePanel>
@@ -293,42 +299,46 @@ const renderReady = (
   const context = getHatGameContext(session);
   const phase = getHatGamePhaseMeta(session.phaseNumber);
   const previousTurn = session.lastTurnSummary;
-  const correctLabel =
-    previousTurn?.correctCount === 1 ? "correct guess" : "correct guesses";
+
+  const nextStepsPrimary = phase.instruction;
+
+  const nextStepsGivePhone = controller.snapshot.handoffRevealed ? (
+    <>
+      <span className="font-semibold text-foreground">
+        {context.activeDescriberName}
+      </span>{" "}
+      has the phone — start the turn from the footer when everyone is ready.
+    </>
+  ) : (
+    <>
+      Give the phone to{" "}
+      <span className="font-semibold text-foreground">
+        {context.activeDescriberName}
+      </span>
+      .
+    </>
+  );
 
   return {
     content: (
-      <GamePanel
-        subtitle={`Phase ${session.phaseNumber}: ${phase.name}`}
-        title={`${context.activeTeam?.name ?? "Next team"} up next`}
-      >
-        {previousTurn ? (
-          <div className={reviewCardClass}>
-            <p className="font-semibold">
-              {previousTurn.describerName}&apos;s turn is over
-            </p>
-            <p className="mt-1 text-muted-foreground">
-              {previousTurn.describerName} scored {previousTurn.correctCount}{" "}
-              {correctLabel} for {previousTurn.teamName}.
-            </p>
-            {previousTurn.phaseCompleted ? (
-              <p className="mt-1 text-muted-foreground">
-                Phase {previousTurn.completedPhaseNumber} complete
-                {previousTurn.nextPhaseName
-                  ? `. Next: ${previousTurn.nextPhaseName}.`
-                  : "."}
-              </p>
-            ) : null}
-          </div>
-        ) : null}
+      <section className="flex flex-1 flex-col gap-4 pb-4">
+        <GamePanel
+          title={`${context.activeTeam?.name ?? "Next team"} up next`}
+        />
+
+        {previousTurn ? <HatLastTurnCard summary={previousTurn} /> : null}
+
+        <ReadyProgressCard label="Phase">
+          {session.phaseNumber}: {phase.name}
+        </ReadyProgressCard>
+
         <HatScoreboard session={session} />
-        <p className={noticeClass}>{phase.instruction}</p>
-        <p className={noticeClass}>
-          {controller.snapshot.handoffRevealed
-            ? `${context.activeDescriberName} has the phone.`
-            : `Give the phone to ${context.activeDescriberName}.`}
-        </p>
-      </GamePanel>
+
+        <ReadyNextStepsCard
+          givePhoneLine={nextStepsGivePhone}
+          primaryText={nextStepsPrimary}
+        />
+      </section>
     ),
     actions: controller.snapshot.handoffRevealed ? (
       <PrimaryFooterButton
@@ -339,7 +349,7 @@ const renderReady = (
       />
     ) : (
       <PrimaryFooterButton
-        label={`${context.activeDescriberName} ready`}
+        label={`${context.activeDescriberName} Ready`}
         onClick={controller.revealHandoff}
       />
     ),

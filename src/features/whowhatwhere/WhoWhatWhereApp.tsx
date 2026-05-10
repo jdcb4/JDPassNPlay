@@ -16,7 +16,7 @@ import { GameResultActions } from "@/components/GameResultActions";
 import { GameShell } from "@/components/GameShell";
 import { IconCheck, IconChevronRight, IconSkipForward } from "@/components/icons";
 import { teamRosterAdvanceLabel } from "@/components/team-setup/teamRosterLabels";
-import { canQueueSkipped } from "@/domain/whowhatwhere/game";
+import { canQueueSkipped, getActiveContext } from "@/domain/whowhatwhere/game";
 import { FinalSummaryScreen } from "@/features/whowhatwhere/results/FinalSummaryScreen";
 import { ResultsScreen } from "@/features/whowhatwhere/results/ResultsScreen";
 import { SettingsScreen } from "@/features/whowhatwhere/setup/SettingsScreen";
@@ -115,12 +115,13 @@ export function WhoWhatWhereApp() {
           onClick={game.leaveReviewToTeamSetup}
         />
         <PrimaryFooterButton
-          label="Start local round"
+          label="Start the game"
           onClick={game.startRoundFromReview}
         />
       </>,
     );
   } else if (game.match && game.activeMode === "ready") {
+    const readyDescriberName = getActiveContext(game.match).describer.name;
     footer = wrap(
       game.readyHandoffRevealed ? (
         <PrimaryFooterButton
@@ -130,7 +131,7 @@ export function WhoWhatWhereApp() {
         />
       ) : (
         <PrimaryFooterButton
-          label="Describer ready"
+          label={`${readyDescriberName} Ready`}
           onClick={() => game.setReadyHandoffRevealed(true)}
         />
       ),
@@ -220,7 +221,6 @@ export function WhoWhatWhereApp() {
             error={game.turnError}
             handoffRevealed={game.readyHandoffRevealed}
             match={game.match}
-            onBackToSetup={game.backToSetup}
           />
         ) : null}
 

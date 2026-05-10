@@ -22,8 +22,8 @@ Rendered inside **`GameShell`**. Flow is driven by `useGameController`: **`landi
 | **Landing** | Game description; if **`pendingMatch`**, a **`ResumeGameCard`** with **Resume game** in-card and **Start new game** in the footer (plus discard confirm when replacing a save). Component: `WwwLandingScreen`. |
 | **Game settings** | Team count, turn length, rounds, skips, word categories. Component: `SettingsScreen`. |
 | **Team roster (per team)** | One step per team: name team and players (`teamStep` advances through teams). Primary advance (**Next team** / **Start local round**) is in the shell footer. Component: `TeamSetupScreen`. |
-| **Review teams** | Read-only roster recap plus **Next steps** card before the round starts; **Edit teams** / **Start local round** in the footer. Component: `WwwReviewTeamsScreen`. |
-| **Between turns (ready)** | Who’s up next, optional last-turn recap, scoreboard; handoff messaging and **Describer ready** → **Start turn** (same screen; footer depends on `readyHandoffRevealed`). Component: `ReadyScreen`. |
+| **Review teams** | Read-only roster recap plus **Next steps** card before the round starts; **Edit teams** / **Start the game** in the footer. Component: `WwwReviewTeamsScreen`. |
+| **Between turns (ready)** | Heading, last-turn recap (`LastTurnCard`), round strip (`ReadyProgressCard`), scoreboard (highlights team that just played), **Next steps** card; footer **`[Describer] Ready`** → **Start turn** (`readyHandoffRevealed`). Component: `ReadyScreen`. |
 | **Active turn** | Current word, timer/metrics, Skip/Correct, skipped-word queue; **End turn** in header. Component: `ActiveTurnScreen`. |
 | **Final match recap** | After the last turn of the match: last-turn card + scoreboard; **View final scores**. Component: `FinalSummaryScreen`. |
 | **Final results** | Winner/tie, best turn, leaderboard; **Pick another game** / **Replay** / **New game**. Component: `ResultsScreen`. |
@@ -43,7 +43,7 @@ Rendered inside **`GameShell`**. Shell step is **`AppSnapshot.step`** (`hatGameA
 | **Clue entry — private handoff** | “Pass to …” / only that player should see the screen (`clueEntryRevealed === false`). |
 | **Clue entry — figures form** | Enter famous figures for the active player (`clueEntryRevealed === true`). |
 | **Loading saved game** | Brief placeholder while persisted state loads (`!controller.loaded`). |
-| **Between turns (ready)** | Phase label, scoreboard, optional last-turn recap, handoff copy; **… ready** → **Start turn**. Session **`stage === "ready"`**. |
+| **Between turns (ready)** | Heading, **`HatLastTurnCard`**, phase strip (**`ReadyProgressCard`**), scoreboard (highlights team that just played), **Next steps** card; **`[Describer] Ready`** → **Start turn**. Session **`stage === "ready"`**. |
 | **Active turn** | Current clue, timer and phase metrics, Skip/Correct, optional skipped-clue rows. Session **`stage === "turn"`**. |
 | **Final results** | Tie or leaderboard, best-turn line; **Pick another game** / **Replay** / **New game**. Session **`stage === "results"`**. |
 

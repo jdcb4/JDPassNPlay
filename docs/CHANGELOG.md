@@ -2,6 +2,12 @@
 
 Notable changes by version. Newest at the top. Bumps follow `docs/VERSIONING.md`.
 
+## 0.7.0 - 2026-05-10
+
+- **Between turns (WWW + Hat):** Shared stack — heading (`GamePanel`), **`LastTurnCard`** / **`HatLastTurnCard`** (expandable Words), **`ReadyProgressCard`** (Round or Phase), **`GameScoreboard`** (ring highlights **last turn’s team**, not upcoming), **`ReadyNextStepsCard`**. WWW ready removes back button and round categories blurb; footer primary **`[Describer name] Ready`**.
+- **Review teams:** WWW **Next steps** copy starts at “After you start…”; primary footer **`Start the game`**. Hat **Next steps** uses **`text-typ-body`** to match WWW.
+- **Shared components:** **`WwwLastTurnCard`**, **`HatLastTurnCard`**, **`ReadyProgressCard`**, **`ReadyNextStepsCard`**, **`readySharedClasses`**; **`GameScoreboard`** prop renamed to **`highlightTeamId`**.
+
 ## 0.6.0 - 2026-05-10
 
 - **Who What Where:** **`WwwLandingScreen`** (hub-style landing + optional **`ResumeGameCard`**); footer primary **Start game** / **Start new game** (discard confirm). **`WwwReviewTeamsScreen`** after roster steps (**Review teams** + **Next steps** cards); **`review`** mode before creating the match.

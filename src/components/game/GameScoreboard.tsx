@@ -11,12 +11,12 @@ export type GameScoreboardTeam = {
  */
 export function GameScoreboard({
   teams,
-  activeTeamId,
+  highlightTeamId,
   sortDescendingByScore = false,
 }: {
   readonly teams: readonly GameScoreboardTeam[];
-  /** Highlight the team whose turn it is (WhoWhatWhere ready flow). */
-  readonly activeTeamId?: string | null;
+  /** Ring highlight — e.g. team that just finished a turn (between-turns ready screens). */
+  readonly highlightTeamId?: string | null;
   /** WWW leaderboard-style ordering; Hat keeps roster order when false. */
   readonly sortDescendingByScore?: boolean;
 }) {
@@ -33,7 +33,7 @@ export function GameScoreboard({
             key={team.id}
             className={cn(
               "flex items-center justify-between text-typ-ui font-medium",
-              team.id === activeTeamId &&
+              team.id === highlightTeamId &&
                 "-mx-1 rounded-md px-2 py-1 ring-2 ring-ring",
             )}
           >
