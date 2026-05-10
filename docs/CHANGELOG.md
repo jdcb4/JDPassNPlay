@@ -2,6 +2,10 @@
 
 Notable changes by version. Newest at the top. Bumps follow `docs/VERSIONING.md`.
 
+## 0.9.2 - 2026-05-10
+
+- **Shared layouts:** **`BetweenTurnsLayout`** (ready + final turn recap stack for WWW and Hat) and **`LandingScreenLayout`** (shared **`GamePanel`** shell + resume / discard-confirm slots; WWW keeps keyboard-safe outer section). Refactor only — intended UX parity with previous screens.
+
 ## 0.9.1 - 2026-05-10
 
 - **Who What Where:** Last team roster step footer primary **Finalise teams** (was **Start local round**).

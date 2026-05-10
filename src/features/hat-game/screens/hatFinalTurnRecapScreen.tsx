@@ -1,3 +1,4 @@
+import { BetweenTurnsLayout } from "@/components/game/BetweenTurnsLayout";
 import { FINAL_TURN_RECAP_NEXT_STEPS } from "@/components/game/finalTurnRecapCopy";
 import { PrimaryFooterButton } from "@/components/game/GameFooterButtons";
 import { HatLastTurnCard } from "@/components/game/HatLastTurnCard";
@@ -15,11 +16,15 @@ export function hatFinalTurnRecapScreen(
 
   return {
     content: (
-      <section className="flex flex-1 flex-col gap-4 pb-4">
-        <ThatsTheLastTurnCard />
-        {previousTurn ? <HatLastTurnCard summary={previousTurn} /> : null}
-        <ReadyNextStepsCard primaryText={FINAL_TURN_RECAP_NEXT_STEPS} />
-      </section>
+      <BetweenTurnsLayout
+        banner={<ThatsTheLastTurnCard />}
+        lastTurnCard={
+          previousTurn ? <HatLastTurnCard summary={previousTurn} /> : null
+        }
+        nextSteps={
+          <ReadyNextStepsCard primaryText={FINAL_TURN_RECAP_NEXT_STEPS} />
+        }
+      />
     ),
     actions: (
       <PrimaryFooterButton

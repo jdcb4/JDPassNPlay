@@ -1,3 +1,4 @@
+import { BetweenTurnsLayout } from "@/components/game/BetweenTurnsLayout";
 import { PrimaryFooterButton } from "@/components/game/GameFooterButtons";
 import { GamePanel } from "@/components/game/GamePanel";
 import { HatLastTurnCard } from "@/components/game/HatLastTurnCard";
@@ -41,22 +42,28 @@ export function hatReadyScreen(
 
   return {
     content: (
-      <section className="flex flex-1 flex-col gap-4 pb-4">
-        <GamePanel title={`${context.activeTeam?.name ?? "Next team"} up next`} />
-
-        {previousTurn ? <HatLastTurnCard summary={previousTurn} /> : null}
-
-        <ReadyProgressCard label="Phase">
-          {session.phaseNumber}: {phase.name}
-        </ReadyProgressCard>
-
-        <HatScoreboard session={session} />
-
-        <ReadyNextStepsCard
-          givePhoneLine={nextStepsGivePhone}
-          primaryText={nextStepsPrimary}
-        />
-      </section>
+      <BetweenTurnsLayout
+        heading={
+          <GamePanel
+            title={`${context.activeTeam?.name ?? "Next team"} up next`}
+          />
+        }
+        lastTurnCard={
+          previousTurn ? <HatLastTurnCard summary={previousTurn} /> : null
+        }
+        nextSteps={
+          <ReadyNextStepsCard
+            givePhoneLine={nextStepsGivePhone}
+            primaryText={nextStepsPrimary}
+          />
+        }
+        progressCard={
+          <ReadyProgressCard label="Phase">
+            {session.phaseNumber}: {phase.name}
+          </ReadyProgressCard>
+        }
+        scoreboard={<HatScoreboard session={session} />}
+      />
     ),
     actions: controller.snapshot.handoffRevealed ? (
       <PrimaryFooterButton

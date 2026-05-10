@@ -98,11 +98,13 @@ The largest **structural** difference is runtime shape: WWW uses many focused sc
 
 ## 7. Would further abstraction help?
 
+**Implemented (shared components)**
+
+1. **`BetweenTurnsLayout`** — Slots: `heading`, `lastTurnCard`, `progressCard`, `scoreboard`, `nextSteps`, optional `banner` / `confetti` / `tail`. Used by **`ReadyScreen`**, **`FinalTurnRecapScreen`**, **`hatReadyScreen`**, **`hatFinalTurnRecapScreen`**.
+
+2. **`LandingScreenLayout`** — `title`, `subtitle`, `resumeSlot`, `confirmDestructiveSlot`; optional **`wrapInKeyboardSafeSection`** (WWW `true`, Hat `false`). **`WwwLandingScreen`** and **`hatLandingScreen`** compose it.
+
 **Worth considering (medium value)**
-
-1. **`BetweenTurnsLayout`** — A single layout component accepting slots: `heading`, `lastTurnCard`, `progressCard`, `scoreboard`, `nextSteps`, optional `confetti`/`banner`. Would shrink duplication between `ReadyScreen`, `FinalTurnRecapScreen`, and Hat’s `renderReady` / `renderFinalTurnRecap` **if** the team wants one place to tweak spacing/order.
-
-2. **`LandingScreenLayout`** — Props: `title`, `subtitle`, `resumeSlot`, `confirmDestructiveSlot`, same section shell. Reduces drift between `WwwLandingScreen` and Hat landing.
 
 3. **`ActiveTurnShell`** — Shared grid for `TurnPlayHighlight` + `Metric` cluster + instruction row; game-specific slots for queue/skipped panels. **Only** if active-turn UX is expected to stay parallel long-term.
 
@@ -121,7 +123,7 @@ The largest **structural** difference is runtime shape: WWW uses many focused sc
 ## 8. Recommendations (non-binding)
 
 1. **Keep** domain-specific last-turn and active-turn content in separate modules or slots; **avoid** merging WWW/Hat turn engines.
-2. **Consider** extracting `BetweenTurnsLayout` only if future tickets repeatedly touch spacing/order across three places (`Ready`, `FinalTurnRecap`, Hat equivalents).
+2. **Between-turns spacing/order** — adjust **`BetweenTurnsLayout`** once to affect WWW ready/recap and Hat ready/recap together.
 3. **Document** footer label sources (`WhoWhatWhereApp` vs `ScreenModel.actions`) in [`ARCHITECTURE.md`](ARCHITECTURE.md) if onboarding friction appears — behavior is equivalent but discovery differs.
 4. **Hat-only** clue-entry flow remains intentionally separate; treating it as a third “setup track” in docs (already in `SCREENS.md`) is enough unless a second game adds similar private-entry steps.
 

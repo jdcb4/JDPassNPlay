@@ -1,3 +1,4 @@
+import { BetweenTurnsLayout } from "@/components/game/BetweenTurnsLayout";
 import { GamePanel } from "@/components/game/GamePanel";
 import { ReadyNextStepsCard } from "@/components/game/ReadyNextStepsCard";
 import { ReadyProgressCard } from "@/components/game/ReadyProgressCard";
@@ -35,25 +36,26 @@ export function ReadyScreen({
   );
 
   return (
-    <section className="flex flex-1 flex-col gap-4 pb-4">
-      <GamePanel title={`${context.team.name} up next`} />
-
-      <LastTurnCard summary={match.lastTurnSummary} />
-
-      <ReadyProgressCard label="Round">
-        {Math.min(match.roundNumber, match.settings.totalRounds)} /{" "}
-        {match.settings.totalRounds}
-      </ReadyProgressCard>
-
-      <Scoreboard match={match} />
-
-      <ReadyNextStepsCard givePhoneLine={givePhoneLine} primaryText={primaryText} />
-
-      {error ? (
-        <p className="rounded-md border border-semantic-destructive-border-soft bg-semantic-destructive-surface-soft p-3 text-typ-ui text-destructive">
-          {error}
-        </p>
-      ) : null}
-    </section>
+    <BetweenTurnsLayout
+      heading={<GamePanel title={`${context.team.name} up next`} />}
+      lastTurnCard={<LastTurnCard summary={match.lastTurnSummary} />}
+      nextSteps={
+        <ReadyNextStepsCard givePhoneLine={givePhoneLine} primaryText={primaryText} />
+      }
+      progressCard={
+        <ReadyProgressCard label="Round">
+          {Math.min(match.roundNumber, match.settings.totalRounds)} /{" "}
+          {match.settings.totalRounds}
+        </ReadyProgressCard>
+      }
+      scoreboard={<Scoreboard match={match} />}
+      tail={
+        error ? (
+          <p className="rounded-md border border-semantic-destructive-border-soft bg-semantic-destructive-surface-soft p-3 text-typ-ui text-destructive">
+            {error}
+          </p>
+        ) : null
+      }
+    />
   );
 }

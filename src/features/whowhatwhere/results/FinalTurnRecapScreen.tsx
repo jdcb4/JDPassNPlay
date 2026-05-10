@@ -1,3 +1,4 @@
+import { BetweenTurnsLayout } from "@/components/game/BetweenTurnsLayout";
 import { FINAL_TURN_RECAP_NEXT_STEPS } from "@/components/game/finalTurnRecapCopy";
 import { ReadyNextStepsCard } from "@/components/game/ReadyNextStepsCard";
 import { ThatsTheLastTurnCard } from "@/components/game/ThatsTheLastTurnCard";
@@ -11,10 +12,12 @@ export function FinalTurnRecapScreen({
   readonly match: MatchState;
 }) {
   return (
-    <section className="flex flex-1 flex-col gap-4 pb-4">
-      <ThatsTheLastTurnCard />
-      <LastTurnCard summary={match.lastTurnSummary} />
-      <ReadyNextStepsCard primaryText={FINAL_TURN_RECAP_NEXT_STEPS} />
-    </section>
+    <BetweenTurnsLayout
+      banner={<ThatsTheLastTurnCard />}
+      lastTurnCard={<LastTurnCard summary={match.lastTurnSummary} />}
+      nextSteps={
+        <ReadyNextStepsCard primaryText={FINAL_TURN_RECAP_NEXT_STEPS} />
+      }
+    />
   );
 }
