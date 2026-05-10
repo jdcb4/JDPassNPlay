@@ -59,6 +59,7 @@ Games:
 - [`docs/TYPOGRAPHY.md`](TYPOGRAPHY.md) — named font tiers (`text-typ-*`).
 - [`docs/THEMING.md`](THEMING.md) — semantic colors (`semantic-*`) and theme layers.
 - [`docs/SCREENS.md`](SCREENS.md) — informal names for each hub/game screen (UX reference).
+- [`docs/UX_CROSS_GAME_REPORT.md`](UX_CROSS_GAME_REPORT.md) — WWW vs Hat screen parity, shared components, abstraction notes.
 - [`docs/VERSIONING.md`](VERSIONING.md) — version rules.
 - [`docs/DECISIONS.md`](DECISIONS.md) — durable decisions (ADR-lite).
 - [`docs/ROADMAP.md`](ROADMAP.md) — future ideas only, not active work.
