@@ -1,6 +1,9 @@
 /* eslint-disable react-refresh/only-export-components -- screen builder module; not a leaf component file */
 import type { NavigateFunction } from "react-router-dom";
 
+import { FinalResultsBody } from "@/components/game/final-results/FinalResultsBody";
+import { ResultsConfetti } from "@/components/game/final-results/ResultsConfetti";
+import { mapFinalResultsFromHat } from "@/components/game/final-results/viewModel";
 import { FINAL_TURN_RECAP_NEXT_STEPS } from "@/components/game/finalTurnRecapCopy";
 import {
   FooterIconSlotButton,
@@ -60,9 +63,6 @@ const inputClassName =
   "keyboard-safe-input h-12 w-full rounded-md border border-input bg-background px-3 text-typ-input text-foreground outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring";
 
 const noticeClass = "text-typ-ui text-muted-foreground";
-
-const reviewCardClass =
-  "rounded-lg border border-border bg-semantic-muted-panel-bg p-3 text-typ-ui";
 
 const renderLanding = (controller: HatGameAppController): ScreenModel => ({
   content: (
@@ -466,37 +466,34 @@ const renderResults = (
   controller: HatGameAppController,
   session: HatGameSession,
   navigate: NavigateFunction,
-): ScreenModel => ({
-  content: (
-    <GamePanel
-      subtitle="All three phases are complete."
-      title={session.results?.isTie ? "Tie game" : "Final leaderboard"}
-    >
-      {session.results?.bestTurn ? (
-        <p className={noticeClass}>
-          Best turn: {session.results.bestTurn.describerName} scored{" "}
-          {session.results.bestTurn.score} for {session.results.bestTurn.teamName}
-          .
-        </p>
-      ) : null}
-      {session.results?.leaderboard.map((entry, index) => (
-        <div key={entry.teamId} className={reviewCardClass}>
-          <p className="font-semibold">
-            {index + 1}. {entry.teamName}
-          </p>
-          <p className="mt-1 text-typ-ui text-muted-foreground">{entry.score} pts</p>
+): ScreenModel => {
+  const results = session.results;
+  const vm = results ? mapFinalResultsFromHat(results) : null;
+
+  return {
+    content: (
+      <section className="relative flex flex-1 flex-col pb-4">
+        <ResultsConfetti />
+        <div className="relative z-10">
+          <GamePanel title="Final Results">
+            {vm ? (
+              <FinalResultsBody vm={vm} />
+            ) : (
+              <p className="text-typ-body text-muted-foreground">No results yet.</p>
+            )}
+          </GamePanel>
         </div>
-      ))}
-    </GamePanel>
-  ),
-  actions: (
-    <GameResultActions
-      onNewGame={() => void controller.startNewGame()}
-      onPickAnotherGame={() => navigate("/")}
-      onReplay={controller.playAgain}
-    />
-  ),
-});
+      </section>
+    ),
+    actions: (
+      <GameResultActions
+        onNewGame={() => void controller.startNewGame()}
+        onPickAnotherGame={() => navigate("/")}
+        onReplay={controller.playAgain}
+      />
+    ),
+  };
+};
 
 const renderGame = (
   controller: HatGameAppController,

@@ -157,6 +157,21 @@ const config: Config = {
           },
         ],
       },
+      keyframes: {
+        "confetti-fall": {
+          "0%": {
+            transform: "translateY(-14vh) rotate(0deg)",
+            opacity: "1",
+          },
+          "100%": {
+            transform: "translateY(105vh) rotate(680deg)",
+            opacity: "0.28",
+          },
+        },
+      },
+      animation: {
+        "confetti-fall": "confetti-fall linear forwards",
+      },
     },
   },
   plugins: [],

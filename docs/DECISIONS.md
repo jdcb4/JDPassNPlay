@@ -20,6 +20,16 @@ When adding a new entry, append to the bottom and keep the most recent decisions
 
 ---
 
+## 2026-05-10: Results confetti without a dependency
+
+**Decision:** Implement **`ResultsConfetti`** as fixed-position absolutely positioned colored spans animated with Tailwind **`@keyframes confetti-fall`** (`tailwind.config.ts`). No canvas libraries or extra npm packages.
+
+**Reasoning:** Celebration UX with zero install footprint and predictable bundle size; aligns with “client-only / lightweight hub” goals.
+
+**Rejected alternatives:** Adding **`canvas-confetti`** or similar — extra dependency and DECISIONS overhead for a decorative effect.
+
+---
+
 ## 2026-01-01: Scaffolded from the `client-only` preset
 
 **Decision:** Use the `Client-only React app` defaults from the Project Initiation base.

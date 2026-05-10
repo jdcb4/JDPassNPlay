@@ -2,6 +2,11 @@
 
 Notable changes by version. Newest at the top. Bumps follow `docs/VERSIONING.md`.
 
+## 0.9.0 - 2026-05-10
+
+- **Final results (WWW + Hat):** Shared **`FinalResultsBody`** — hero winner/tie callout, **Final Leaderboard** with primary tint for winners + podium-ish ranks 2–3, **Best turn** card (player prominent, large score, team muted). **`ResultsConfetti`** (Tailwind **`confetti-fall`** keyframes; no new deps). **`GamePanel`** title **Final Results** on both games; Hat drops phase subtitle.
+- **Shared mapping:** `mapFinalResultsFromWww` / `mapFinalResultsFromHat` in **`final-results/viewModel.ts`**.
+
 ## 0.8.0 - 2026-05-10
 
 - **Final turn recap (WWW + Hat):** After the last timed turn, a recap modeled on **Between turns (ready)** without round/phase/scoreboard — **That’s the last turn**, last-turn card (**`LastTurnCard`** / **`HatLastTurnCard`**), **Next steps** → footer **Final scores** → overall results. Hat **`HatGameSession.stage`** gains **`finalSummary`** and **`view-results`** action before **`results`**.

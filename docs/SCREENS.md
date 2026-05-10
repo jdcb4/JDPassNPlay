@@ -26,7 +26,7 @@ Rendered inside **`GameShell`**. Flow is driven by `useGameController`: **`landi
 | **Between turns (ready)** | Heading, last-turn recap (`LastTurnCard`), round strip (`ReadyProgressCard`), scoreboard (highlights team that just played), **Next steps** card; footer **`[Describer] Ready`** → **Start turn** (`readyHandoffRevealed`). Component: `ReadyScreen`. |
 | **Active turn** | Current word, timer/metrics, Skip/Correct, skipped-word queue; **End turn** in header. Component: `ActiveTurnScreen`. |
 | **Final turn recap** | Like **Between turns (ready)** but no following turn: **That’s the last turn** banner, **`LastTurnCard`** recap only, **Next steps** toward overall scores; footer **Final scores**. Match **`stage === "finalSummary"`**. Component: **`FinalTurnRecapScreen`**. |
-| **Final results** | Winner/tie, best turn, leaderboard; **Pick another game** / **Replay** / **New game**. Component: `ResultsScreen`. |
+| **Final results** | Shared layout: winner/tie **hero**, **Final Leaderboard**, **Best turn**, confetti; footer **Pick another game** / **Replay** / **New game**. Component: **`ResultsScreen`**. |
 
 ---
 
@@ -46,7 +46,7 @@ Rendered inside **`GameShell`**. Shell step is **`AppSnapshot.step`** (`hatGameA
 | **Between turns (ready)** | Heading, **`HatLastTurnCard`**, phase strip (**`ReadyProgressCard`**), scoreboard (highlights team that just played), **Next steps** card; **`[Describer] Ready`** → **Start turn**. Session **`stage === "ready"`**. |
 | **Active turn** | Current clue, timer and phase metrics, Skip/Correct, optional skipped-clue rows. Session **`stage === "turn"`**. |
 | **Final turn recap** | Last turn of the match: **That’s the last turn**, **`HatLastTurnCard`**, **Next steps**; footer **Final scores** → **`stage === "results"`**. Session **`stage === "finalSummary"`**. |
-| **Final results** | Tie or leaderboard, best-turn line; **Pick another game** / **Replay** / **New game**. Session **`stage === "results"`**. |
+| **Final results** | Same shared podium UI as WWW (**`FinalResultsBody`** via **`mapFinalResultsFromHat`**); session **`stage === "results"`**. |
 
 Screen assembly: **`buildHatGameScreen`** in `HatGameWebScreens.tsx`. **`HatGameApp`** adds shell chrome, error strip, and **`AppInfoOverlay`**.
 
@@ -86,6 +86,6 @@ These labels align across both games:
 - **Ready / between turns** — pass-the-phone moment before a timed turn.
 - **Active turn** — timed describing/guessing with Skip/Correct (WWW: header End turn; Hat: footer actions).
 - **Final turn recap** — last turn’s performance before the leaderboard (both games).
-- **Results** — match outcome and replay/exit actions.
+- **Results** — shared podium (winner hero, **Final Leaderboard**, **Best turn**, confetti); replay / exit actions.
 
 Who What Where adds **Landing** with optional resume, **Final turn recap**, and category-driven setup. Hat Game adds **Landing**, **Clue entry**, phase-based turns, **Final turn recap**, and the shared ready → turn → recap → results flow.

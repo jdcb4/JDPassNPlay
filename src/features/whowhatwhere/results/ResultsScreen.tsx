@@ -1,3 +1,6 @@
+import { FinalResultsBody } from "@/components/game/final-results/FinalResultsBody";
+import { ResultsConfetti } from "@/components/game/final-results/ResultsConfetti";
+import { mapFinalResultsFromWww } from "@/components/game/final-results/viewModel";
 import { GamePanel } from "@/components/game/GamePanel";
 import type { MatchState } from "@/domain/whowhatwhere/types";
 
@@ -6,44 +9,26 @@ export function ResultsScreen({
 }: {
   readonly match: MatchState;
 }) {
-  const results = match.results;
+  const vm = mapFinalResultsFromWww(match);
+
+  if (!vm) {
+    return (
+      <section className="relative flex flex-1 flex-col pb-4">
+        <GamePanel title="Final Results">
+          <p className="text-typ-body text-muted-foreground">No results yet.</p>
+        </GamePanel>
+      </section>
+    );
+  }
 
   return (
-    <section className="flex flex-1 flex-col pb-4">
-      <GamePanel
-        eyebrow="Final results"
-        title={results?.isTie ? "It is a tie" : "Winner crowned"}
-      >
-        <div className="grid gap-3">
-          {results?.bestTurn && (
-            <div className="rounded-md border bg-card p-4">
-              <p className="font-medium text-typ-ui text-muted-foreground">
-                Best turn
-              </p>
-              <p className="mt-1 font-semibold">
-                {results.bestTurn.teamName}: +{results.bestTurn.scoreDelta}
-              </p>
-              <p className="mt-1 text-typ-ui text-muted-foreground">
-                {results.bestTurn.describerName}
-              </p>
-            </div>
-          )}
-          {results?.leaderboard?.map((entry, index) => (
-            <div
-              key={entry.teamId}
-              className="flex items-center justify-between rounded-md border bg-card p-4"
-            >
-              <div className="flex items-center gap-3">
-                <p className="w-8 font-semibold text-typ-ui text-muted-foreground">
-                  #{index + 1}
-                </p>
-                <p className="font-semibold">{entry.teamName}</p>
-              </div>
-              <p className="text-typ-metric font-bold">{entry.score}</p>
-            </div>
-          ))}
-        </div>
-      </GamePanel>
+    <section className="relative flex flex-1 flex-col pb-4">
+      <ResultsConfetti />
+      <div className="relative z-10">
+        <GamePanel title="Final Results">
+          <FinalResultsBody vm={vm} />
+        </GamePanel>
+      </div>
     </section>
   );
 }
